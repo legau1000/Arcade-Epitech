@@ -1,0 +1,27 @@
+2 groupes:  -IGameModule
+            -IDisplayModule
+
+dlopen()
+dlsym()
+dlclose()
+
+
+"extern" C
+
+
+libdl in c a utilisé
+
+
+Faire tourner n'importe quel jeux  INTERFACE
+
+IG, changement de lib (même pour pacman)
+
+Faire avec un autre groupe, et faire de la doc (outils)
+
+review à 2 groupes! donc réfléchr, limite pas faire les même jeux
+
+(libcaca pas mal)
+SFML
+OpenGl ou Qt!
+
+archi dés le début et pas l'inverse
