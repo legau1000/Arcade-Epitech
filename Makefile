@@ -5,32 +5,19 @@
 ## makefile
 ##
 
-INCLUDE		=	-Iinclude
+all:
+	make -C core
+	make -C games
+	make -C lib
 
-CFLAGS          +=      $(INCLUDE) -W -Wall -Wextra -Wshadow 
+core:
+	make -C core
 
-CC		=	gcc
+games:
+	make -C games
 
-RM		=	rm
-
-SRC_BASE	=	src/
-
-SRC_FILES	=	main.c		\
-			error/errors.c
-
-SRC		=	$(addprefix $(SRC_BASE),$(SRC_FILES))
-
-OBJ		=	$(SRC:.c=.o)
-
-NAME		=	duo
-
-.SILENT:
-
-$(NAME):	$(OBJ)
-	$(CC)  -o $(NAME) $(OBJ)
-		@echo "Compilation faite!"
-
-all:	$(NAME)
+lib:
+	make -C lib
 
 clean:
 	$(RM) -f $(OBJ)
@@ -44,6 +31,8 @@ re:	fclean all
 		@echo "Re fait!"
 
 tests_run:
-	make -C tests/
+	make -C core/tests/
+	make -C games/tests/
+	make -C lib/tests/
 
 .PHONY: clean fclean re all tests_run
