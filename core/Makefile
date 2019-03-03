@@ -5,43 +5,40 @@
 ## makefile
 ##
 
-INCLUDE		=	-Iinclude
+INCLUDE		=	-I ./include
 
-CFLAGS          +=      $(INCLUDE) -W -Wall -Wextra -Wshadow 
+CXXFLAGS	=	$(INCLUDE) -W -Wall -Wextra -Wshadow 
 
-CC		=	gcc
-
-RM		=	rm
+CXX			=	g++
 
 SRC_BASE	=	src/
 
-SRC_FILES	=	main.c		\
-			error/errors.c
+SRC_FILES	=	
 
 SRC		=	$(addprefix $(SRC_BASE),$(SRC_FILES))
 
-OBJ		=	$(SRC:.c=.o)
+OBJ	=	$(SRC:.cpp=.o)
 
-NAME		=	duo
+NAME	=	../arcade
 
 .SILENT:
 
-$(NAME):	$(OBJ)
-	$(CC)  -o $(NAME) $(OBJ)
-		@echo "Compilation faite!"
+$(NAME):	clean $(OBJ)
+	$(CXX) -o $(NAME) $(OBJ) $(INCLUDE)
+		@echo RE core
 
 all:	$(NAME)
 
 clean:
-	$(RM) -f $(OBJ)
-		@echo "Clean faite!"
+	rm -f $(OBJ)
+		@echo clean core
 
 fclean: clean
-	$(RM) -f $(NAME)
-		@echo "FClean faite!"
+	rm -f units_tests
+		@echo fclean core
 
 re:	fclean all
-		@echo "Re fait!"
+		@echo RE core
 
 tests_run:
 	make -C tests/

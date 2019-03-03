@@ -5,45 +5,38 @@
 ## makefile
 ##
 
-INCLUDE		=	-Iinclude
+all:
+	make -C ncurses
+	make -C sfml
+	make -C qt
 
-CFLAGS          +=      $(INCLUDE) -W -Wall -Wextra -Wshadow 
+ncurses:
+	make -C ncurses
 
-CC		=	gcc
+sfml:
+	make -C sfml
 
-RM		=	rm
-
-SRC_BASE	=	src/
-
-SRC_FILES	=	main.c		\
-			error/errors.c
-
-SRC		=	$(addprefix $(SRC_BASE),$(SRC_FILES))
-
-OBJ		=	$(SRC:.c=.o)
-
-NAME		=	duo
-
-.SILENT:
-
-$(NAME):	$(OBJ)
-	$(CC)  -o $(NAME) $(OBJ)
-		@echo "Compilation faite!"
-
-all:	$(NAME)
+qt:
+	make -C qt
 
 clean:
-	$(RM) -f $(OBJ)
+	make clean -C ncurses
+	make clean -C sfml
+	make clean -C qt
 		@echo "Clean faite!"
 
 fclean: clean
-	$(RM) -f $(NAME)
+	make fclean -C ncurses
+	make fclean -C sfml
+	make fclean -C qt
 		@echo "FClean faite!"
 
 re:	fclean all
 		@echo "Re fait!"
 
 tests_run:
-	make -C tests/
+	make -C ncurses/tests/
+	make -C sfml/tests/
+	make -C qt/tests/
 
 .PHONY: clean fclean re all tests_run

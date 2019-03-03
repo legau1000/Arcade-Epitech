@@ -5,45 +5,38 @@
 ## makefile
 ##
 
-INCLUDE		=	-Iinclude
+all:
+	make -C game_1
+	make -C game_2
+	make -C snake
 
-CFLAGS          +=      $(INCLUDE) -W -Wall -Wextra -Wshadow 
+g1:
+	make -C game_1
 
-CC		=	gcc
+g2:
+	make -C game_2
 
-RM		=	rm
-
-SRC_BASE	=	src/
-
-SRC_FILES	=	main.c		\
-			error/errors.c
-
-SRC		=	$(addprefix $(SRC_BASE),$(SRC_FILES))
-
-OBJ		=	$(SRC:.c=.o)
-
-NAME		=	duo
-
-.SILENT:
-
-$(NAME):	$(OBJ)
-	$(CC)  -o $(NAME) $(OBJ)
-		@echo "Compilation faite!"
-
-all:	$(NAME)
+snake:
+	make -C snake
 
 clean:
-	$(RM) -f $(OBJ)
+	make clean -C game_1
+	make clean -C game_2
+	make clean -C snake
 		@echo "Clean faite!"
 
 fclean: clean
-	$(RM) -f $(NAME)
+	make fclean -C game_1
+	make fclean -C game_2
+	make fclean -C snake
 		@echo "FClean faite!"
 
 re:	fclean all
 		@echo "Re fait!"
 
 tests_run:
-	make -C tests/
+	make -C game_1/tests/
+	make -C game_2/tests/
+	make -C snake/tests/
 
 .PHONY: clean fclean re all tests_run
