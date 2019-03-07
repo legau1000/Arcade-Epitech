@@ -49,7 +49,8 @@ Interface:
         void createAsset(char *path);
         void drawAsset(ASSET);
         void drawWindow();
-        void closeWindow();
+	void closeWindow();
+	void openWindow();
         void destroyAsset(ASSET);
         void getType();
 

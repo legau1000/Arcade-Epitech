@@ -5,26 +5,22 @@
 ## makefile
 ##
 
-CXXFLAGS	=	-Iinclude
-
-AR	=	ar rc
+CXXFLAGS	=	-Iinclude -I../
 
 RM	=	rm
 
-SRC_BASE	=	src/
-
-SRC_FILES	=	
-
-SRC		=	$(addprefix $(SRC_BASE),$(SRC_FILES))
+SRC		=	src/ncurses.cpp	\
+			main.cpp
 
 OBJ	=	$(SRC:.cpp=.o)
 
-NAME	=	 ../lib_arcade_ncurses.so
+# NAME	=	 ../lib_arcade_ncurses.so
+NAME	=	 lib_arcade_ncurses.so
 
 .SILENT:
 
 $(NAME):	$(OBJ)
-	$(AR) -shared -o $(NAME) $(OBJ)
+	g++ -o $(NAME) $(OBJ) -lncurses 
 
 all:	$(NAME)
 

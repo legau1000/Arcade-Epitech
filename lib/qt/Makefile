@@ -5,31 +5,17 @@
 ## makefile
 ##
 
-CXXFLAGS	=	-Iinclude
+RM		=	rm -f
 
-AR	=	ar rc
-
-RM	=	rm
-
-SRC_BASE	=	src/
-
-SRC_FILES	=	
-
-SRC		=	$(addprefix $(SRC_BASE),$(SRC_FILES))
-
-OBJ	=	$(SRC:.cpp=.o)
-
-NAME	=	 ../lib_arcade_qt.so
+NAME	=	 lib_arcade_qt.so
 
 .SILENT:
 
-$(NAME):	$(OBJ)
-	$(AR) -shared -o $(NAME) $(OBJ)
+all:
+	make -C src/
 
-all:	$(NAME)
-
-clean:	$(OBJ)
-	$(RM) -f $(OBJ)
+clean:
+	$(RM) src/*.o
 
 fclean: clean
 	$(RM) -f $(NAME)

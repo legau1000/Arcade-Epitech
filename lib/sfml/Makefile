@@ -5,7 +5,7 @@
 ## makefile
 ##
 
-CXXFLAGS	=	-Iinclude
+CXXFLAGS	=	-Iinclude -I../
 
 AR	=	ar rc
 
