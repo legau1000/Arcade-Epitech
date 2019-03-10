@@ -13,6 +13,7 @@
 #include <string.h>
 #include <string>
 #include "IDisplayModule.hpp"
+#include "def.hpp"
 
 class Ncurses : virtual public IDisplayModule
 {
@@ -24,12 +25,12 @@ class Ncurses : virtual public IDisplayModule
 
         // Sprites
         void *createAsset(std::string &path);
-        void drawAsset(void *sprite);
+        void drawAsset(void *sprite, int x = 0, int y = 0);
         void drawWindow();
         void destroyAsset(void *sprite);
 
         // Events
-        void catchEvent();
+        e_event catchEvent();
 
         // Sounds
         void start_sound();

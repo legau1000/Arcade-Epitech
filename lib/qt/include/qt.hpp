@@ -31,7 +31,7 @@ class qt : virtual public IDisplayModule
         e_type getType() {};
 
         // Sprites
-        void createAsset(std::string &path) {};
+        void *createAsset(std::string &path) {};
         void drawAsset(void *sprite) {};
         void destroyAsset(void *sprite) {};
         void drawWindow() {};

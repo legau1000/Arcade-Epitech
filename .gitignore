@@ -2,3 +2,5 @@
 *.so
 *.gcno
 *.gcda
+.vscode
+a.out
