@@ -20,26 +20,35 @@ qt::qt()
     scene->addLine(ligne);
     scene->addText("Hello world !");
     
-    QGraphicsView vue(scene);
-    vue.resize(1920, 1080);
-    vue.show();
+    this->vue = new QGraphicsView(scene);
+    this->vue->resize(1920, 1080);
+    this->vue->show();
     // scene->removeItem(item);
 	// cpid = fork();
     // if (cpid == 0) {
     //     printf("%d\n", cpid);
-        this->app->exec();
+    this->app->exec();
+    this->app->closeAllWindows();
+    this->app->exit(84);
     //     exit(0);
     // }
 }
 
 void qt::setpos(int index)
 {
-    QGraphicsItem *item;
-    QPixmap monPixmap("logo.jpg");
-
-    item = this->scene->addPixmap(monPixmap); //load picture
-    item->setPos(index, index);
+    QLine ligne(50, 50, index, 200);
+    this->scene->addLine(ligne);
+    this->vue->show();
 }
+
+// void qt::setpos(int index)
+// {
+//     QGraphicsItem *item;
+//     QPixmap monPixmap("logo.jpg");
+
+//     item = this->scene->addPixmap(monPixmap); //load picture
+//     item->setPos(index, index);
+// }
 
 qt::~qt()
 {

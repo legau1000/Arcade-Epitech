@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2018
-** Duo Stumper
+** Arcade define
 ** File description:
-** def.h
+** def.hpp
 */
 
 #ifndef DEF_HPP__

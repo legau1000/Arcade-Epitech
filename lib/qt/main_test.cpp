@@ -2,16 +2,18 @@
 #include <iostream>
 #include "include/qt.hpp"
 
-int main(int ac, char**av)
+int main(int argc, char *argv[])
 {
-    int index = 0;
+    QApplication app(argc, argv);
+    QLine ligne(50, 50, 200, 200);
+    QGraphicsScene *scene = new QGraphicsScene();
 
-    IDisplayModule *nneqt = new qt;
-    printf("OUI\n");
-    while (1) {
-        if (index % 10 == 0)
-            nneqt->getType();
-        index++;
-    }
-    return (0);
+    scene->addLine(ligne);
+
+    QGraphicsView vue(scene);
+    vue.resize(1920, 1080);
+    vue.show();
+
+    // delete scene;
+    return app.exec();
 }

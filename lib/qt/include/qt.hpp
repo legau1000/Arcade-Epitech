@@ -18,39 +18,42 @@
 #include <QtGui/QGraphicsItem>
 #include <QtGui/QApplication>
 #include <QtGui/QtGui>
-#include "IDisplayModule.hpp"
+// #include "IDisplayModule.hpp"
 // #include <iostream>
 
 
-class qt : virtual public IDisplayModule
+class qt
 {
     public:
         qt();
         ~qt();
-    
-        e_type getType() {};
 
-        // Sprites
-        void *createAsset(std::string &path) {};
-        void drawAsset(void *sprite) {};
-        void destroyAsset(void *sprite) {};
-        void drawWindow() {};
+        void setpos(int nb);
+    //     e_type getType();
 
-        // Events
-        void catchEvent() {};
+    //     // Sprites
+    //     void *createAsset(std::string &path);
+    //     void drawAsset(void *sprite, int x = 0, int y = 0);
+    //     void drawWindow();
+    //     void destroyAsset(void *sprite);
 
-        // Sounds
-        void start_sound() {};
-        void stop_sound() {};
+    //     // Events
+    //     e_event catchEvent();
 
-        void setpos(int index);
+    //     // Sounds
+    //     void start_sound();
+    //     void stop_sound();
 
-    protected:
+    //     // void addModule(const std::string &);
+    //     // void deleteModule(const std::string &);
+    //     // void displayWallpaper();
 
+    // protected:
     private:
+        QGraphicsView *vue;
         QApplication *app;
         QGraphicsScene *scene;
-        e_type type;
+        // e_type type;
 };
 
 #endif /* !QT_HPP_ */

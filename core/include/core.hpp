@@ -1,8 +1,8 @@
 /*
 ** EPITECH PROJECT, 2018
-** Duo Stumper
+** Core Arcade
 ** File description:
-** my.h
+** core.hpp
 */
 
 #ifndef CORE_HPP__
