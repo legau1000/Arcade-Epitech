@@ -2,7 +2,7 @@
 
 int main()
 {
-    Ncurses nc;
+    displayModule::Ncurses nc;
     int index = 0;
     int x = 0;
     int y = 0;

@@ -57,8 +57,6 @@ namespace displayModule
         public:
             virtual ~IDisplayModule() = default;
 
-            virtual e_type getType() const = 0;
-
             // Sprites
             virtual void *createAsset(std::string &path) = 0;
             virtual void drawAsset(void *sprite, int x, int y) = 0;
