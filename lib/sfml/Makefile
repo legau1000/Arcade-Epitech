@@ -5,7 +5,9 @@
 ## makefile
 ##
 
-CXXFLAGS	=	-Iinclude -I../
+CXXFLAGS	=	-Iinclude -ILib/include -INcurses/include -IGraphical/include -W -Wall -Wextra -Wshadow
+
+LDFLAGS		=	-lncurses -l c_graph_prog -LLib -linfos -lsfml-graphics -lsfml-window -lsfml-system
 
 AR	=	ar rc
 
@@ -13,7 +15,7 @@ RM	=	rm
 
 SRC_BASE	=	src/
 
-SRC_FILES	=	
+SRC_FILES	=	main.cpp
 
 SRC		=	$(addprefix $(SRC_BASE),$(SRC_FILES))
 
