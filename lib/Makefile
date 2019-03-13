@@ -5,7 +5,7 @@
 ## makefile
 ##
 
-.SILENT:
+# .SILENT:
 
 all:
 	make -C ncurses

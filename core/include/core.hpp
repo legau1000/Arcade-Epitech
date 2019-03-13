@@ -9,6 +9,10 @@
 #define CORE_HPP__
 
 #include <string>
+#include <iostream>
+#include <map>
+#include <memory>
+#include "IDisplayModule.hpp"
 
 class Core
 {
@@ -21,6 +25,10 @@ class Core
     protected:
 
     private:
+        std::map<std::string, std::string> *Games;
+        std::map<std::string, std::string> *Graphic;
+        std::unique_ptr<displayModule::IDisplayModule> ActualGraph;
+        // std::unique_ptr<gameModule::IGameModule> ActualGame;
 
 };
 

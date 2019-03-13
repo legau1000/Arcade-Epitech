@@ -21,7 +21,7 @@ namespace displayModule
             ~Ncurses();
 
             // Sprites
-            void *createAsset(std::string &path);
+            void *createAsset(const std::string &path);
             void drawAsset(void *sprite, int x = 0, int y = 0);
             void drawWindow();
             void destroyAsset(void *sprite);
@@ -33,12 +33,13 @@ namespace displayModule
             void start_sound();
             void stop_sound();
 
-            // void addModule(const std::string &);
-            // void deleteModule(const std::string &);
-            // void displayWallpaper();
-
         protected:
         private:
+            e_event catchLetterEvents(int h);
+            e_event catchSpecialEvents(int h);
+            e_event catchArrow(int h);
+            e_event catchSysButton(int h);
+
     };
 }
 

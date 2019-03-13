@@ -11,5 +11,5 @@ int main(int ac, char **av)
 {
     Core core(ac, av);
 
-    core.start();
+    return (core.start());
 }
