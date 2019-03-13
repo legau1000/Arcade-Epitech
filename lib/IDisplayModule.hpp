@@ -58,7 +58,7 @@ namespace displayModule
             virtual ~IDisplayModule() = default;
 
             // Sprites
-            virtual void *createAsset(const std::string &path) = 0;
+            virtual void *createAsset(std::string &path) = 0;
             virtual void drawAsset(void *sprite, int x, int y) = 0;
             virtual void destroyAsset(void *sprite) = 0;
             virtual void drawWindow() = 0;
