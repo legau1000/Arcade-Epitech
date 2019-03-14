@@ -9,6 +9,8 @@
 #define NCURSES_HPP_
 
 #include <ncurses.h>
+#include <fstream>
+#include <bits/stdc++.h>
 #include "IDisplayModule.hpp"
 #include "def.hpp"
 
@@ -21,10 +23,13 @@ namespace displayModule
             ~Ncurses();
 
             // Sprites
-            void *createAsset(const std::string &path);
-            void drawAsset(void *sprite, int x = 0, int y = 0);
-            void drawWindow();
-            void destroyAsset(void *sprite);
+            bool createAsset(const std::string &path, const std::string &assetName);
+            bool drawAsset(const std::string &assetName, int x, int y);
+            bool drawText(const std::string &textName, int x, int y);
+            void refreshWindow();
+
+            // Create Text
+            bool createText(const std::string &text, const std::string &assetName);
 
             // Events
             e_event catchEvent();
@@ -35,10 +40,12 @@ namespace displayModule
 
         protected:
         private:
+            std::unordered_map<std::string, std::string> sprites;
             e_event catchLetterEvents(int h);
             e_event catchSpecialEvents(int h);
             e_event catchArrow(int h);
             e_event catchSysButton(int h);
+            std::string cutEndFile(const std::string &name);
 
     };
 }
