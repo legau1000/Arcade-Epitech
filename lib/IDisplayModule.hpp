@@ -52,57 +52,6 @@ namespace displayModule
         ESCAPE
     };
 
-    class Asset
-    {
-        public:
-            /* Constructor who don't take params
-                Set _y to 0
-                Set _x to 0
-                Set _asset to nullptr       */
-            explicit Asset() 
-            {
-                this->_x = 0;
-                this->_y = 0;
-                this->_asset = nullptr;
-            };
-            ~Asset() = default;
-
-            // Set X and Y of sprite
-            void setPosition(int x, int y)
-            {
-                this->_x = x;
-                this->_y = x;
-            };
-
-            // Set The Asset to _Asset
-            void setAsset(void *asset)
-            {
-                this->_asset = asset;
-            };
-
-            // Get Asset (Sprite / Texts / Other)
-            void *getAsset()
-            {
-                return (_asset);
-            };
-
-            // Get Positions
-            int getXPosition()
-            {
-                return (_x);
-            };
-
-            int getYPosition() 
-            {
-                return (_y);
-            };
-
-        private:
-            void *_asset;
-            int _x;
-            int _y;
-    };
-
     class IDisplayModule
     {
         public:
@@ -110,15 +59,12 @@ namespace displayModule
             virtual ~IDisplayModule() = default;
 
             // Sprites
-            virtual Asset createAsset(const std::string &path) = 0;
-            virtual void drawAsset(Asset &sprite) = 0;
+            virtual bool createAsset(const std::string &path, const std::string &assetName) = 0;
+            virtual bool drawAsset(const std::string &assetName, int x, int y) = 0;
             virtual void refreshWindow() = 0;
 
             // Text
-            virtual Asset createText(const std::string &text) = 0;
-
-            // Set Position
-            virtual void setAssetPosition(Asset &asset, int x, int y) = 0;
+            virtual bool createText(const std::string &text, const std::string &assetName) = 0;
 
             // Events
             virtual e_event catchEvent() = 0;
