@@ -16,8 +16,7 @@ int main()
 
 	while (win.isOpen())
 	{
-		sf::Event event;
-		while (win.pollEvent(event))
+		while (win.pollEvent(prune._event))
 		{
 			win.clear();
 			prune.createAsset("../../games/pacman/assets/sfml/", "miss.png");
@@ -26,16 +25,16 @@ int main()
 			prune.drawAsset("mushroom.png", 800, 500);
 			prune.createText("MS. PacMan", "../../games/pacman/assets/sfml/pacman.ttf");
 			prune.drawText("MS. PacMan", 500, 100);
-			if (event.type == sf::Event::Closed)
+			if (prune._event.type == sf::Event::Closed)
 			{
 				win.close();
 			}
 			prune.refreshWindow();
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Z)
+			if (prune.catchEvent() == KEY_A)
 			{
 				prune.stop_sound();
 			}
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::A)
+			if (prune.catchEvent() == KEY_Z)
 			{
 				prune.start_sound();
 			}

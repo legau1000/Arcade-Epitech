@@ -26,6 +26,7 @@ public:
   bool drawAsset(const std::string &assetName, int x, int y);
   void refreshWindow();
   sf::RenderWindow &getWindow();
+  sf::Event getEvent();
 
   // Text
   bool createText(const std::string &text, const std::string &assetName);
@@ -38,13 +39,14 @@ public:
   void start_sound();
   void stop_sound();
 
+  sf::Event _event;
+
 protected:
 private:
   sf::RenderWindow _window;
   std::unordered_map<std::string, sf::Texture> _mapOfSprite;
   std::unordered_map<std::string, sf::Font> _mapOfText;
   sf::Music _music;
-  sf::Event _event;
 };
 } // namespace displayModule
 
