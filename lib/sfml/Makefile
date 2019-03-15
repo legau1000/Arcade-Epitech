@@ -13,8 +13,8 @@ RM	=	rm
 
 SRC_BASE	=	src/
 
-SRC_FILES	=	main.cpp \
-	InitWindow.cpp
+SRC_FILES	=	InitWindow.cpp \
+	main.cpp
 
 SRC		=	$(addprefix $(SRC_BASE),$(SRC_FILES))
 

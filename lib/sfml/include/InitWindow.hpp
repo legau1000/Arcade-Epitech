@@ -10,31 +10,42 @@
 
 #include "def.hpp"
 #include "IDisplayModule.hpp"
+#include <iostream>
+#include <unordered_map>
+#include "SFML/Graphics.hpp"
+#include "SFML/Audio.hpp"
 
-class InitWindow : public displayModule::IDisplayModule
+namespace displayModule
+{
+class InitWindow : public IDisplayModule
 {
 public:
   InitWindow();
   ~InitWindow();
-  // Sprites
-  void *createAsset(std::string &path);
-  void drawAsset(void *sprite, int x, int y);
-  void destroyAsset(void *sprite);
-  void drawWindow();
+  bool createAsset(const std::string &path, const std::string &assetName);
+  bool drawAsset(const std::string &assetName, int x, int y);
+  void refreshWindow();
+  sf::RenderWindow &getWindow();
+
+  // Text
+  bool createText(const std::string &text, const std::string &assetName);
+  bool drawText(const std::string &textName, int x, int y);
 
   // Events
-  displayModule::e_event catchEvent(){};
+  e_event catchEvent();
 
   // Sounds
   void start_sound();
   void stop_sound();
 
-  sf::RenderWindow *window;
-  bool displaySprite = false;
-  sf::Music music;
-
 protected:
 private:
+  sf::RenderWindow _window;
+  std::unordered_map<std::string, sf::Texture> _mapOfSprite;
+  std::unordered_map<std::string, sf::Font> _mapOfText;
+  sf::Music _music;
+  sf::Event _event;
 };
+} // namespace displayModule
 
 #endif /* !WINDOW_HPP_ */

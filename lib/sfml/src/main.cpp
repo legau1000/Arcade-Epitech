@@ -7,33 +7,38 @@
 
 #include "InitWindow.hpp"
 
+using namespace displayModule;
+
 int main()
 {
 	InitWindow prune;
-	std::string path = "src/18.png";
+	sf::RenderWindow &win = prune.getWindow();
 
-	while (prune.window->isOpen())
+	while (win.isOpen())
 	{
 		sf::Event event;
-		while (prune.window->pollEvent(event))
+		while (win.pollEvent(event))
 		{
-			prune.window->clear();
-			prune.drawAsset(prune.createAsset(path), 300, 400);
-
+			win.clear();
+			prune.createAsset("../../games/pacman/assets/sfml/", "miss.png");
+			prune.createAsset("../../games/pacman/assets/sfml/", "mushroom.png");
+			prune.drawAsset("miss.png", 200, 300);
+			prune.drawAsset("mushroom.png", 800, 500);
+			prune.createText("MS. PacMan", "../../games/pacman/assets/sfml/pacman.ttf");
+			prune.drawText("MS. PacMan", 500, 100);
 			if (event.type == sf::Event::Closed)
 			{
-				prune.window->close();
+				win.close();
 			}
-			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::A)
-			{
-				prune.destroyAsset(prune.createAsset(path));
-			}
-			prune.start_sound();
+			prune.refreshWindow();
 			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Z)
 			{
 				prune.stop_sound();
 			}
-			prune.drawWindow();
+			if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::A)
+			{
+				prune.start_sound();
+			}
 		}
 	}
 	return 0;

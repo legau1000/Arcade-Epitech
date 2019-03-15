@@ -7,55 +7,144 @@
 
 #include "InitWindow.hpp"
 
-InitWindow::InitWindow()
+using namespace displayModule;
+
+InitWindow::InitWindow() : _window(sf::VideoMode(1920, 1080), "Let's play!")
 {
-	this->window = new sf::RenderWindow(sf::VideoMode(1920, 1080), "SFML!", sf::Style::Resize | sf::Style::Close);
 }
 
-void InitWindow::drawWindow()
+bool InitWindow::createAsset(const std::string &path, const std::string &assetName)
 {
-	this->window->display();
+	sf::Texture texture;
+	texture.loadFromFile(path + assetName);
+	this->_mapOfSprite.insert(std::pair<std::string, sf::Texture>(assetName, texture));
+	return true;
 }
 
-void *InitWindow::createAsset(std::string &path)
+bool InitWindow::drawAsset(const std::string &assetName, int x, int y)
 {
-	sf::Texture *texture = new sf::Texture();
-	texture->loadFromFile("./src/18.png");
-	return (texture);
+	sf::Sprite sprite(this->_mapOfSprite.find(assetName)->second);
+	sprite.setPosition(x, y);
+	this->_window.draw(sprite);
+	return true;
 }
 
-void InitWindow::drawAsset(void *sprite, int x, int y)
+void InitWindow::refreshWindow()
 {
-	try
-	{
-		if (!this->displaySprite)
-		{
-			sf::Sprite newSprite(*(sf::Texture *)sprite);
-			newSprite.setPosition(x, y);
-			this->window->draw(newSprite);
-		}
-	}
-	catch (const std::exception &e)
-	{
-		std::cerr << e.what();
-	}
+	this->_window.display();
 }
 
-void InitWindow::destroyAsset(void *sprite)
+sf::RenderWindow &InitWindow::getWindow()
 {
-	this->displaySprite = true;
+	return this->_window;
 }
 
+// Text
+bool InitWindow::createText(const std::string &text, const std::string &assetName)
+{
+	sf::Font font;
+	font.loadFromFile(assetName);
+
+	this->_mapOfText.insert(std::pair<std::string, sf::Font>(text, font));
+	return true;
+}
+
+bool InitWindow::drawText(const std::string &textName, int x, int y)
+{
+	sf::Text texte;
+
+	texte.setFont(this->_mapOfText.find(textName)->second);
+	texte.setString(this->_mapOfText.find(textName)->first);
+	texte.setCharacterSize(100);
+	texte.setFillColor(sf::Color::Yellow);
+	texte.setStyle(sf::Text::Bold);
+	texte.setPosition(x, y);
+	this->_window.draw(texte);
+	return true;
+}
+
+// Events
+e_event InitWindow::catchEvent()
+{
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::A)
+		return KEY_A;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::B)
+		return KEY_B;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::C)
+		return KEY_C;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::D)
+		return KEY_D;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::E)
+		return KEY_E;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::F)
+		return KEY_F;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::G)
+		return KEY_G;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::H)
+		return KEY_H;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::I)
+		return KEY_I;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::J)
+		return KEY_J;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::K)
+		return KEY_K;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::L)
+		return KEY_L;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::M)
+		return KEY_M;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::N)
+		return KEY_N;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::O)
+		return KEY_O;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::P)
+		return KEY_P;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::Q)
+		return KEY_Q;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::R)
+		return KEY_R;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::S)
+		return KEY_S;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::T)
+		return KEY_T;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::U)
+		return KEY_U;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::V)
+		return KEY_V;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::W)
+		return KEY_W;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::X)
+		return KEY_X;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::Y)
+		return KEY_Y;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::Z)
+		return KEY_Z;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::Down)
+		return ARROW_DOWN;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::Up)
+		return ARROW_UP;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::Left)
+		return ARROW_LEFT;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::Right)
+		return ARROW_RIGHT;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::Space)
+		return SPACE;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::Enter)
+		return ENTER;
+	if (this->_event.type == sf::Event::KeyPressed && this->_event.key.code == sf::Keyboard::Escape)
+		return ESCAPE;
+	return NOTHING;
+}
+
+//Sounds
 void InitWindow::start_sound()
 {
-	if (!this->music.openFromFile("./src/gamesong.ogg"))
-		exit;
-	this->music.setVolume(50);
-	this->music.play();
+	this->_music.openFromFile("../../games/pacman/assets/sfml/pacman.ogg");
+	this->_music.setVolume(50);
+	this->_music.play();
 }
 void InitWindow::stop_sound()
 {
-	this->music.stop();
+	this->_music.stop();
 }
 
 InitWindow::~InitWindow()
