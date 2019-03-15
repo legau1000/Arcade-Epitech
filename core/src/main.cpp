@@ -9,7 +9,7 @@
 
 int main(int ac, char **av)
 {
-    Core core(ac, av);
+    Core core;
 
-    return (core.start());
+    return (core.start(ac, av));
 }

@@ -11,7 +11,7 @@ all:
 	make -C lib
 
 core:
-	make -C core
+	make -C re core
 
 games:
 	make -C games

@@ -5,15 +5,16 @@
 ## makefile
 ##
 
-INCLUDE		=	-I ./include -I../games -I../lib
+INCLUDE		=	-I ./include -I../games -I../lib -ldl
 
 CXXFLAGS	=	$(INCLUDE) -W -Wall -Wextra -Wshadow 
 
-CXX			=	g++
+CXX			=	g++ -g
 
 SRC_BASE	=	src/
 
-SRC_FILES	=	main.cpp
+SRC_FILES	=	core.cpp	\
+				main.cpp
 
 SRC		=	$(addprefix $(SRC_BASE),$(SRC_FILES))
 

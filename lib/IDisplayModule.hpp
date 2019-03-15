@@ -74,7 +74,8 @@ namespace displayModule
             // Sounds
             virtual void start_sound() = 0;
             virtual void stop_sound() = 0;
-    };
+
+   };
 } // namespace displayModule
 
 #endif /* !IDISPLAYMODULE_HPP_ */

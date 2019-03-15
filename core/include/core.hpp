@@ -12,22 +12,38 @@
 #include <iostream>
 #include <map>
 #include <memory>
+#include <bits/stdc++.h>
 #include "IDisplayModule.hpp"
+#include "def.hpp"
 
 class Core
 {
     public:
-        Core(int ac, char **av);
+        Core();
         ~Core();
 
-        int start();
+        int start(int ac, char **av);
+        void load_graph(char *lib);
 
     protected:
 
     private:
-        std::map<std::string, std::string> *Games;
-        std::map<std::string, std::string> *Graphic;
-        std::unique_ptr<displayModule::IDisplayModule> ActualGraph;
+        void closeLibGraphic();
+        int writeUsage();
+        std::unordered_map<std::string, std::string> Games;
+        std::unordered_map<std::string, std::string> Graphic;
+
+        // Stop the actual graphic Lib
+        void *hundleGraph;
+        displayModule::IDisplayModule *(*launchGraph)();
+        displayModule::IDisplayModule *ActualGraph;
+
+        // Stop the actual Game Lib
+        // void *hundleGame;
+        // std::unique_ptr<gameModule::IGameModule> ActualGame;
+
+        // A voir pk unique PTR marche pas
+        // std::unique_ptr<displayModule::IDisplayModule> ActualGraph;
         // std::unique_ptr<gameModule::IGameModule> ActualGame;
 
 };

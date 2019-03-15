@@ -107,7 +107,7 @@ namespace displayModule
     {
         e_event arrow = catchArrow(h);
 
-        if (arrow == NOTHING)
+        if (arrow != NOTHING)
             return (arrow);
         else
             return (catchSysButton(h));
@@ -130,4 +130,18 @@ namespace displayModule
 
     void Ncurses::stop_sound()
     {}
+
+    extern "C"
+    {
+        Ncurses *allocator()
+        {
+            return new Ncurses();
+        }
+
+        void deleter(Ncurses *ptr)
+        {
+            delete  ptr;
+        }
+    }
+
 }
