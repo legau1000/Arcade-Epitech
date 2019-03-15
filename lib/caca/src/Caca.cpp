@@ -70,7 +70,7 @@ namespace displayModule
         // mvprintw(y, x, asset.data());
         this->cv = caca_get_canvas(this->dp);
         caca_set_color_ansi(this->cv, CACA_BLACK, CACA_WHITE);
-        caca_put_str(this->cv, 0, 0, asset.data());
+        caca_put_str(this->cv, x, y, asset.data());
         return (true);
     }
 
@@ -81,8 +81,15 @@ namespace displayModule
 
     e_event Caca::catchLetterEvents(int h)
     {
-        int stock = h - 92;
-
+        int stock = h;
+        
+        if ((h >= CACA_KEY_CTRL_A && h <= CACA_KEY_CTRL_G) 
+        || (h >= CACA_KEY_CTRL_J && h <= CACA_KEY_CTRL_L)
+        || (h >= CACA_KEY_CTRL_N && h <= CACA_KEY_CTRL_R)
+        || (h >= CACA_KEY_CTRL_T && h <= CACA_KEY_CTRL_Z))
+            stock = stock + 24;
+        else
+            return (e_event::NOTHING);
         return ((e_event) stock);
     }
 
@@ -122,15 +129,18 @@ namespace displayModule
 
     e_event Caca::catchEvent()
     {
-        //caca_get_event(dp, CACA_EVENT_KEY_PRESS, &ev, -1) == 1
-        int h = caca_get_event_key_ch(&this->ev);
-
+        int isKeyPressed = caca_get_event(dp, CACA_EVENT_KEY_PRESS, &ev, -1);
+        int h;
+        
+        if (isKeyPressed != 1)
+            return (NOTHING);        
+        h = caca_get_event_key_ch(&this->ev);
         if (h == CACA_KEY_UNKNOWN)
             return (NOTHING);
-        else if (h >= CACA_KEY_CTRL_A && h <= CACA_KEY_CTRL_G 
-        || h >= CACA_KEY_CTRL_J && h <= CACA_KEY_CTRL_L
-        || h >= CACA_KEY_CTRL_N && h <= CACA_KEY_CTRL_R
-        || h >= CACA_KEY_CTRL_T && h <= CACA_KEY_CTRL_Z)
+        else if ((h >= CACA_KEY_CTRL_A && h <= CACA_KEY_CTRL_G)
+        || (h >= CACA_KEY_CTRL_J && h <= CACA_KEY_CTRL_L)
+        || (h >= CACA_KEY_CTRL_N && h <= CACA_KEY_CTRL_R)
+        || (h >= CACA_KEY_CTRL_T && h <= CACA_KEY_CTRL_Z))
             return (this->catchLetterEvents(h));
         else
             return (this->catchSpecialEvents(h));
