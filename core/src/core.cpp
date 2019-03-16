@@ -32,9 +32,8 @@ int Core::writeUsage()
 
 int Core::start(int ac, char **av)
 {
-    if (ac != 2 || av[1] == (char *)"-h" || av[1] == (char *)"--help") {
+    if (ac != 2 || av[1] == (char *)"-h" || av[1] == (char *)"--help")
         return (writeUsage());
-    }
     if (load_graph(av[1]) == 84)
         return (84);
     this->catchAllGraph();
@@ -54,17 +53,15 @@ std::string Core::cutEndFile(const std::string &name)
 void Core::catchAllGraph()
 {
     DIR * rep = opendir("./lib/");
-    struct dirent *file;
+    struct dirent *file = nullptr;
     std::string name;
  
     if (rep) {
         file = readdir(rep);
         while (file) {
             name = file->d_name;
-            if (name.find(".so\0") != std::string::npos) {
+            if (name.find(".so\0") != std::string::npos)
                 this->Graphic.insert(make_pair(cutEndFile(file->d_name), ("./lib/" + name)));
-                printf("%s\n", file->d_name);
-            }
             file = readdir(rep);
         }
         closedir(rep);
@@ -74,17 +71,15 @@ void Core::catchAllGraph()
 void Core::catchAllGame()
 {
     DIR * rep = opendir("./games/");
-    struct dirent *file;
+    struct dirent *file = nullptr;
     std::string name;
  
     if (rep) {
         file = readdir(rep);
         while (file) {
             name = file->d_name;
-            if (name.find(".so\0") != std::string::npos) {
-                this->Games.insert(make_pair(cutEndFile(file->d_name), ("./lib/" + name)));
-                printf("%s\n", file->d_name);
-            }
+            if (name.find(".so\0") != std::string::npos)
+                this->Games.insert(make_pair(cutEndFile(file->d_name), ("./games/" + name)));
             file = readdir(rep);
         }
         closedir(rep);
