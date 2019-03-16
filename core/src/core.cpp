@@ -6,6 +6,7 @@
 */
 
 #include <dlfcn.h>
+#include <dirent.h>
 #include "core.hpp"
 
 Core::Core()
@@ -34,16 +35,60 @@ int Core::start(int ac, char **av)
     if (ac != 2 || av[1] == (char *)"-h" || av[1] == (char *)"--help") {
         return (writeUsage());
     }
-    load_graph(av[1]);
-    if (this->launchGraph == nullptr) {
+    if (load_graph(av[1]) == 84)
         return (84);
-    }
-    // ActualGraph->test();
-    this->ActualGraph = this->launchGraph();
-    while (1);
-    // this->catchAllGame();
-    // this->catchAllGame();
+    this->catchAllGraph();
+    this->catchAllGame();
     return (0);
+}
+
+std::string Core::cutEndFile(const std::string &name)
+{
+    std::size_t pos = name.find(".");
+
+    if (pos == std::string::npos)
+        return (name);
+    return (name.substr(0, pos));
+}
+
+void Core::catchAllGraph()
+{
+    DIR * rep = opendir("./lib/");
+    struct dirent *file;
+    std::string name;
+ 
+    if (rep) {
+        file = readdir(rep);
+        while (file) {
+            name = file->d_name;
+            if (name.find(".so\0") != std::string::npos) {
+                this->Graphic.insert(make_pair(cutEndFile(file->d_name), ("./lib/" + name)));
+                printf("%s\n", file->d_name);
+            }
+            file = readdir(rep);
+        }
+        closedir(rep);
+    }
+}
+
+void Core::catchAllGame()
+{
+    DIR * rep = opendir("./games/");
+    struct dirent *file;
+    std::string name;
+ 
+    if (rep) {
+        file = readdir(rep);
+        while (file) {
+            name = file->d_name;
+            if (name.find(".so\0") != std::string::npos) {
+                this->Games.insert(make_pair(cutEndFile(file->d_name), ("./lib/" + name)));
+                printf("%s\n", file->d_name);
+            }
+            file = readdir(rep);
+        }
+        closedir(rep);
+    }
 }
 
 void Core::closeLibGraphic()
@@ -53,7 +98,7 @@ void Core::closeLibGraphic()
     this->launchGraph = nullptr;
 }
 
-void Core::load_graph(char *path)
+void Core::openLibGraphic(char *path)
 {
     void *handle = dlopen(path, RTLD_NOW);
 
@@ -67,4 +112,14 @@ void Core::load_graph(char *path)
     this->launchGraph = reinterpret_cast<displayModule::IDisplayModule* (*)()>(dlsym(this->hundleGraph, "allocator"));
     if (this->launchGraph == nullptr)
         closeLibGraphic();
+}
+
+int Core::load_graph(char *path)
+{
+    openLibGraphic(path);
+    if (this->launchGraph == nullptr) {
+        return (84);
+    }
+    this->ActualGraph = this->launchGraph();
+    return (0);
 }

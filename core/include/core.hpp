@@ -23,15 +23,21 @@ class Core
         ~Core();
 
         int start(int ac, char **av);
-        void load_graph(char *lib);
+        int load_graph(char *lib);
 
     protected:
 
     private:
+        void openLibGraphic(char *path);
         void closeLibGraphic();
         int writeUsage();
-        std::unordered_map<std::string, std::string> Games;
+        void catchAllGraph();
+        void Core::catchAllGame();
+        std::string cutEndFile(const std::string &name);
+
+        // Map for stock all game and sprite
         std::unordered_map<std::string, std::string> Graphic;
+        std::unordered_map<std::string, std::string> Games;
 
         // Stop the actual graphic Lib
         void *hundleGraph;
