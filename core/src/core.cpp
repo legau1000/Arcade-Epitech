@@ -2,22 +2,13 @@
 ** EPITECH PROJECT, 2018
 ** Core Arcade
 ** File description:
-** core.hpp
+** core.cpp
 */
 
-#include <dlfcn.h>
-#include <dirent.h>
 #include "core.hpp"
 
 Core::Core()
-{
-    this->ActualGraph = nullptr;
-    this->hundleGraph = nullptr;
-    this->launchGraph = nullptr;
-    // this->ActualGame = nullptr;
-    // this->hundleGame = nullptr;
-    // this->launchGame = nullptr;
-}
+{}
 
 Core::~Core()
 {
@@ -30,28 +21,19 @@ int Core::writeUsage()
     return (0);
 }
 
-void Core::closeWindowLibGraphic()
-{
-    this->delGraph(this->ActualGraph);
-    closeLibGraphic();
-}
-
 void Core::startMenu()
 {
-    this->ActualGraph->createText("FirstGame", "Snake");
-    this->ActualGraph->drawText("Snake", 0, 0);
-    this->ActualGraph->refreshWindow();
-    // this->printGames();
+    this->_ActualGraph->createText("FirstGame", "Snake");
+    this->_ActualGraph->drawText("Snake", 0, 0);
+    this->_ActualGraph->refreshWindow();
     while (1);
-    // this->closeWindowLibGraphic();
 }
 
 int Core::start(int ac, char **av)
 {
     if (ac != 2 || av[1] == (char *)"-h" || av[1] == (char *)"--help")
         return (writeUsage());
-    if (load_graph(av[1]) == 84)
-        return (84);
+    this->_ActualGraph = _graph.loadNewLib(av[1]);
     this->catchAllGraph();
     this->catchAllGame();
     this->startMenu();
@@ -78,7 +60,7 @@ void Core::catchAllGraph()
         while (file) {
             name = file->d_name;
             if (name.find(".so\0") != std::string::npos)
-                this->Graphic.insert(make_pair(cutEndFile(file->d_name), ("./lib/" + name)));
+                this->_Graphic.insert(make_pair(cutEndFile(file->d_name), ("./lib/" + name)));
             file = readdir(rep);
         }
         closedir(rep);
@@ -96,44 +78,9 @@ void Core::catchAllGame()
         while (file) {
             name = file->d_name;
             if (name.find(".so\0") != std::string::npos)
-                this->Games.insert(make_pair(cutEndFile(file->d_name), ("./games/" + name)));
+                this->_Games.insert(make_pair(cutEndFile(file->d_name), ("./games/" + name)));
             file = readdir(rep);
         }
         closedir(rep);
     }
-}
-
-void Core::closeLibGraphic()
-{
-    dlclose(this->hundleGraph);
-    this->hundleGraph = nullptr;
-    this->launchGraph = nullptr;
-    this->delGraph = nullptr;
-}
-
-void Core::openLibGraphic(char *path)
-{
-    void *handle = dlopen(path, RTLD_NOW);
-
-    if (!handle) {
-        std::cout << dlerror() << std::endl;
-        return;
-    }
-    if (this->launchGraph != nullptr)
-        closeLibGraphic();
-    this->hundleGraph = handle;
-    this->launchGraph = reinterpret_cast<displayModule::IDisplayModule* (*)()>(dlsym(this->hundleGraph, "allocator"));
-    this->delGraph = reinterpret_cast<void (*)(displayModule::IDisplayModule *ptr)>(dlsym(this->hundleGraph, "deleter"));
-    if (this->launchGraph == nullptr || this->delGraph == nullptr)
-        closeLibGraphic();
-}
-
-int Core::load_graph(char *path)
-{
-    openLibGraphic(path);
-    if (this->launchGraph == nullptr) {
-        return (84);
-    }
-    this->ActualGraph = this->launchGraph();
-    return (0);
 }

@@ -13,7 +13,7 @@ CXX			=	g++ -g
 
 SRC_BASE	=	src/
 
-SRC_FILES	=	core.cpp	\
+SRC_FILES	=	core.cpp		\
 				main.cpp
 
 SRC		=	$(addprefix $(SRC_BASE),$(SRC_FILES))

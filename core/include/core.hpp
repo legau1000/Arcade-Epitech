@@ -12,8 +12,9 @@
 #include <iostream>
 #include <map>
 #include <memory>
-#include <bits/stdc++.h>
+#include <unordered_map>
 #include "IDisplayModule.hpp"
+#include "loadGraphic.hpp"
 #include "def.hpp"
 
 class Core
@@ -28,36 +29,25 @@ class Core
     protected:
 
     private:
-        void openLibGraphic(char *path);
-        void closeLibGraphic();
         int writeUsage();
         void catchAllGraph();
         void catchAllGame();
         void startMenu();
-        void closeWindowLibGraphic();
         std::string cutEndFile(const std::string &name);
 
+        LoadGraph<displayModule::IDisplayModule> _graph;
         // Map for stock all game and sprite
-        std::unordered_map<std::string, std::string> Graphic;
-        std::unordered_map<std::string, std::string> Games;
+        std::unordered_map<std::string, std::string> _Graphic;
+        std::unordered_map<std::string, std::string> _Games;
 
-        // Stop the actual graphic Lib
-        void *hundleGraph;
-        displayModule::IDisplayModule *(*launchGraph)();
-        void (*delGraph)(displayModule::IDisplayModule *ptr);
-        displayModule::IDisplayModule *ActualGraph;
+        // Actual Graphic Lib
+        std::shared_ptr<displayModule::IDisplayModule> _ActualGraph;
 
         // Stop the actual Game Lib
         // void *hundleGame;
         // std::unique_ptr<gameModule::IGameModule> ActualGame;
 
-        // A voir avec Tom.... :D
-        // std::shared_ptr<displayModule::IDisplayModule *> ActualGraph;
-
-        // A voir pk unique PTR marche pas
-        // std::unique_ptr<displayModule::IDisplayModule> ActualGraph;
-        // std::unique_ptr<gameModule::IGameModule> ActualGame;
-
+ 
 };
 
 #endif
