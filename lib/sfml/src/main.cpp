@@ -23,7 +23,7 @@ int main()
 			prune.createAsset("../../games/pacman/assets/sfml/", "mushroom.png");
 			prune.drawAsset("miss.png", 200, 300);
 			prune.drawAsset("mushroom.png", 800, 500);
-			prune.createText("MS. PacMan", "../../games/pacman/assets/sfml/pacman.ttf");
+			prune.createText("MS. PacMan", "MS. PacMan");
 			prune.drawText("MS. PacMan", 500, 100);
 			if (prune._event.type == sf::Event::Closed)
 			{

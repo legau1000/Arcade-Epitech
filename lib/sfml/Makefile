@@ -5,7 +5,7 @@
 ## makefile
 ##
 
-CXXFLAGS	=	-Iinclude -I../ -ILib/include -IGraphical/include -W -Wall -Wextra -Wshadow
+CXXFLAGS	=	-Iinclude -I../ -ILib/include -IGraphical/include -W -Wall -Wextra -Wshadow -shared -fPIC
 
 LDFLAGS		=	-l c_graph_prog -LLib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
@@ -13,17 +13,16 @@ RM	=	rm
 
 SRC_BASE	=	src/
 
-SRC_FILES	=	InitWindow.cpp \
-	main.cpp
+SRC_FILES	=	InitWindow.cpp
 
 SRC		=	$(addprefix $(SRC_BASE),$(SRC_FILES))
 
 OBJ	=	$(SRC:.cpp=.o)
 
-NAME	=	 lib_arcade_sfml
+NAME	=	 ../lib_arcade_sfml.so
 
 $(NAME):	$(OBJ)
-	g++ -o $(NAME) $(OBJ) $(CXXFLAGS) $(LDFLAGS)
+	g++ -std=c++11 -o $(NAME) $(OBJ) $(CXXFLAGS) $(LDFLAGS)
 
 all:	$(NAME)
 

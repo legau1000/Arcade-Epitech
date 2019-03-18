@@ -5,30 +5,31 @@
 ## makefile
 ##
 
-CXXFLAGS	=	-Iinclude
+CXXFLAGS	=	-Iinclude -Iinclude -I../ -ILib/include
 
-AR	=	ar rc
+LDFLAGS =  -L./ -l_arcade_sfml
 
 RM	=	rm
 
 SRC_BASE	=	src/
 
-SRC_FILES	=	
+SRC_FILES	=	MapPacman.cpp \
+main.cpp
 
 SRC		=	$(addprefix $(SRC_BASE),$(SRC_FILES))
 
 OBJ	=	$(SRC:.cpp=.o)
 
-NAME	=	 ../lib_arcade_insert_name.so
+NAME	=	 pacman
 
 .SILENT:
 
 $(NAME):	$(OBJ)
-	$(AR) -shared -o $(NAME) $(OBJ)
+	g++ -o $(NAME) $(OBJ) $(CXXFLAGS) $(LDFLAGS)
 
 all:	$(NAME)
 
-clean:	$(OBJ)
+clean:
 	$(RM) -f $(OBJ)
 
 fclean: clean

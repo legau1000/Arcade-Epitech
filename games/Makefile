@@ -10,8 +10,8 @@ all:
 	make -C game_2
 	make -C snake
 
-g1:
-	make -C game_1
+pacman:
+	make -C pacman
 
 g2:
 	make -C game_2

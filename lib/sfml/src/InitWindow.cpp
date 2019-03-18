@@ -15,23 +15,23 @@ InitWindow::InitWindow() : _window(sf::VideoMode(1920, 1080), "Let's play!")
 
 bool InitWindow::createAsset(const std::string &path, const std::string &assetName)
 {
-	sf::Texture texture;
-	texture.loadFromFile(path + assetName);
-	this->_mapOfSprite.insert(std::pair<std::string, sf::Texture>(assetName, texture));
+	this->_texture.loadFromFile(path + assetName);
+	this->_mapOfSprite.insert(std::pair<std::string, sf::Texture>(assetName, this->_texture));
 	return true;
 }
 
 bool InitWindow::drawAsset(const std::string &assetName, int x, int y)
 {
-	sf::Sprite sprite(this->_mapOfSprite.find(assetName)->second);
-	sprite.setPosition(x, y);
-	this->_window.draw(sprite);
+	this->_sprite.setTexture(this->_mapOfSprite.find(assetName)->second);
+	this->_sprite.setPosition(x, y);
+	this->_window.draw(this->_sprite);
 	return true;
 }
 
 void InitWindow::refreshWindow()
 {
 	this->_window.display();
+	this->_window.clear();
 }
 
 sf::RenderWindow &InitWindow::getWindow()
@@ -47,24 +47,20 @@ sf::Event InitWindow::getEvent()
 // Text
 bool InitWindow::createText(const std::string &text, const std::string &assetName)
 {
-	sf::Font font;
-	font.loadFromFile(assetName);
-
-	this->_mapOfText.insert(std::pair<std::string, sf::Font>(text, font));
+	this->_mapOfText.insert(std::pair<std::string, std::string>(assetName, text));
 	return true;
 }
 
 bool InitWindow::drawText(const std::string &textName, int x, int y)
 {
-	sf::Text texte;
-
-	texte.setFont(this->_mapOfText.find(textName)->second);
-	texte.setString(this->_mapOfText.find(textName)->first);
-	texte.setCharacterSize(100);
-	texte.setFillColor(sf::Color::Yellow);
-	texte.setStyle(sf::Text::Bold);
-	texte.setPosition(x, y);
-	this->_window.draw(texte);
+	this->_font.loadFromFile("../../games/pacman/assets/sfml/pacman.ttf");
+	this->_text.setFont(this->_font);
+	this->_text.setString(this->_mapOfText.find(textName)->second);
+	this->_text.setCharacterSize(100);
+	this->_text.setFillColor(sf::Color::Yellow);
+	this->_text.setStyle(sf::Text::Bold);
+	this->_text.setPosition(x, y);
+	this->_window.draw(this->_text);
 	return true;
 }
 
@@ -157,4 +153,5 @@ void InitWindow::stop_sound()
 
 InitWindow::~InitWindow()
 {
+	this->_window.close();
 }
