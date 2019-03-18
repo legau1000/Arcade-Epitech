@@ -50,6 +50,7 @@ namespace displayModule
     bool Ncurses::createText(const std::string &text, const std::string &assetKey)
     {
         sprites.insert(make_pair(assetKey, text));
+        mvprintw(0, 0, "err");
         return (true);
     }
 
@@ -62,8 +63,9 @@ namespace displayModule
     {
         std::string asset = sprites[assetKey];
 
-        if (!asset[0])
+        if (!asset[0]) {
             return (false);
+        }
         mvprintw(y, x, asset.data());
         return (true);
     }

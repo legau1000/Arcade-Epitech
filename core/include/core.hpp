@@ -32,7 +32,9 @@ class Core
         void closeLibGraphic();
         int writeUsage();
         void catchAllGraph();
-        void Core::catchAllGame();
+        void catchAllGame();
+        void startMenu();
+        void closeWindowLibGraphic();
         std::string cutEndFile(const std::string &name);
 
         // Map for stock all game and sprite
@@ -42,11 +44,15 @@ class Core
         // Stop the actual graphic Lib
         void *hundleGraph;
         displayModule::IDisplayModule *(*launchGraph)();
+        void (*delGraph)(displayModule::IDisplayModule *ptr);
         displayModule::IDisplayModule *ActualGraph;
 
         // Stop the actual Game Lib
         // void *hundleGame;
         // std::unique_ptr<gameModule::IGameModule> ActualGame;
+
+        // A voir avec Tom.... :D
+        // std::shared_ptr<displayModule::IDisplayModule *> ActualGraph;
 
         // A voir pk unique PTR marche pas
         // std::unique_ptr<displayModule::IDisplayModule> ActualGraph;

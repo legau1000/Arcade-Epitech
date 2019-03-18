@@ -30,6 +30,22 @@ int Core::writeUsage()
     return (0);
 }
 
+void Core::closeWindowLibGraphic()
+{
+    this->delGraph(this->ActualGraph);
+    closeLibGraphic();
+}
+
+void Core::startMenu()
+{
+    this->ActualGraph->createText("FirstGame", "Snake");
+    this->ActualGraph->drawText("Snake", 0, 0);
+    this->ActualGraph->refreshWindow();
+    // this->printGames();
+    while (1);
+    // this->closeWindowLibGraphic();
+}
+
 int Core::start(int ac, char **av)
 {
     if (ac != 2 || av[1] == (char *)"-h" || av[1] == (char *)"--help")
@@ -38,6 +54,7 @@ int Core::start(int ac, char **av)
         return (84);
     this->catchAllGraph();
     this->catchAllGame();
+    this->startMenu();
     return (0);
 }
 
@@ -91,6 +108,7 @@ void Core::closeLibGraphic()
     dlclose(this->hundleGraph);
     this->hundleGraph = nullptr;
     this->launchGraph = nullptr;
+    this->delGraph = nullptr;
 }
 
 void Core::openLibGraphic(char *path)
@@ -105,7 +123,8 @@ void Core::openLibGraphic(char *path)
         closeLibGraphic();
     this->hundleGraph = handle;
     this->launchGraph = reinterpret_cast<displayModule::IDisplayModule* (*)()>(dlsym(this->hundleGraph, "allocator"));
-    if (this->launchGraph == nullptr)
+    this->delGraph = reinterpret_cast<void (*)(displayModule::IDisplayModule *ptr)>(dlsym(this->hundleGraph, "deleter"));
+    if (this->launchGraph == nullptr || this->delGraph == nullptr)
         closeLibGraphic();
 }
 
