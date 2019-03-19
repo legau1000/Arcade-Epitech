@@ -151,4 +151,17 @@ namespace displayModule
 
     void Caca::stop_sound()
     {}
+
+    extern "C"
+    {
+        Caca *allocator()
+        {
+            return new Caca();
+        }
+
+        void deleter(Caca *ptr)
+        {
+            delete  ptr;
+        }
+    }
 }
