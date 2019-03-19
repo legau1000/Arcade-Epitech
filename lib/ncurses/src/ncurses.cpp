@@ -50,7 +50,6 @@ namespace displayModule
     bool Ncurses::createText(const std::string &text, const std::string &assetKey)
     {
         sprites.insert(make_pair(assetKey, text));
-        mvprintw(0, 0, "err");
         return (true);
     }
 
@@ -62,11 +61,25 @@ namespace displayModule
     bool Ncurses::drawAsset(const std::string &assetKey, int x, int y)
     {
         std::string asset = sprites[assetKey];
+        size_t index = 0;
+        char print[2];
+        int stock_x = x;
 
         if (!asset[0]) {
             return (false);
         }
-        mvprintw(y, x, asset.data());
+        print[1] = '\0';
+        while (asset.data()[index]) {
+            print[0] = asset.data()[index];
+            mvprintw(y, x, print);
+            x++;
+            index++;
+            if (asset.data()[index] == '\n') {
+                y++;
+                x = stock_x;
+                index++;
+            }
+        }
         return (true);
     }
 

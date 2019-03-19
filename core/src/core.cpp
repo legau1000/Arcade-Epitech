@@ -23,8 +23,8 @@ int Core::writeUsage()
 
 void Core::startMenu()
 {
-    this->_ActualGraph->createText("FirstGame", "Snake");
-    this->_ActualGraph->drawText("Snake", 0, 0);
+    this->_ActualGraph->createText("####\n#  #\n#  #\n####", "Snake");
+    this->_ActualGraph->drawText("Snake", 10, 10);
     this->_ActualGraph->refreshWindow();
     while (1);
 }
