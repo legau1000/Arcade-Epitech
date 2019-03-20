@@ -64,13 +64,26 @@ namespace displayModule
     bool Caca::drawAsset(const std::string &assetKey, int x, int y)
     {
         std::string asset = sprites[assetKey];
+        size_t index = 0;
+        char print[2];
+        int stock_x = x;
 
         if (!asset[0])
             return (false);
-        // mvprintw(y, x, asset.data());
-        this->cv = caca_get_canvas(this->dp);
-        caca_set_color_ansi(this->cv, CACA_BLACK, CACA_WHITE);
-        caca_put_str(this->cv, x, y, asset.data());
+        print[1] = '\0';
+        while (asset.data()[index]) {
+            print[0] = asset.data()[index];
+            this->cv = caca_get_canvas(this->dp);
+            caca_set_color_ansi(this->cv, CACA_BLACK, CACA_WHITE);
+            caca_put_str(this->cv, x, y, print);
+            x++;
+            index++;
+            if (asset.data()[index] == '\n') {
+                y++;
+                x = stock_x;
+                index++;
+            }
+        }
         return (true);
     }
 
@@ -83,11 +96,9 @@ namespace displayModule
     {
         int stock = h;
         
-        if ((h >= CACA_KEY_CTRL_A && h <= CACA_KEY_CTRL_G) 
-        || (h >= CACA_KEY_CTRL_J && h <= CACA_KEY_CTRL_L)
-        || (h >= CACA_KEY_CTRL_N && h <= CACA_KEY_CTRL_R)
-        || (h >= CACA_KEY_CTRL_T && h <= CACA_KEY_CTRL_Z))
-            stock = stock + 24;
+        if (h >= 65 && h <= 90) {
+            stock = stock - 60;
+        }
         else
             return (e_event::NOTHING);
         return ((e_event) stock);
@@ -129,7 +140,7 @@ namespace displayModule
 
     e_event Caca::catchEvent()
     {
-        int isKeyPressed = caca_get_event(dp, CACA_EVENT_KEY_PRESS, &ev, -1);
+        int isKeyPressed = caca_get_event(dp, CACA_EVENT_KEY_PRESS, &this->ev, -1);
         int h;
         
         if (isKeyPressed != 1)
@@ -137,10 +148,7 @@ namespace displayModule
         h = caca_get_event_key_ch(&this->ev);
         if (h == CACA_KEY_UNKNOWN)
             return (NOTHING);
-        else if ((h >= CACA_KEY_CTRL_A && h <= CACA_KEY_CTRL_G)
-        || (h >= CACA_KEY_CTRL_J && h <= CACA_KEY_CTRL_L)
-        || (h >= CACA_KEY_CTRL_N && h <= CACA_KEY_CTRL_R)
-        || (h >= CACA_KEY_CTRL_T && h <= CACA_KEY_CTRL_Z))
+        else if (h >= 65 && h <= 90)
             return (this->catchLetterEvents(h));
         else
             return (this->catchSpecialEvents(h));
