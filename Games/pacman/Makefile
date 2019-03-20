@@ -7,7 +7,7 @@
 
 CXXFLAGS	=	-Iinclude -Iinclude -I../ -ILib/include
 
-LDFLAGS =  -L./ -l_arcade_sfml
+LDFLAGS =  -L./ 
 
 RM	=	rm
 
