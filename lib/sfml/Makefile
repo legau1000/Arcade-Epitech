@@ -22,7 +22,7 @@ OBJ	=	$(SRC:.cpp=.o)
 NAME	=	 ../lib_arcade_sfml.so
 
 $(NAME):	$(OBJ)
-	g++ -std=c++11 -o $(NAME) $(OBJ) $(CXXFLAGS) $(LDFLAGS)
+	g++ -shared -o $(NAME) $(OBJ) $(CXXFLAGS) $(LDFLAGS)
 
 all:	$(NAME)
 

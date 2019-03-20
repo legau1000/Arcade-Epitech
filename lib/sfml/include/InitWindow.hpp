@@ -43,6 +43,7 @@ public:
 
 protected:
 private:
+  std::string cutEndFile(const std::string &name);
   sf::RenderWindow _window;
   std::unordered_map<std::string, sf::Texture> _mapOfSprite;
   std::unordered_map<std::string, std::string> _mapOfText;
