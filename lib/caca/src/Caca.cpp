@@ -11,7 +11,8 @@ namespace displayModule
 {
     Caca::Caca()
     {
-        this->dp = caca_create_display(NULL);
+        this->cv = caca_create_canvas(1920, 1080);
+        this->dp = caca_create_display(this->cv);
         if(!dp)
             return;
         // this->cv = caca_get_canvas(this->dp);
