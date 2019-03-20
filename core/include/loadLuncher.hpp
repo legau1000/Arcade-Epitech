@@ -16,12 +16,13 @@
 class loadLauncher
 {
     public:
-        loadLauncher() {};
-        ~loadLauncher() {};
-        void initLaunch(const std::unordered_map<std::string, std::string>&,
-                        const std::unordered_map<std::string, std::string>&,
-                        const std::shared_ptr<displayModule::IDisplayModule>&);
+        loadLauncher();
+        ~loadLauncher();
+        void initLaunch(const std::unordered_map<std::string, std::string>,
+                        const std::unordered_map<std::string, std::string>,
+                        const std::shared_ptr<displayModule::IDisplayModule>);
         displayModule::e_event start();
+        void loadAssets();
 
     protected:
 

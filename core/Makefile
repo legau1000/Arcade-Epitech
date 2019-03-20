@@ -5,7 +5,7 @@
 ## makefile
 ##
 
-INCLUDE		=	-I ./include -I../games -I../lib -ldl
+INCLUDE		=	-I ./include -I../Games -I../lib -ldl
 
 CXXFLAGS	=	$(INCLUDE) -W -Wall -Wextra -Wshadow 
 
@@ -14,7 +14,8 @@ CXX			=	g++ -g
 SRC_BASE	=	src/
 
 SRC_FILES	=	core.cpp		\
-				main.cpp
+				main.cpp		\
+				loadLuncher.cpp
 
 SRC		=	$(addprefix $(SRC_BASE),$(SRC_FILES))
 
