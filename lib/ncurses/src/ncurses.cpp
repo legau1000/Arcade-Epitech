@@ -13,6 +13,7 @@ namespace displayModule
     {
         clear();
         initscr();
+        keypad(stdscr, TRUE);
         nodelay(stdscr, true);
         noecho();
         curs_set(0);
@@ -134,7 +135,7 @@ namespace displayModule
 
         if (h == ERR)
             return (NOTHING);
-        else if (h > 97 && h < 123)
+        else if (h > 96 && h < 123)
             return (this->catchLetterEvents(h));
         else
             return (this->catchSpecialEvents(h));
