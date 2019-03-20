@@ -7,14 +7,14 @@
 
 all:
 	make -C core
-	make -C games
+	make -C Games
 	make -C lib
 
 core:
 	make -C re core
 
 games:
-	make -C games
+	make -C Games
 
 lib:
 	make -C lib
@@ -32,7 +32,7 @@ re:	fclean all
 
 tests_run:
 	make -C core/tests/
-	make -C games/tests/
+	make -C Games/tests/
 	make -C lib/tests/
 
 .PHONY: clean fclean re all tests_run
