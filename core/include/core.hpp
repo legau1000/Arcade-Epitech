@@ -35,9 +35,12 @@ class Core
         int writeUsage();
         void catchAllLib(const std::string &directory);
         void startGame();
-        void executeEvent(displayModule::e_event ext);
         void closeAllLib();
+        void changeGraphic();
         std::string cutEndFile(const std::string &name);
+        bool executeEvent(displayModule::e_event ext);
+        bool changeGraphic(displayModule::e_event ext);
+        void initLib(std::string av);
 
         // Map for stock all game and sprite
         std::vector<mapGraphGame> _allGraphic;

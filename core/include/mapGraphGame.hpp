@@ -22,7 +22,8 @@ class mapGraphGame
         bool GetUse() const {return (this->_used);};
         void SetUse(const bool use) {this->_used = use;};
 
-        std::string GetPath() {return (this->_path);};
+        std::string GetPath() {
+            return (this->_path);};
 
         std::string GetName() {return (this->_name);};
 

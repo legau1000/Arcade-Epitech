@@ -5,7 +5,6 @@
 ** core.cpp
 */
 
-#include "loadLuncher.hpp"
 #include "core.hpp"
 
 Core::Core()
@@ -24,30 +23,76 @@ int Core::writeUsage()
     return (0);
 }
 
-void Core::executeEvent(displayModule::e_event ext)
+bool Core::changeGraphic(displayModule::e_event ext)
+{
+    size_t index = 0;
+
+    while (this->_allGraphic[index].GetUse() != true)
+        index++;
+    this->_allGraphic[index].SetUse(false);
+    if (ext == displayModule::ARROW_LEFT) {
+        if (index == 0) {
+            index = this->_allGraphic.size() - 1;
+        } else 
+            index = index - 1;
+    } else {
+        index = (index + 1) % (this->_allGraphic.size());
+    }
+    this->_allGraphic[index].SetUse(true);
+    this->_ActualGraph = nullptr;
+    this->_ActualGraph = _graph.loadNewLib(this->_allGraphic[index].GetPath());
+    if (this->_ActualGraph == nullptr)
+        return (true);
+    return (false);
+}
+
+bool Core::executeEvent(displayModule::e_event ext)
 {
     if (ext == displayModule::ENTER) {
         this->_ActualGame = nullptr;
     }
+    if (ext == displayModule::ARROW_LEFT ||
+    ext == displayModule::ARROW_RIGHT) {
+        return (this->changeGraphic(ext));
+    }
+    if (ext == displayModule::ARROW_UP ||
+    ext == displayModule::ARROW_DOWN) {
+        return (this->changeGraphic(ext));
+    }
+    return (false);
 }
 
 void Core::startGame()
 {
     displayModule::e_event ext = displayModule::NOTHING;
 
-    this->_ActualGraph->createText(this->_allGraphic[0].GetName(), "VERIF");
-    this->_ActualGraph->drawText("VERIF", 10, 10);
-    this->_ActualGraph->refreshWindow();
     while (ext != displayModule::ESCAPE) {
         if (this->_ActualGame == nullptr) {
-            // ext = launcher.start();
+            this->_ActualGraph->createText(this->_allGraphic[0].GetName(), "VERIF");
+            this->_ActualGraph->drawText("VERIF", 10, 10);
+            this->_ActualGraph->refreshWindow();
         } else {
             // ext = this->_ActualGame.game();
         }
         ext = this->_ActualGraph->catchEvent();
-        if (ext != displayModule::NOTHING)
-            this->executeEvent(ext);
+        if (ext != displayModule::NOTHING) {
+            if (this->executeEvent(ext) == true)
+                return;
+        }
     }
+}
+
+void Core::initLib(std::string av)
+{
+    size_t index = 0;
+
+    if (av[0] != '.' || av[1] != '/')
+        av = "./" + av;
+    while (av != this->_allGraphic[index].GetPath() && 
+    av != this->_allGraphic[index].GetPath()) {
+        index++;
+    }
+    this->_allGraphic[index].SetUse(true);
 }
 
 int Core::start(int ac, char **av)
@@ -59,6 +104,7 @@ int Core::start(int ac, char **av)
         return (84);
     this->catchAllLib("./lib/");
     this->catchAllLib("./Games/");
+    this->initLib(av[1]);
     this->startGame();
     return (0);
 }

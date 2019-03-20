@@ -26,6 +26,8 @@ class LoadGraph
         ~LoadGraph() {};
         std::shared_ptr<T> loadNewLib(const std::string &path)
         {
+            if (this->hundleGraph != nullptr)
+                dlclose(this->hundleGraph);
             this->hundleGraph = dlopen(path.data(), RTLD_NOW);
             if (!this->hundleGraph) {
                 std::cout << dlerror() << std::endl;
