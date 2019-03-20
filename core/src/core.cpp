@@ -5,10 +5,13 @@
 ** core.cpp
 */
 
+#include "loadLuncher.hpp"
 #include "core.hpp"
 
 Core::Core()
-{}
+{
+    this->_ActualGame = nullptr;
+}
 
 Core::~Core()
 {
@@ -21,12 +24,19 @@ int Core::writeUsage()
     return (0);
 }
 
-void Core::startMenu()
+void Core::startGame()
 {
-    this->_ActualGraph->createText("####\n#  #\n#  #\n####", "Snake");
-    this->_ActualGraph->drawText("Snake", 10, 10);
-    this->_ActualGraph->refreshWindow();
-    while (1);
+    loadLauncher launcher;
+    displayModule::e_event ext = displayModule::NOTHING;
+
+    launcher.initLaunch(this->_allGraphic, this->_allGames, this->_ActualGraph);
+    while (ext != displayModule::ESCAPE) {
+        if (this->_ActualGame == nullptr) {
+            ext = launcher.start();
+        } else {
+            // this->_ActualGame.game();
+        }
+    }
 }
 
 int Core::start(int ac, char **av)
@@ -34,9 +44,11 @@ int Core::start(int ac, char **av)
     if (ac != 2 || av[1] == (char *)"-h" || av[1] == (char *)"--help")
         return (writeUsage());
     this->_ActualGraph = _graph.loadNewLib(av[1]);
+    if (this->_ActualGraph == nullptr)
+        return (84);
     this->catchAllGraph();
     this->catchAllGame();
-    this->startMenu();
+    this->startGame();
     return (0);
 }
 
@@ -54,13 +66,13 @@ void Core::catchAllGraph()
     DIR * rep = opendir("./lib/");
     struct dirent *file = nullptr;
     std::string name;
- 
+
     if (rep) {
         file = readdir(rep);
         while (file) {
             name = file->d_name;
             if (name.find(".so\0") != std::string::npos)
-                this->_Graphic.insert(make_pair(cutEndFile(file->d_name), ("./lib/" + name)));
+                this->_allGraphic.insert(make_pair(cutEndFile(file->d_name), ("./lib/" + name)));
             file = readdir(rep);
         }
         closedir(rep);
@@ -78,7 +90,7 @@ void Core::catchAllGame()
         while (file) {
             name = file->d_name;
             if (name.find(".so\0") != std::string::npos)
-                this->_Games.insert(make_pair(cutEndFile(file->d_name), ("./games/" + name)));
+                this->_allGames.insert(make_pair(cutEndFile(file->d_name), ("./games/" + name)));
             file = readdir(rep);
         }
         closedir(rep);
