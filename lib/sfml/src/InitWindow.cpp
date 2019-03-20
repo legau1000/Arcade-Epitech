@@ -13,10 +13,22 @@ InitWindow::InitWindow() : _window(sf::VideoMode(1920, 1080), "Let's play!")
 {
 }
 
+std::string InitWindow::cutEndFile(const std::string &name)
+{
+	std::size_t pos = name.find(".");
+
+	if (pos == std::string::npos)
+		return (name);
+	return (name.substr(0, pos));
+}
+
 bool InitWindow::createAsset(const std::string &path, const std::string &assetName)
 {
-	this->_texture.loadFromFile(path + assetName);
-	this->_mapOfSprite.insert(std::pair<std::string, sf::Texture>(assetName, this->_texture));
+	std::string realPath = path + "/2d/" + assetName;
+	std::string filename = this->cutEndFile(assetName);
+
+	this->_texture.loadFromFile(realPath);
+	this->_mapOfSprite.insert(std::pair<std::string, sf::Texture>(filename, this->_texture));
 	return true;
 }
 
@@ -53,7 +65,7 @@ bool InitWindow::createText(const std::string &text, const std::string &assetNam
 
 bool InitWindow::drawText(const std::string &textName, int x, int y)
 {
-	this->_font.loadFromFile("./games/pacman/assets/sfml/pacman.ttf");
+	this->_font.loadFromFile("./Games/pacman/assets/2d/pacman.ttf");
 	this->_text.setFont(this->_font);
 	this->_text.setString(this->_mapOfText.find(textName)->second);
 	this->_text.setCharacterSize(100);
@@ -142,7 +154,7 @@ e_event InitWindow::catchEvent()
 //Sounds
 void InitWindow::start_sound()
 {
-	this->_music.openFromFile("./games/pacman/assets/sfml/pacman.ogg");
+	this->_music.openFromFile("./Games/pacman/assets/2d/pacman.ogg");
 	this->_music.setVolume(50);
 	this->_music.play();
 }
