@@ -14,7 +14,9 @@
 #include <memory>
 #include <unordered_map>
 #include "IDisplayModule.hpp"
+#include "IGameModule.hpp"
 #include "loadGraphic.hpp"
+#include "loadGame.hpp"
 #include "def.hpp"
 
 class Core
@@ -32,21 +34,24 @@ class Core
         int writeUsage();
         void catchAllGraph();
         void catchAllGame();
-        void startMenu();
+        void startGame();
         std::string cutEndFile(const std::string &name);
 
-        LoadGraph<displayModule::IDisplayModule> _graph;
         // Map for stock all game and sprite
-        std::unordered_map<std::string, std::string> _Graphic;
-        std::unordered_map<std::string, std::string> _Games;
+        std::unordered_map<std::string, std::string> _allGraphic;
+        std::unordered_map<std::string, std::string> _allGames;
+
+        // Struct for load Graphic Lib
+        LoadGraph<displayModule::IDisplayModule> _graph;
+
+        // Struct for load Games Lib
+        LoadGraph<gameModule::IGameModule> _games;
 
         // Actual Graphic Lib
         std::shared_ptr<displayModule::IDisplayModule> _ActualGraph;
 
-        // Stop the actual Game Lib
-        // void *hundleGame;
-        // std::unique_ptr<gameModule::IGameModule> ActualGame;
-
+        // Actual Game Lib
+        std::unique_ptr<gameModule::IGameModule> _ActualGame;
  
 };
 

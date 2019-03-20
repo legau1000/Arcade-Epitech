@@ -5,8 +5,8 @@
 ** LoadGraph.hpp
 */
 
-#ifndef LOADGRAPH_HPP__
-#define LOADGRAPH_HPP__
+#ifndef LOADGAME_HPP__
+#define LOADGAME_HPP__
 
 #include <string>
 #include <iostream>
@@ -16,14 +16,14 @@
 #include "IDisplayModule.hpp"
 
 template <typename T>
-class LoadGraph
+class loadGame
 {
     public:
-        LoadGraph()
+        loadGame()
         {
             this->hundleGraph = nullptr;
         };
-        ~LoadGraph() {};
+        ~loadGame() {};
         std::shared_ptr<T> loadNewLib(const std::string &path)
         {
             this->hundleGraph = dlopen(path.data(), RTLD_NOW);
