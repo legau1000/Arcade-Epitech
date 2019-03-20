@@ -8,18 +8,21 @@
 #include "loadLuncher.hpp"
 
 loadLauncher::loadLauncher()
-{}
+{
+    this->_ActualGraph = nullptr;
+}
 
 loadLauncher::~loadLauncher()
 {}
 
-void loadLauncher::initLaunch(const std::unordered_map<std::string, std::string> allGraphic, 
-                const std::unordered_map<std::string, std::string> allGames,
-                const std::shared_ptr<displayModule::IDisplayModule> ActualGraph)
+void loadLauncher::initLaunch(std::vector<mapGraphGame> allGraphic, 
+                std::vector<mapGraphGame> allGames,
+                std::shared_ptr<displayModule::IDisplayModule> ActualGraph)
 {
-    this->_allGraphic = allGraphic;
-    this->_allGames = allGames;
     this->_ActualGraph = ActualGraph;
+    // this->_ActualGraph->createText(allGraphic[0].GetName(), "VERIF");
+    // this->_allGraphic = allGraphic;
+    // this->_allGames = allGames;
 };
 
 void loadLauncher::loadAssets()
@@ -30,7 +33,7 @@ void loadLauncher::loadAssets()
 displayModule::e_event loadLauncher::start()
 {
     this->loadAssets();
-    // this->_ActualGraph->drawAsset("core", 10, 10);
-    // this->_ActualGraph->refreshWindow();
+    this->_ActualGraph->drawText("VERIF", 10, 10);
+    this->_ActualGraph->refreshWindow();
     while (1);
 };

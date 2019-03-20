@@ -5,12 +5,12 @@
 ## makefile
 ##
 
-# .SILENT:
+.SILENT:
 
 all:
 	make -C ncurses
-	# make -C sfml
-	# make -C qt
+	make -C caca
+	make -C sfml
 
 ncurses:
 	make -C ncurses
@@ -18,19 +18,19 @@ ncurses:
 sfml:
 	make -C sfml
 
-qt:
-	make -C qt
+caca:
+	make -C caca
 
 clean:
 	make clean -C ncurses
-	# make clean -C sfml
-	# make clean -C qt
+	make clean -C caca
+	make clean -C sfml
 		@echo "Clean faite!"
 
 fclean: clean
 	make fclean -C ncurses
-	# make fclean -C sfml
-	# make fclean -C qt
+	make fclean -C caca
+	make fclean -C sfml
 		@echo "FClean faite!"
 
 re:	fclean all
@@ -38,7 +38,7 @@ re:	fclean all
 
 tests_run:
 	make -C ncurses/tests/
-	# make -C sfml/tests/
-	# make -C qt/tests/
+	make -C caca/tests/
+	make -C sfml/tests/
 
 .PHONY: clean fclean re all tests_run

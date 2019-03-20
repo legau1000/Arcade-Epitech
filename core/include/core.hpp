@@ -12,11 +12,12 @@
 #include <iostream>
 #include <map>
 #include <memory>
-#include <unordered_map>
+#include <vector>
 #include "IDisplayModule.hpp"
 #include "IGameModule.hpp"
 #include "loadGraphic.hpp"
 #include "loadGame.hpp"
+#include "mapGraphGame.hpp"
 #include "def.hpp"
 
 class Core
@@ -32,14 +33,15 @@ class Core
 
     private:
         int writeUsage();
-        void catchAllGraph();
-        void catchAllGame();
+        void catchAllLib(const std::string &directory);
         void startGame();
+        void executeEvent(displayModule::e_event ext);
+        void closeAllLib();
         std::string cutEndFile(const std::string &name);
 
         // Map for stock all game and sprite
-        std::unordered_map<std::string, std::string> _allGraphic;
-        std::unordered_map<std::string, std::string> _allGames;
+        std::vector<mapGraphGame> _allGraphic;
+        std::vector<mapGraphGame> _allGames;
 
         // Struct for load Graphic Lib
         LoadGraph<displayModule::IDisplayModule> _graph;
