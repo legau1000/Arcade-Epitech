@@ -53,7 +53,7 @@ bool InitWindow::createText(const std::string &text, const std::string &assetNam
 
 bool InitWindow::drawText(const std::string &textName, int x, int y)
 {
-	this->_font.loadFromFile("../../games/pacman/assets/sfml/pacman.ttf");
+	this->_font.loadFromFile("./games/pacman/assets/sfml/pacman.ttf");
 	this->_text.setFont(this->_font);
 	this->_text.setString(this->_mapOfText.find(textName)->second);
 	this->_text.setCharacterSize(100);
@@ -142,7 +142,7 @@ e_event InitWindow::catchEvent()
 //Sounds
 void InitWindow::start_sound()
 {
-	this->_music.openFromFile("../../games/pacman/assets/sfml/pacman.ogg");
+	this->_music.openFromFile("./games/pacman/assets/sfml/pacman.ogg");
 	this->_music.setVolume(50);
 	this->_music.play();
 }
