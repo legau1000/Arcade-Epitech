@@ -9,7 +9,7 @@
 
 Core::Core()
 {
-    this->_ActualGame = nullptr;
+    //this->_ActualGame = nullptr;
 }
 
 Core::~Core()
