@@ -23,6 +23,20 @@ int Core::writeUsage()
     return (0);
 }
 
+bool Core::setNewGraphLib(size_t index)
+{
+    this->_allGraphic[index].SetUse(true);
+    this->_ActualGraph = nullptr;
+    this->_ActualGraph = _graph.loadNewLib(this->_allGraphic[index].GetPath());
+    if (this->_ActualGraph == nullptr)
+        return (true);
+    if (this->_ActualGame == nullptr) {
+        this->initLauncher();
+    } else {
+    }
+    return (false);
+}
+
 bool Core::changeGraphic(displayModule::e_event ext)
 {
     size_t index = 0;
@@ -35,14 +49,18 @@ bool Core::changeGraphic(displayModule::e_event ext)
             index = this->_allGraphic.size() - 1;
         } else 
             index = index - 1;
-    } else {
+    } else
         index = (index + 1) % (this->_allGraphic.size());
+    return (this->setNewGraphLib(index));
+}
+
+bool Core::changeGame(displayModule::e_event ext)
+{
+    if (this->_ActualGame == nullptr) {
+        
+    } else {
+        
     }
-    this->_allGraphic[index].SetUse(true);
-    this->_ActualGraph = nullptr;
-    this->_ActualGraph = _graph.loadNewLib(this->_allGraphic[index].GetPath());
-    if (this->_ActualGraph == nullptr)
-        return (true);
     return (false);
 }
 
@@ -57,22 +75,42 @@ bool Core::executeEvent(displayModule::e_event ext)
     }
     if (ext == displayModule::ARROW_UP ||
     ext == displayModule::ARROW_DOWN) {
-        return (this->changeGraphic(ext));
+        return (this->changeGame(ext));
+    }
+    if (ext == displayModule::KEY_A) {
+        printf("TEST\n");
+        this->_allGames[0].SetUse(true);
+        this->_ActualGame = nullptr;
+        this->_ActualGame = _games.loadNewLib(this->_allGames[0].GetPath());
+        if (this->_ActualGame == nullptr)
+            return (true);
+        this->_ActualGame->initGame(this->_ActualGraph);
+        printf("TEST2\n");
     }
     return (false);
+}
+displayModule::e_event Core::printLauncher()
+{
+    // this->_ActualGraph->drawText("VERIF", 10, 10);
+    // this->_ActualGraph->refreshWindow();
+    return (this->_ActualGraph->catchEvent());
+}
+
+void Core::initLauncher()
+{
+    this->_ActualGraph->createText("TEST T MORT!", "VERIF");
 }
 
 void Core::startGame()
 {
     displayModule::e_event ext = displayModule::NOTHING;
 
+    this->initLauncher();
     while (ext != displayModule::ESCAPE) {
         if (this->_ActualGame == nullptr) {
-            this->_ActualGraph->createText(this->_allGraphic[0].GetName(), "VERIF");
-            this->_ActualGraph->drawText("VERIF", 10, 10);
-            this->_ActualGraph->refreshWindow();
+            ext = this->printLauncher();
         } else {
-            // ext = this->_ActualGame.game();
+            ext = this->_ActualGame->game();
         }
         ext = this->_ActualGraph->catchEvent();
         if (ext != displayModule::NOTHING) {

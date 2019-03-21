@@ -39,7 +39,17 @@ class Core
         void changeGraphic();
         std::string cutEndFile(const std::string &name);
         bool executeEvent(displayModule::e_event ext);
+
+        // Launcher Core
+        void initLauncher();
+        displayModule::e_event printLauncher();
+
+        // Change Actual Graphic Lib
         bool changeGraphic(displayModule::e_event ext);
+        bool setNewGraphLib(size_t index);
+
+        bool changeGame(displayModule::e_event ext);
+
         void initLib(std::string av);
 
         // Map for stock all game and sprite
@@ -56,7 +66,7 @@ class Core
         std::shared_ptr<displayModule::IDisplayModule> _ActualGraph;
 
         // Actual Game Lib
-        std::unique_ptr<gameModule::IGameModule> _ActualGame;
+        std::shared_ptr<gameModule::IGameModule> _ActualGame;
  
 };
 
