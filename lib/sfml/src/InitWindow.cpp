@@ -81,13 +81,12 @@ e_event InitWindow::catchEvent()
 {
 	while (this->_window.pollEvent(this->_event))
 	{
+		if (this->_event.type == sf::Event::Closed)
+			return ESCAPE;
 		if (this->_event.type == sf::Event::KeyPressed)
 		{
 			if (this->_event.key.code == sf::Keyboard::A)
-			{
-				std::cout << "prout1" << std::endl;
 				return KEY_A;
-			}
 			if (this->_event.key.code == sf::Keyboard::B)
 				return KEY_B;
 			if (this->_event.key.code == sf::Keyboard::C)
@@ -143,9 +142,7 @@ e_event InitWindow::catchEvent()
 			if (this->_event.key.code == sf::Keyboard::Up)
 				return ARROW_UP;
 			if (this->_event.key.code == sf::Keyboard::Left)
-			{
 				return ARROW_LEFT;
-			}
 			if (this->_event.key.code == sf::Keyboard::Right)
 				return ARROW_RIGHT;
 			if (this->_event.key.code == sf::Keyboard::Space)
