@@ -9,7 +9,7 @@
 
 using namespace displayModule;
 
-InitWindow::InitWindow() : _window(sf::VideoMode(1920, 1080), "Let's play!")
+InitWindow::InitWindow() : _window(sf::VideoMode(1920, 1080), "Let's play!", sf::Style::Resize | sf::Style::Close)
 {
 }
 
@@ -79,76 +79,84 @@ bool InitWindow::drawText(const std::string &textName, int x, int y)
 // Events
 e_event InitWindow::catchEvent()
 {
-	if (this->_event.type == sf::Event::KeyPressed)
+	while (this->_window.pollEvent(this->_event))
 	{
-		if (this->_event.key.code == sf::Keyboard::A)
-			return KEY_A;
-		if (this->_event.key.code == sf::Keyboard::B)
-			return KEY_B;
-		if (this->_event.key.code == sf::Keyboard::C)
-			return KEY_C;
-		if (this->_event.key.code == sf::Keyboard::D)
-			return KEY_D;
-		if (this->_event.key.code == sf::Keyboard::E)
-			return KEY_E;
-		if (this->_event.key.code == sf::Keyboard::F)
-			return KEY_F;
-		if (this->_event.key.code == sf::Keyboard::G)
-			return KEY_G;
-		if (this->_event.key.code == sf::Keyboard::H)
-			return KEY_H;
-		if (this->_event.key.code == sf::Keyboard::I)
-			return KEY_I;
-		if (this->_event.key.code == sf::Keyboard::J)
-			return KEY_J;
-		if (this->_event.key.code == sf::Keyboard::K)
-			return KEY_K;
-		if (this->_event.key.code == sf::Keyboard::L)
-			return KEY_L;
-		if (this->_event.key.code == sf::Keyboard::M)
-			return KEY_M;
-		if (this->_event.key.code == sf::Keyboard::N)
-			return KEY_N;
-		if (this->_event.key.code == sf::Keyboard::O)
-			return KEY_O;
-		if (this->_event.key.code == sf::Keyboard::P)
-			return KEY_P;
-		if (this->_event.key.code == sf::Keyboard::Q)
-			return KEY_Q;
-		if (this->_event.key.code == sf::Keyboard::R)
-			return KEY_R;
-		if (this->_event.key.code == sf::Keyboard::S)
-			return KEY_S;
-		if (this->_event.key.code == sf::Keyboard::T)
-			return KEY_T;
-		if (this->_event.key.code == sf::Keyboard::U)
-			return KEY_U;
-		if (this->_event.key.code == sf::Keyboard::V)
-			return KEY_V;
-		if (this->_event.key.code == sf::Keyboard::W)
-			return KEY_W;
-		if (this->_event.key.code == sf::Keyboard::X)
-			return KEY_X;
-		if (this->_event.key.code == sf::Keyboard::Y)
-			return KEY_Y;
-		if (this->_event.key.code == sf::Keyboard::Z)
-			return KEY_Z;
-		if (this->_event.key.code == sf::Keyboard::Down)
-			return ARROW_DOWN;
-		if (this->_event.key.code == sf::Keyboard::Up)
-			return ARROW_UP;
-		if (this->_event.key.code == sf::Keyboard::Left)
-			return ARROW_LEFT;
-		if (this->_event.key.code == sf::Keyboard::Right)
-			return ARROW_RIGHT;
-		if (this->_event.key.code == sf::Keyboard::Space)
-			return SPACE;
-		if (this->_event.key.code == sf::Keyboard::Enter)
-			return ENTER;
-		if (this->_event.key.code == sf::Keyboard::Escape)
-			return ESCAPE;
+		if (this->_event.type == sf::Event::KeyPressed)
+		{
+			if (this->_event.key.code == sf::Keyboard::A)
+			{
+				std::cout << "prout1" << std::endl;
+				return KEY_A;
+			}
+			if (this->_event.key.code == sf::Keyboard::B)
+				return KEY_B;
+			if (this->_event.key.code == sf::Keyboard::C)
+				return KEY_C;
+			if (this->_event.key.code == sf::Keyboard::D)
+				return KEY_D;
+			if (this->_event.key.code == sf::Keyboard::E)
+				return KEY_E;
+			if (this->_event.key.code == sf::Keyboard::F)
+				return KEY_F;
+			if (this->_event.key.code == sf::Keyboard::G)
+				return KEY_G;
+			if (this->_event.key.code == sf::Keyboard::H)
+				return KEY_H;
+			if (this->_event.key.code == sf::Keyboard::I)
+				return KEY_I;
+			if (this->_event.key.code == sf::Keyboard::J)
+				return KEY_J;
+			if (this->_event.key.code == sf::Keyboard::K)
+				return KEY_K;
+			if (this->_event.key.code == sf::Keyboard::L)
+				return KEY_L;
+			if (this->_event.key.code == sf::Keyboard::M)
+				return KEY_M;
+			if (this->_event.key.code == sf::Keyboard::N)
+				return KEY_N;
+			if (this->_event.key.code == sf::Keyboard::O)
+				return KEY_O;
+			if (this->_event.key.code == sf::Keyboard::P)
+				return KEY_P;
+			if (this->_event.key.code == sf::Keyboard::Q)
+				return KEY_Q;
+			if (this->_event.key.code == sf::Keyboard::R)
+				return KEY_R;
+			if (this->_event.key.code == sf::Keyboard::S)
+				return KEY_S;
+			if (this->_event.key.code == sf::Keyboard::T)
+				return KEY_T;
+			if (this->_event.key.code == sf::Keyboard::U)
+				return KEY_U;
+			if (this->_event.key.code == sf::Keyboard::V)
+				return KEY_V;
+			if (this->_event.key.code == sf::Keyboard::W)
+				return KEY_W;
+			if (this->_event.key.code == sf::Keyboard::X)
+				return KEY_X;
+			if (this->_event.key.code == sf::Keyboard::Y)
+				return KEY_Y;
+			if (this->_event.key.code == sf::Keyboard::Z)
+				return KEY_Z;
+			if (this->_event.key.code == sf::Keyboard::Down)
+				return ARROW_DOWN;
+			if (this->_event.key.code == sf::Keyboard::Up)
+				return ARROW_UP;
+			if (this->_event.key.code == sf::Keyboard::Left)
+			{
+				return ARROW_LEFT;
+			}
+			if (this->_event.key.code == sf::Keyboard::Right)
+				return ARROW_RIGHT;
+			if (this->_event.key.code == sf::Keyboard::Space)
+				return SPACE;
+			if (this->_event.key.code == sf::Keyboard::Enter)
+				return ENTER;
+			if (this->_event.key.code == sf::Keyboard::Escape)
+				return ESCAPE;
+		}
 	}
-	return NOTHING;
+	return (NOTHING);
 }
 
 //Sounds
