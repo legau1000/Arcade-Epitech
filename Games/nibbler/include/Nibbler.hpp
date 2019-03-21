@@ -26,6 +26,7 @@ namespace gameModule
             bool initGame(std::shared_ptr<displayModule::IDisplayModule> asset);
             bool setLib(std::shared_ptr<displayModule::IDisplayModule> asset);
 
+            void drawElements(displayModule::IDisplayModule *);
             void count_apple(void);
             displayModule::e_event catchNibblerEvent(displayModule::e_event event);
             void move_nibbler(int newPos);

@@ -15,8 +15,12 @@ gameModule::Nibbler::Nibbler()
     this->pos_apple.push_back(35);
     this->pos_apple.push_back(103);
     this->pos_apple.push_back(115);
+    this->pos_apple.push_back(155);
+    this->pos_apple.push_back(143);
+    this->pos_apple.push_back(195);
+    this->pos_apple.push_back(1000);
 
-    this->nbApples = 4;
+    this->nbApples = 7;
 
     this->nibbler.push_back(187);
     this->nibbler.push_back(188);
@@ -30,6 +34,25 @@ gameModule::Nibbler::~Nibbler()
 {
 }
 
+void gameModule::Nibbler::drawElements(displayModule::IDisplayModule *yolo)
+{
+    int i = 0;
+
+    yolo->drawAsset("Oui", 0, 0);
+    for (i = 0; this->pos_apple[i]; i++) {
+        yolo->createText("x", "apple" + i);
+        yolo->drawText("apple" + i, this->pos_apple[i] % 20, this->pos_apple[i] / 20);
+    }
+    for (i = 0; this->nibbler[i]; i++) {
+        if (i == 0)
+            yolo->createText("P", "nibbler" + i);
+        else
+            yolo->createText("*", "nibbler" + i);
+        yolo->drawText("nibbler" + i, this->nibbler[i] % 20, this->nibbler[i] / 20);
+    }
+    yolo->refreshWindow();
+}
+
 displayModule::e_event gameModule::Nibbler::game()
 {
     displayModule::IDisplayModule *yolo = new displayModule::Caca();
@@ -41,23 +64,9 @@ displayModule::e_event gameModule::Nibbler::game()
     getline(file, this->map, '\0');
     file.close();
 
-    // DISPLAY
     yolo->createText(this->map, "Oui");
-    
     while (!this->isQuit && this->nbApples != 0) {
-        yolo->drawAsset("Oui", 0, 0);
-        for (i = 0; this->pos_apple[i]; i++) {
-            yolo->createText("x", "apple" + i);
-            yolo->drawText("apple" + i, this->pos_apple[i] % 20, this->pos_apple[i] / 20);
-        }
-        for (i = 0; this->nibbler[i]; i++) {
-            if (i == 0)
-                yolo->createText("P", "nibbler" + i); // T'EN ETAIS LA CONNARD
-            else
-                yolo->createText("*", "nibbler" + i);
-            yolo->drawText("nibbler" + i, this->nibbler[i] % 20, this->nibbler[i] / 20);
-        }
-        yolo->refreshWindow();
+        this->drawElements(yolo);
         this->catchNibblerEvent(yolo->catchEvent());
         if ((this->ev_nibbler == displayModule::e_event::ERROR) ||
         (this->ev_nibbler == displayModule::e_event::ESCAPE) ||
@@ -86,6 +95,7 @@ void gameModule::Nibbler::move_nibbler(int newPos)
 {
     auto x = this->nibbler.end();
     auto isApple = std::find(this->pos_apple.begin(), this->pos_apple.end(), newPos);
+    auto isBody = std::find(this->nibbler.begin(), this->nibbler.end(), newPos);
     int tmp = this->nibbler[0];
     int newTmp = newPos;
     int i = 0;
@@ -101,18 +111,18 @@ void gameModule::Nibbler::move_nibbler(int newPos)
             i++;
         }
         this->nibbler.push_back(tmp);
-        this->pos = this->nibbler[0];
-    } else if (this->map[newPos] == ' ') {
+    } else if (isBody != this->nibbler.end()
+    || this->map[newPos] == '#')
+        exit(84);
+    else if (this->map[newPos] == ' ') {
         while (i < nibbler.size()) {
             this->nibbler[i] = newTmp;
             newTmp = tmp;
             i++;
             tmp = this->nibbler[i];
         }
-        this->pos = this->nibbler[0];
-    } else {
-        exit(84);
     }
+    this->pos = this->nibbler[0];
 }
 
 displayModule::e_event gameModule::Nibbler::catchNibblerEvent(displayModule::e_event event)
