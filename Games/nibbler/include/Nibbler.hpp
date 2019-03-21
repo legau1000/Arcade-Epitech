@@ -33,7 +33,7 @@ namespace gameModule
         private:
             std::string map;
             std::vector<int> pos_apple;
-            std::unordered_map<int, std::string> nibbler;
+            std::vector<int> nibbler;
             displayModule::e_event ev_nibbler;
             bool isQuit = false;
             int score;

@@ -99,6 +99,8 @@ namespace displayModule
         
         if (h >= 65 && h <= 90) {
             stock = stock - 60;
+        } else if (h >= 97 && h <= 122) {
+            stock = stock - 92;
         }
         else
             return (e_event::NOTHING);
@@ -120,8 +122,7 @@ namespace displayModule
     e_event Caca::catchSysButton(int h)
     {
         switch (h) {
-            // PAS DE SPACE
-            // case 32 : return (e_event::SPACE);
+            case 32 : return (e_event::SPACE);
             case CACA_KEY_RETURN : return (e_event::ENTER);
             case CACA_KEY_ESCAPE : return (e_event::ESCAPE);
             default:break;
@@ -149,7 +150,7 @@ namespace displayModule
         h = caca_get_event_key_ch(&this->ev);
         if (h == CACA_KEY_UNKNOWN)
             return (NOTHING);
-        else if (h >= 65 && h <= 90)
+        else if ((h >= 65 && h <= 90) || (h >= 97 && h <= 122))
             return (this->catchLetterEvents(h));
         else
             return (this->catchSpecialEvents(h));
