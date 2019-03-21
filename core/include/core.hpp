@@ -60,7 +60,7 @@ class Core
         LoadGraph<displayModule::IDisplayModule> _graph;
 
         // Struct for load Games Lib
-        LoadGraph<gameModule::IGameModule> _games;
+        loadGame<gameModule::IGameModule> _games;
 
         // Actual Graphic Lib
         std::shared_ptr<displayModule::IDisplayModule> _ActualGraph;
