@@ -30,9 +30,12 @@ bool Core::setNewGraphLib(size_t index)
     this->_ActualGraph = _graph.loadNewLib(this->_allGraphic[index].GetPath());
     if (this->_ActualGraph == nullptr)
         return (true);
-    if (this->_ActualGame == nullptr) {
+    if (this->_ActualGame == nullptr)
+    {
         this->initLauncher();
-    } else {
+    }
+    else
+    {
     }
     return (false);
 }
@@ -44,48 +47,59 @@ bool Core::changeGraphic(displayModule::e_event ext)
     while (this->_allGraphic[index].GetUse() != true)
         index++;
     this->_allGraphic[index].SetUse(false);
-    if (ext == displayModule::ARROW_LEFT) {
-        if (index == 0) {
+    if (ext == displayModule::ARROW_LEFT)
+    {
+        if (index == 0)
+        {
             index = this->_allGraphic.size() - 1;
-        } else 
+        }
+        else
             index = index - 1;
-    } else
+    }
+    else
         index = (index + 1) % (this->_allGraphic.size());
     return (this->setNewGraphLib(index));
 }
 
 bool Core::changeGame(displayModule::e_event ext)
 {
-    if (this->_ActualGame == nullptr) {
-        
-    } else {
-        
+    if (this->_ActualGame == nullptr)
+    {
+    }
+    else
+    {
     }
     return (false);
 }
 
 bool Core::executeEvent(displayModule::e_event ext)
 {
-    if (ext == displayModule::ENTER) {
+    if (ext == displayModule::ENTER)
+    {
         this->_ActualGame = nullptr;
     }
     if (ext == displayModule::ARROW_LEFT ||
-    ext == displayModule::ARROW_RIGHT) {
+        ext == displayModule::ARROW_RIGHT)
+    {
         return (this->changeGraphic(ext));
     }
     if (ext == displayModule::ARROW_UP ||
-    ext == displayModule::ARROW_DOWN) {
+        ext == displayModule::ARROW_DOWN)
+    {
         return (this->changeGame(ext));
     }
-    if (ext == displayModule::KEY_A) {
+    if (ext == displayModule::KEY_A)
+    {
         printf("TEST\n");
         this->_allGames[0].SetUse(true);
         this->_ActualGame = nullptr;
-        this->_ActualGame = _games.loadNewLib(this->_allGames[0].GetPath());
+        this->_ActualGame = this->_games.loadNewLib(this->_allGames[0].GetPath());
         if (this->_ActualGame == nullptr)
             return (true);
-        this->_ActualGame->initGame(this->_ActualGraph);
+        printf("%s\n", this->_allGames[0].GetPath().data());
         printf("TEST2\n");
+        this->_ActualGame->initGame(this->_ActualGraph);
+        printf("TEST3\n");
     }
     return (false);
 }
@@ -106,14 +120,19 @@ void Core::startGame()
     displayModule::e_event ext = displayModule::NOTHING;
 
     this->initLauncher();
-    while (ext != displayModule::ESCAPE) {
-        if (this->_ActualGame == nullptr) {
+    while (ext != displayModule::ESCAPE)
+    {
+        if (this->_ActualGame == nullptr)
+        {
             ext = this->printLauncher();
-        } else {
+        }
+        else
+        {
             ext = this->_ActualGame->game();
         }
-        ext = this->_ActualGraph->catchEvent();
-        if (ext != displayModule::NOTHING) {
+        // ext = this->_ActualGraph->catchEvent();
+        if (ext != displayModule::NOTHING)
+        {
             if (this->executeEvent(ext) == true)
                 return;
         }
@@ -126,8 +145,9 @@ void Core::initLib(std::string av)
 
     if (av[0] != '.' || av[1] != '/')
         av = "./" + av;
-    while (av != this->_allGraphic[index].GetPath() && 
-    av != this->_allGraphic[index].GetPath()) {
+    while (av != this->_allGraphic[index].GetPath() &&
+           av != this->_allGraphic[index].GetPath())
+    {
         index++;
     }
     this->_allGraphic[index].SetUse(true);
@@ -157,16 +177,19 @@ std::string Core::cutEndFile(const std::string &name)
 }
 
 void Core::catchAllLib(const std::string &directory)
-{ 
-    DIR * rep = opendir(directory.data());
+{
+    DIR *rep = opendir(directory.data());
     struct dirent *file = nullptr;
     std::string name;
- 
-    if (rep) {
+
+    if (rep)
+    {
         file = readdir(rep);
-        while (file) {
+        while (file)
+        {
             name = file->d_name;
-            if (name.find(".so\0") != std::string::npos) {
+            if (name.find(".so\0") != std::string::npos)
+            {
                 if (directory == "./Games/")
                     this->_allGames.push_back(mapGraphGame(cutEndFile(name), (directory + name)));
                 else

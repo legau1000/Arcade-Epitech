@@ -5,27 +5,24 @@
 ## makefile
 ##
 
-CXXFLAGS	=	-Iinclude -Iinclude -I../ -ILib/include
-
-LDFLAGS =  -L./ 
+CXXFLAGS	=	-Iinclude -I../ -I./../../lib/ -shared -fPIC
 
 RM	=	rm
 
 SRC_BASE	=	src/
 
-SRC_FILES	=	MapPacman.cpp \
-main.cpp
+SRC_FILES	=	Pacman.cpp
 
 SRC		=	$(addprefix $(SRC_BASE),$(SRC_FILES))
 
 OBJ	=	$(SRC:.cpp=.o)
 
-NAME	=	 pacman
+NAME	=	 ../pacman.so
 
 .SILENT:
 
 $(NAME):	$(OBJ)
-	g++ -o $(NAME) $(OBJ) $(CXXFLAGS) $(LDFLAGS)
+	g++ -shared -o $(NAME) $(OBJ) $(CXXFLAGS)
 
 all:	$(NAME)
 

@@ -6,7 +6,7 @@
 */
 
 #ifndef IGAMEMODULE_HPP_
-# define IGAMEMODULE_HPP_
+#define IGAMEMODULE_HPP_
 
 #include <iostream>
 #include <memory>
@@ -14,14 +14,14 @@
 
 namespace gameModule
 {
-    class IGameModule
-    {
-        public:
-            virtual ~IGameModule() = default;
-            virtual displayModule::e_event game() = 0;
-            virtual bool initGame(std::shared_ptr<displayModule::IDisplayModule> asset) = 0;
-            virtual bool setLib(std::shared_ptr<displayModule::IDisplayModule> asset) = 0;
-    };
-}
+class IGameModule
+{
+  public:
+    virtual ~IGameModule() = default;
+    virtual displayModule::e_event game() = 0;
+    virtual bool initGame(std::shared_ptr<displayModule::IDisplayModule> asset) = 0;
+    virtual bool setLib(std::shared_ptr<displayModule::IDisplayModule> asset) = 0;
+};
+} // namespace gameModule
 
 #endif //OOP_ARCADE_2018_IGAMEMODULE_HPP

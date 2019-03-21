@@ -18,38 +18,40 @@
 template <typename T>
 class loadGame
 {
-    public:
-        loadGame()
+  public:
+    loadGame()
+    {
+        this->hundleGraph = nullptr;
+    };
+    ~loadGame(){};
+    std::shared_ptr<T> loadNewLib(const std::string &path)
+    {
+        this->hundleGraph = dlopen(path.data(), RTLD_NOW);
+        if (!this->hundleGraph)
         {
-            this->hundleGraph = nullptr;
-        };
-        ~loadGame() {};
-        std::shared_ptr<T> loadNewLib(const std::string &path)
+            std::cout << dlerror() << std::endl;
+            return (nullptr);
+        }
+        return (this->GetLoadAndDelete());
+    };
+
+  protected:
+    std::shared_ptr<T> GetLoadAndDelete()
+    {
+        auto luncher = reinterpret_cast<T *(*)()>(dlsym(this->hundleGraph, "allocator"));
+        auto deleter = reinterpret_cast<void (*)(T *)>(dlsym(this->hundleGraph, "deleter"));
+
+        if (!luncher || !deleter)
         {
-            this->hundleGraph = dlopen(path.data(), RTLD_NOW);
-            if (!this->hundleGraph) {
-                std::cout << dlerror() << std::endl;
-                return (nullptr);
-            }
-            return (this->GetLoadAndDelete());
-        };
+            std::cout << "ERROR WHEN LOADING ALLOCATOR OR DELETER!\n"
+                      << std::endl;
+            return (nullptr);
+        }
+        return (std::shared_ptr<T>(luncher(), [deleter](T *p) { deleter(p); }));
+    };
 
-    protected:
-        std::shared_ptr<T> GetLoadAndDelete()
-        {
-            auto luncher = reinterpret_cast<T *(*)()>(dlsym(this->hundleGraph, "allocator"));
-            auto deleter = reinterpret_cast<void (*)(T *)>(dlsym(this->hundleGraph, "deleter"));
-
-            if (!luncher || !deleter) {
-                std::cout << "ERROR WHEN LOADING ALLOCATOR OR DELETER!\n" << std::endl;
-                return (nullptr);
-            }
-            return (std::shared_ptr<T>(luncher(), [deleter](T *p){ deleter(p); }));
-        };
-
-    private:
-        void *hundleGraph;
-
+  private:
+    void *hundleGraph;
 };
 
 #endif
