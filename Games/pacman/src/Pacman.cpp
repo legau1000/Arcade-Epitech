@@ -23,23 +23,56 @@ displayModule::e_event Pacman::game()
 	return displayModule::e_event::NOTHING;
 }
 
+void Pacman::fillMap()
+{
+	std::ifstream fileName("Games/pacman/assets/2d/map.txt", std::ios::in);
+
+	std::string content;
+	while (getline(fileName, content))
+	{
+		this->_map.append(content);
+		this->_map.append("\n");
+	}
+}
+
+void Pacman::createMap(std::shared_ptr<displayModule::IDisplayModule> asset)
+{
+	int i = 0;
+	int x = 10;
+	int y = 10;
+	this->fillMap();
+
+	while (this->_map[i] != '\0')
+	{
+		if (this->_map[i] == '#')
+		{
+			asset->createAsset("Games/pacman/assets", "wall.png");
+			asset->drawAsset("wall", x, y);
+			x += 1;
+		}
+		else
+			x += 1;
+		if (this->_map[i] == '\n')
+		{
+			y += 1;
+			x = 10;
+		}
+		i++;
+	}
+	this->initCharacter(asset, 19, 19);
+}
+
+void Pacman::initCharacter(std::shared_ptr<displayModule::IDisplayModule> asset, int x, int y)
+{
+	asset->createAsset("Games/pacman/assets", "miss.png");
+	asset->drawAsset("miss", x, y);
+}
+
 bool Pacman::initGame(std::shared_ptr<displayModule::IDisplayModule> asset)
 {
-	try
-	{
-		std::ifstream fileName("../pacman/assets/2d/.map.txt", std::ios::in);
-
-		std::string content;
-		while (getline(fileName, content))
-		{
-			std::cout << content << std::endl;
-		}
-		return true;
-	}
-	catch (const std::exception &e)
-	{
-		std::cerr << e.what() << '\n';
-	}
+	this->createMap(asset);
+	asset->refreshWindow();
+	return true;
 }
 
 bool Pacman::setLib(std::shared_ptr<displayModule::IDisplayModule> asset)

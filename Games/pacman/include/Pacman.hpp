@@ -17,7 +17,7 @@ namespace gameModule
 {
 class Pacman : public IGameModule
 {
-  public:
+public:
 	Pacman();
 	~Pacman();
 
@@ -25,8 +25,12 @@ class Pacman : public IGameModule
 	bool initGame(std::shared_ptr<displayModule::IDisplayModule> asset);
 	bool setLib(std::shared_ptr<displayModule::IDisplayModule> asset);
 
-  protected:
-  private:
+protected:
+private:
+	void fillMap();
+	void createMap(std::shared_ptr<displayModule::IDisplayModule> asset);
+	void initCharacter(std::shared_ptr<displayModule::IDisplayModule> asset, int x, int y);
+	std::string _map;
 };
 } // namespace gameModule
 

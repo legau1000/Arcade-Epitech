@@ -105,8 +105,8 @@ bool Core::executeEvent(displayModule::e_event ext)
 }
 displayModule::e_event Core::printLauncher()
 {
-    // this->_ActualGraph->drawText("VERIF", 10, 10);
-    // this->_ActualGraph->refreshWindow();
+    this->_ActualGraph->drawText("VERIF", 10, 10);
+    this->_ActualGraph->refreshWindow();
     return (this->_ActualGraph->catchEvent());
 }
 

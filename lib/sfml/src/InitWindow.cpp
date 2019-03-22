@@ -35,7 +35,7 @@ bool InitWindow::createAsset(const std::string &path, const std::string &assetNa
 bool InitWindow::drawAsset(const std::string &assetName, int x, int y)
 {
 	this->_sprite.setTexture(this->_mapOfSprite.find(assetName)->second);
-	this->_sprite.setPosition(x, y);
+	this->_sprite.setPosition(x * 32, y * 32);
 	this->_window.draw(this->_sprite);
 	return true;
 }
