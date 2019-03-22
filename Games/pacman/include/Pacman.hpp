@@ -30,6 +30,7 @@ private:
 	void fillMap();
 	void createMap(std::shared_ptr<displayModule::IDisplayModule> asset);
 	void initCharacter(std::shared_ptr<displayModule::IDisplayModule> asset, int x, int y);
+	void moveCharacter(std::shared_ptr<displayModule::IDisplayModule> asset, int x, int y);
 	std::string _map;
 };
 } // namespace gameModule

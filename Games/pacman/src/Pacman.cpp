@@ -50,8 +50,12 @@ void Pacman::createMap(std::shared_ptr<displayModule::IDisplayModule> asset)
 			asset->drawAsset("wall", x, y);
 			x += 1;
 		}
-		else
+		else if (this->_map[i] == ' ')
+		{
+			asset->createAsset("Games/pacman/assets", "little.png");
+			asset->drawAsset("little", x, y);
 			x += 1;
+		}
 		if (this->_map[i] == '\n')
 		{
 			y += 1;
@@ -59,7 +63,6 @@ void Pacman::createMap(std::shared_ptr<displayModule::IDisplayModule> asset)
 		}
 		i++;
 	}
-	this->initCharacter(asset, 19, 19);
 }
 
 void Pacman::initCharacter(std::shared_ptr<displayModule::IDisplayModule> asset, int x, int y)
@@ -68,9 +71,21 @@ void Pacman::initCharacter(std::shared_ptr<displayModule::IDisplayModule> asset,
 	asset->drawAsset("miss", x, y);
 }
 
+void Pacman::moveCharacter(std::shared_ptr<displayModule::IDisplayModule> asset, int x, int y)
+{
+	if (asset->catchEvent() == displayModule::ARROW_LEFT)
+	{
+		asset->drawAsset("miss", x + 1, y);
+		printf("oui");
+	}
+}
+
 bool Pacman::initGame(std::shared_ptr<displayModule::IDisplayModule> asset)
 {
 	this->createMap(asset);
+	this->initCharacter(asset, 19, 19);
+	this->moveCharacter(asset, 19, 19);
+	asset->start_sound();
 	asset->refreshWindow();
 	return true;
 }

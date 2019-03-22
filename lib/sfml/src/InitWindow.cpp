@@ -27,7 +27,8 @@ bool InitWindow::createAsset(const std::string &path, const std::string &assetNa
 	std::string realPath = path + "/2d/" + assetName;
 	std::string filename = this->cutEndFile(assetName);
 
-	this->_texture.loadFromFile(realPath);
+	if (!this->_texture.loadFromFile(realPath))
+		return false;
 	this->_mapOfSprite.insert(std::pair<std::string, sf::Texture>(filename, this->_texture));
 	return true;
 }
