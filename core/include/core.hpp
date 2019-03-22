@@ -18,6 +18,7 @@
 #include "loadGraphic.hpp"
 #include "loadGame.hpp"
 #include "mapGraphGame.hpp"
+#include "stockPrint.hpp"
 #include "def.hpp"
 
 class Core
@@ -67,7 +68,10 @@ class Core
 
         // Actual Game Lib
         std::shared_ptr<gameModule::IGameModule> _ActualGame;
- 
+
+        // Vector sprite launcher
+        std::vector<stockPrint> _allLauncherSprite;
+
 };
 
 #endif
