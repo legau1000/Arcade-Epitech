@@ -43,6 +43,7 @@ class Core
 
         // Launcher Core
         void initLauncher();
+        void initSprite(std::string path, std::string file, std::string text, int index);
         displayModule::e_event printLauncher();
 
         // Change Actual Graphic Lib
@@ -56,6 +57,8 @@ class Core
         // Map for stock all game and sprite
         std::vector<mapGraphGame> _allGraphic;
         std::vector<mapGraphGame> _allGames;
+
+        // CARE!!!!!!! 2 class !!! une suffit!!!!! template!
 
         // Struct for load Graphic Lib
         LoadGraph<displayModule::IDisplayModule> _graph;

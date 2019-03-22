@@ -31,6 +31,7 @@ bool Core::setNewGraphLib(size_t index)
     if (this->_ActualGraph == nullptr)
         return (true);
     if (this->_ActualGame == nullptr) {
+        this->_allLauncherSprite.clear();
         this->initLauncher();
     } else {
     }
@@ -90,10 +91,18 @@ displayModule::e_event Core::printLauncher()
 {
     std::vector<stockPrint>::iterator index = this->_allLauncherSprite.begin();
     size_t it = 0;
+    int x = 0;
+    int y = 0;
 
     while (index != this->_allLauncherSprite.end()) {
-        this->_ActualGraph->drawText(this->_allLauncherSprite[it++].GetName(), 10, 10);
+        x = this->_allLauncherSprite[it].GetX();
+        y = this->_allLauncherSprite[it].GetY();
+        if (this->_allLauncherSprite[it].GetText())
+            this->_ActualGraph->drawText(this->_allLauncherSprite[it].GetName(), x, y);
+        else
+            this->_ActualGraph->drawAsset(this->_allLauncherSprite[it].GetName(), x, y);
         index++;
+        it++;
     }
     this->_ActualGraph->refreshWindow();
     return (this->_ActualGraph->catchEvent());
@@ -101,8 +110,24 @@ displayModule::e_event Core::printLauncher()
 
 void Core::initLauncher()
 {
-    this->_allLauncherSprite.push_back(stockPrint("./core/assets/", "core", 0, 0));
-    this->_ActualGraph->createAsset("./core/assets/", "core.png");
+    int idx = 0;
+    std::vector<mapGraphGame>::iterator index = this->_allGames.begin();
+
+    this->initSprite("./core/assets/", "core.png", "Arcade", 0);
+    while (index != this->_allGames.end()) {
+        this->initSprite("./core/assets/", this->_allGames[idx].GetName(), this->_allGames[idx].GetName(), 1);
+        this->_allLauncherSprite[idx + 1].SetXY(100, 10);
+        index++;
+    }
+}
+
+void Core::initSprite(std::string path, std::string file, std::string text, int index)
+{
+    this->_allLauncherSprite.push_back(stockPrint(path, this->cutEndFile(file), 0, 0));
+    if (this->_ActualGraph->createAsset(path, file) == false) {
+        this->_ActualGraph->createText(text, file);
+        this->_allLauncherSprite[index].SetText(true);
+    }
 }
 
 void Core::startGame()
