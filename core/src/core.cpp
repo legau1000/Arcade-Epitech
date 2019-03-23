@@ -110,15 +110,21 @@ displayModule::e_event Core::printLauncher()
 
 void Core::initLauncher()
 {
-    int idx = 0;
+    int idxGames = 0;
+    int idx_glob = 1;
     std::vector<mapGraphGame>::iterator index = this->_allGames.begin();
 
     this->initSprite("./core/assets", "core.png", "Arcade", 0);
     while (index != this->_allGames.end()) {
-        this->initSprite("./core/assets", this->_allGames[idx].GetName(), this->_allGames[idx].GetName(), 1);
-        this->_allLauncherSprite[idx + 1].SetXY(100, 10);
+        this->initSprite("./core/assets", this->_allGames[idxGames].GetName(), this->_allGames[idxGames].GetName(), idx_glob);
+        this->_allLauncherSprite[idx_glob].SetXY((idxGames - 1) + 5, 10);
         index++;
+        idxGames++;
+        idx_glob++;
     }
+    this->initSprite("./core/assets", "arrow.png", "->", idx_glob);
+    this->_allLauncherSprite[idx_glob].SetXY(5, 7);
+    idx_glob++;
 }
 
 void Core::initSprite(std::string path, std::string file, std::string text, int index)
