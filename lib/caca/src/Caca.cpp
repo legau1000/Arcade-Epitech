@@ -142,7 +142,7 @@ namespace displayModule
 
     e_event Caca::catchEvent()
     {
-        int isKeyPressed = caca_get_event(dp, CACA_EVENT_KEY_PRESS, &this->ev, -1);
+        int isKeyPressed = caca_get_event(dp, CACA_EVENT_KEY_PRESS, &this->ev, 1000);
         int h;
         
         if (isKeyPressed != 1)

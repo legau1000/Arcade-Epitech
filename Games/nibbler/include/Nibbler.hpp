@@ -13,10 +13,11 @@
 #include <vector>
 #include <unordered_map>
 #include "IDisplayModule.hpp"
+#include "IGameModule.hpp"
 
 namespace gameModule
 {
-    class Nibbler
+    class Nibbler : virtual IGameModule
     {
         public:
             Nibbler();
@@ -27,18 +28,17 @@ namespace gameModule
             bool setLib(std::shared_ptr<displayModule::IDisplayModule> asset);
 
             void drawElements(displayModule::IDisplayModule *);
-            void count_apple(void);
             displayModule::e_event catchNibblerEvent(displayModule::e_event event);
-            void move_nibbler(int newPos);
+            void move_nibbler(int x, int y);
+            void addApple(void);
         protected:
         private:
-            std::string map;
-            std::vector<int> pos_apple;
-            std::vector<int> nibbler;
+            std::vector<std::string> map;
+            std::vector<std::pair<int, int>> nibbler;
             displayModule::e_event ev_nibbler;
+            std::pair<int, int> pos_apple;
             bool isQuit = false;
             int score;
-            int pos;
             int nbApples;
     };
 }
