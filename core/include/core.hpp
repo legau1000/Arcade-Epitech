@@ -53,6 +53,8 @@ class Core
         bool changeGame(displayModule::e_event ext);
         void moveArrow(displayModule::e_event ext);
 
+        bool enterEvent();
+
         void initLib(std::string av);
 
         // Map for stock all game and sprite

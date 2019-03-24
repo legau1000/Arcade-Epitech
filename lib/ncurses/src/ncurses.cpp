@@ -11,6 +11,7 @@ namespace displayModule
 {
     Ncurses::Ncurses()
     {
+        this->_print = false;
         clear();
         initscr();
         keypad(stdscr, TRUE);
@@ -66,6 +67,10 @@ namespace displayModule
         char print[2];
         int stock_x = x;
 
+        if (this->_print == false) {
+            this->_print = true;
+            clear();
+        }
         if (!asset[0]) {
             return (false);
         }
@@ -86,8 +91,8 @@ namespace displayModule
 
     void Ncurses::refreshWindow()
     {
-        // refresh();
-        clear();
+        this->_print = false;
+        refresh();
     }
 
     e_event Ncurses::catchLetterEvents(int h)
@@ -113,7 +118,7 @@ namespace displayModule
     {
         switch (h) {
             case 32 : return (e_event::SPACE);
-            case KEY_ENTER : return (e_event::ENTER);
+            case 10 : return (e_event::ENTER);
             case 27 : return (e_event::ESCAPE);
             default:break;
         }

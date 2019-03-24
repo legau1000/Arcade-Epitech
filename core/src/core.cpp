@@ -61,7 +61,8 @@ void Core::moveArrow(displayModule::e_event ext)
         if (this->_place != 0)
             this->_place--;
     } else {
-        this->_place++;
+        if ((unsigned) this->_place < this->_allGames.size() - 1)
+            this->_place++;
     }
     this->_arrow->SetXY(20, 10 + (this->_place * 5));
 }
@@ -77,10 +78,25 @@ bool Core::changeGame(displayModule::e_event ext)
     return (false);
 }
 
+bool Core::enterEvent()
+{
+    if (this->_ActualGame == nullptr) {
+        this->_allGames[this->_place].SetUse(true);
+        this->_ActualGame = nullptr;
+        this->_ActualGame = this->_games.loadNewLib(this->_allGames[this->_place].GetPath());
+        if (this->_ActualGame == nullptr)
+            return (true);
+        this->_ActualGame->initGame(this->_ActualGraph);
+    } else {
+
+    }
+    return (false);
+}
+
 bool Core::executeEvent(displayModule::e_event ext)
 {
     if (ext == displayModule::ENTER) {
-        this->_ActualGame = nullptr;
+        return (this->enterEvent());
     }
     if (ext == displayModule::ARROW_LEFT ||
         ext == displayModule::ARROW_RIGHT) {
@@ -108,7 +124,6 @@ displayModule::e_event Core::printLauncher()
     int x = 0;
     int y = 0;
 
-    this->_ActualGraph->refreshWindow();
     while (index != this->_allLauncherSprite.end()) {
         x = this->_allLauncherSprite[it].GetX();
         y = this->_allLauncherSprite[it].GetY();
@@ -122,6 +137,7 @@ displayModule::e_event Core::printLauncher()
     x = this->_arrow->GetX();
     y = this->_arrow->GetY();
     this->_ActualGraph->drawAsset(this->_arrow->GetName(), x, y);
+    this->_ActualGraph->refreshWindow();
     return (this->_ActualGraph->catchEvent());
 }
 

@@ -40,6 +40,7 @@ namespace displayModule
 
         protected:
         private:
+            bool _print;
             std::unordered_map<std::string, std::string> sprites;
             e_event catchLetterEvents(int h);
             e_event catchSpecialEvents(int h);
