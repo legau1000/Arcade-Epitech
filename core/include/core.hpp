@@ -8,7 +8,6 @@
 #ifndef CORE_HPP__
 #define CORE_HPP__
 
-#include <string>
 #include <iostream>
 #include <map>
 #include <memory>
@@ -44,6 +43,7 @@ class Core
         // Launcher Core
         void initLauncher();
         void initSprite(std::string path, std::string file, std::string text, int index);
+        void initArrow(std::string path, std::string file, std::string text);
         displayModule::e_event printLauncher();
 
         // Change Actual Graphic Lib
@@ -51,6 +51,7 @@ class Core
         bool setNewGraphLib(size_t index);
 
         bool changeGame(displayModule::e_event ext);
+        void moveArrow(displayModule::e_event ext);
 
         void initLib(std::string av);
 
@@ -74,6 +75,10 @@ class Core
 
         // Vector sprite launcher
         std::vector<stockPrint> _allLauncherSprite;
+
+        // Arrow Launcher
+        std::unique_ptr<stockPrint> _arrow;
+        int _place;
 
 };
 

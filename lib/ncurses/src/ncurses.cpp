@@ -86,7 +86,8 @@ namespace displayModule
 
     void Ncurses::refreshWindow()
     {
-        refresh();
+        // refresh();
+        clear();
     }
 
     e_event Ncurses::catchLetterEvents(int h)

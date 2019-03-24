@@ -9,7 +9,7 @@
 
 Core::Core()
 {
-    //this->_ActualGame = nullptr;
+    this->_place = 0;
 }
 
 Core::~Core()
@@ -55,10 +55,24 @@ bool Core::changeGraphic(displayModule::e_event ext)
     return (this->setNewGraphLib(index));
 }
 
+void Core::moveArrow(displayModule::e_event ext)
+{
+    if (ext == displayModule::ARROW_UP) {
+        if (this->_place != 0)
+            this->_place--;
+    } else {
+        this->_place++;
+    }
+    this->_arrow->SetXY(20, 10 + (this->_place * 5));
+}
+
 bool Core::changeGame(displayModule::e_event ext)
 {
     if (this->_ActualGame == nullptr) {
+        this->moveArrow(ext);
+        return (false);
     } else {
+        // Load New Game
     }
     return (false);
 }
@@ -94,6 +108,7 @@ displayModule::e_event Core::printLauncher()
     int x = 0;
     int y = 0;
 
+    this->_ActualGraph->refreshWindow();
     while (index != this->_allLauncherSprite.end()) {
         x = this->_allLauncherSprite[it].GetX();
         y = this->_allLauncherSprite[it].GetY();
@@ -104,27 +119,39 @@ displayModule::e_event Core::printLauncher()
         index++;
         it++;
     }
-    this->_ActualGraph->refreshWindow();
+    x = this->_arrow->GetX();
+    y = this->_arrow->GetY();
+    this->_ActualGraph->drawAsset(this->_arrow->GetName(), x, y);
     return (this->_ActualGraph->catchEvent());
 }
 
 void Core::initLauncher()
 {
     int idxGames = 0;
+    int set_pos = 0;
     int idx_glob = 1;
     std::vector<mapGraphGame>::iterator index = this->_allGames.begin();
 
     this->initSprite("./core/assets", "core.png", "Arcade", 0);
     while (index != this->_allGames.end()) {
         this->initSprite("./core/assets", this->_allGames[idxGames].GetName(), this->_allGames[idxGames].GetName(), idx_glob);
-        this->_allLauncherSprite[idx_glob].SetXY((idxGames - 1) + 5, 10);
+        this->_allLauncherSprite[idx_glob].SetXY(23, 10 + set_pos);
+        set_pos += 5;
         index++;
         idxGames++;
         idx_glob++;
     }
-    this->initSprite("./core/assets", "arrow.png", "->", idx_glob);
-    this->_allLauncherSprite[idx_glob].SetXY(5, 7);
-    idx_glob++;
+    this->initArrow("./core/assets", "arrow.png", "->");
+    this->_arrow->SetXY(20, 10 + (this->_place * 5));
+}
+
+void Core::initArrow(std::string path, std::string file, std::string text)
+{
+    this->_arrow = std::make_unique<stockPrint>(stockPrint(path, this->cutEndFile(file), 0, 0));
+    if (this->_ActualGraph->createAsset(path, file) == false) {
+        this->_ActualGraph->createText(text, file);
+        this->_arrow->SetText(true);
+    }
 }
 
 void Core::initSprite(std::string path, std::string file, std::string text, int index)
