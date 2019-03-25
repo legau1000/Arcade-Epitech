@@ -149,7 +149,7 @@ void Core::initLauncher()
     int idx_glob = 1;
     std::vector<mapGraphGame>::iterator index = this->_allGames.begin();
 
-    this->initSprite("./core/assets", "core.png", "Arcade", 0);
+    this->initSprite("./core/assets", "core", "Arcade", 0);
     while (index != this->_allGames.end()) {
         this->initSprite("./core/assets", this->_allGames[idxGames].GetName(), this->_allGames[idxGames].GetName(), idx_glob);
         this->_allLauncherSprite[idx_glob].SetXY(23, 10 + set_pos);
@@ -158,7 +158,7 @@ void Core::initLauncher()
         idxGames++;
         idx_glob++;
     }
-    this->initArrow("./core/assets", "arrow.png", "->");
+    this->initArrow("./core/assets", "arrow", "->");
     this->_arrow->SetXY(20, 10 + (this->_place * 5));
 }
 

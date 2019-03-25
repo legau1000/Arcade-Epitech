@@ -35,16 +35,15 @@ namespace displayModule
 
     bool Ncurses::createAsset(const std::string &path, const std::string &assetKey)
     {
-        std::fstream file(path + "/1d/" + assetKey, std::fstream::in);
+        std::fstream file(path + "/1d/" + assetKey + ".txt", std::fstream::in);
         std::string content;
-        std::string filename = this->cutEndFile(assetKey);
 
         if (file.is_open())
             getline(file, content, '\0');
         else
             return (false);
         file.close();
-        sprites.insert(make_pair(filename, content));
+        sprites.insert(make_pair(assetKey, content));
         return (true);
     }
 
