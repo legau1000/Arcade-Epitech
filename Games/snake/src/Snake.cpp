@@ -30,9 +30,9 @@ namespace gameModule
 	bool Snake::initGame(const std::shared_ptr<displayModule::IDisplayModule> &asset)
 	{
 		this->_graph = asset;
-		asset->startSound("");
-		asset->refreshWindow();
-		asset->clearScreen();
+		this->_graph->startSound("");
+		// this->_graph->refreshWindow();
+		this->_graph->clearScreen();
 		return (true);
 	}
 
