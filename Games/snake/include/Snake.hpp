@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <memory>
+#include <vector>
 #include "IDisplayModule.hpp"
 #include "IGameModule.hpp"
 
@@ -29,6 +30,18 @@ namespace gameModule
 		private:
 			std::shared_ptr<displayModule::IDisplayModule> _graph;
 
+			void initSound();
+			void startSound(const std::string &key);
+
+			void initAssets();
+
+			bool exitEvent(displayModule::e_event evt);
+
+			void printGame();
+			void printMap();
+
+			bool stockMap(const std::string &path);
+			std::vector<std::string> _map;
 	};
 } // namespace gameModule
 

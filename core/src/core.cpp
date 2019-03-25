@@ -88,7 +88,6 @@ bool Core::enterEvent()
             return (true);
         this->_ActualGame->initGame(this->_ActualGraph);
     } else {
-
     }
     return (false);
 }
@@ -105,14 +104,6 @@ bool Core::executeEvent(displayModule::e_event ext)
     if (ext == displayModule::ARROW_UP ||
         ext == displayModule::ARROW_DOWN) {
         return (this->changeGame(ext));
-    }
-    if (ext == displayModule::KEY_A) {
-        this->_allGames[0].SetUse(true);
-        this->_ActualGame = nullptr;
-        this->_ActualGame = this->_games.loadNewLib(this->_allGames[0].GetPath());
-        if (this->_ActualGame == nullptr)
-            return (true);
-        this->_ActualGame->initGame(this->_ActualGraph);
     }
     return (false);
 }
