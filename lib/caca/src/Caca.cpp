@@ -25,6 +25,7 @@ namespace displayModule
     Caca::~Caca()
     {
         caca_free_display(this->dp);
+        caca_free_canvas(this->cv);
     }
     
     std::string Caca::cutEndFile(const std::string &name)
@@ -91,6 +92,11 @@ namespace displayModule
     void Caca::refreshWindow()
     {
         caca_refresh_display(this->dp);
+    }
+
+    void Caca::clearScreen()
+    {
+        caca_clear_canvas(this->cv);
     }
 
     e_event Caca::catchLetterEvents(int h)

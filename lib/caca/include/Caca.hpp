@@ -97,6 +97,13 @@ namespace displayModule
             void refreshWindow();
 
             /*!
+             *  \brief Nettoyage de l'affichage
+             *
+             *  Methode qui permet de nettoyer l'affichage
+             */
+            void clearScreen();
+
+            /*!
              *  \brief Création de texte
              *
              *  Methode qui permet de créer du texte et de le stocker dans la
