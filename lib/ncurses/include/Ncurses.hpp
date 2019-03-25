@@ -26,7 +26,10 @@ namespace displayModule
             bool createAsset(const std::string &path, const std::string &assetName);
             bool drawAsset(const std::string &assetName, int x, int y);
             bool drawText(const std::string &textName, int x, int y);
+
+            // Window Gestion
             void refreshWindow();
+            void clearScreen();
 
             // Create Text
             bool createText(const std::string &text, const std::string &assetName);
@@ -40,7 +43,6 @@ namespace displayModule
 
         protected:
         private:
-            bool _print;
             std::unordered_map<std::string, std::string> sprites;
             e_event catchLetterEvents(int h);
             e_event catchSpecialEvents(int h);

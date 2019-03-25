@@ -11,7 +11,6 @@ namespace displayModule
 {
     Ncurses::Ncurses()
     {
-        this->_print = false;
         clear();
         initscr();
         keypad(stdscr, TRUE);
@@ -67,10 +66,6 @@ namespace displayModule
         char print[2];
         int stock_x = x;
 
-        if (this->_print == false) {
-            this->_print = true;
-            clear();
-        }
         if (!asset[0]) {
             return (false);
         }
@@ -91,8 +86,12 @@ namespace displayModule
 
     void Ncurses::refreshWindow()
     {
-        this->_print = false;
         refresh();
+    }
+    
+    void Ncurses::clearScreen()
+    {
+        clear();
     }
 
     e_event Ncurses::catchLetterEvents(int h)

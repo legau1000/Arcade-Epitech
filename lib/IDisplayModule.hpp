@@ -63,8 +63,10 @@ class IDisplayModule
     virtual bool createAsset(const std::string &path, const std::string &assetName) = 0;
     virtual bool drawAsset(const std::string &assetName, int x, int y) = 0;
     virtual bool drawText(const std::string &textName, int x, int y) = 0;
+    
+    // 
     virtual void refreshWindow() = 0;
-
+    virtual void clearScreen() = 0;
     // Text
     virtual bool createText(const std::string &text, const std::string &assetName) = 0;
 

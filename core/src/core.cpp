@@ -124,6 +124,7 @@ displayModule::e_event Core::printLauncher()
     int x = 0;
     int y = 0;
 
+    this->_ActualGraph->clearScreen();
     while (index != this->_allLauncherSprite.end()) {
         x = this->_allLauncherSprite[it].GetX();
         y = this->_allLauncherSprite[it].GetY();
