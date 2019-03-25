@@ -48,6 +48,7 @@ void Pacman::createMap(std::shared_ptr<displayModule::IDisplayModule> asset)
 		{
 			asset->createAsset("Games/pacman/assets", "wall.png");
 			asset->drawAsset("wall", x, y);
+
 			x += 1;
 		}
 		else if (this->_map[i] == ' ')
@@ -87,6 +88,7 @@ bool Pacman::initGame(std::shared_ptr<displayModule::IDisplayModule> asset)
 	this->moveCharacter(asset, 19, 19);
 	asset->start_sound();
 	asset->refreshWindow();
+	asset->clearScreen();
 	return true;
 }
 
