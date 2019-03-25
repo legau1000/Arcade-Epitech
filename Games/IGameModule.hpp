@@ -19,8 +19,8 @@ class IGameModule
   public:
     virtual ~IGameModule() = default;
     virtual displayModule::e_event game() = 0;
-    virtual bool initGame(std::shared_ptr<displayModule::IDisplayModule> asset) = 0;
-    virtual bool setLib(std::shared_ptr<displayModule::IDisplayModule> asset) = 0;
+    virtual bool initGame(const std::shared_ptr<displayModule::IDisplayModule> &asset) = 0;
+    virtual bool setLib(const std::shared_ptr<displayModule::IDisplayModule> &asset) = 0;
 };
 } // namespace gameModule
 

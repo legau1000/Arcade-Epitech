@@ -37,10 +37,12 @@ public:
   e_event catchEvent() final;
 
   // Sounds
-  void start_sound() final;
-  void stop_sound() final;
+  // Je les ai implémenté dans le .cpp mais à toi de les faire
+  void createSound(const std::string &path, const std::string &soundKey) final;
+  void startSound(const std::string &soundKey) final;
+  void stopSound(const std::string &soundKey) final;
 
-  sf::Event _event;
+  sf::Event _event; // Prune je vais te tuer si tu laisse sa ici <3
 
 protected:
 private:

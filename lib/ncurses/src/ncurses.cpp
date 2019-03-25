@@ -146,10 +146,13 @@ namespace displayModule
             return (this->catchSpecialEvents(h));
     }
 
-    void Ncurses::start_sound()
+    void Ncurses::createSound(const std::string &path, const std::string &soundKey)
     {}
 
-    void Ncurses::stop_sound()
+    void Ncurses::startSound(const std::string &soundKey)
+    {}
+
+    void Ncurses::stopSound(const std::string &soundKey)
     {}
 
     extern "C"

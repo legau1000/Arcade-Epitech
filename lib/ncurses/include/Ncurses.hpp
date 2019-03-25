@@ -37,9 +37,28 @@ namespace displayModule
             // Events
             e_event catchEvent();
 
-            // Sounds
-            void start_sound();
-            void stop_sound();
+            // Sounds Useless On Ncurses
+            /*!
+             *  \brief Création d'une bande son
+             *
+             *  Crée un Son SANS le lancé
+             */
+            void createSound(const std::string &path, const std::string &soundKey) final;
+
+            /*!
+             *  \brief Lecture d'un son
+             *
+             *  Lance la lecture d'un son
+             */
+            void startSound(const std::string &soundKey) final;
+
+
+            /*!
+             *  \brief Arrêt d'un son
+             *
+             *  Arrête le son joué
+             */
+            void stopSound(const std::string &soundKey) final;
 
         protected:
         private:

@@ -5,15 +5,13 @@
 ## makefile
 ##
 
-CXXFLAGS	=	-Iinclude
-
-AR	=	ar rc
+CXXFLAGS	=	-Iinclude -I../ -I./../../lib/ -shared -fPIC
 
 RM	=	rm
 
 SRC_BASE	=	src/
 
-SRC_FILES	=	
+SRC_FILES	=	Snake.cpp
 
 SRC		=	$(addprefix $(SRC_BASE),$(SRC_FILES))
 
@@ -24,11 +22,11 @@ NAME	=	 ../lib_arcade_snake.so
 .SILENT:
 
 $(NAME):	$(OBJ)
-	$(AR) -shared -o $(NAME) $(OBJ)
+	g++ -shared -o $(NAME) $(OBJ) $(CXXFLAGS)
 
 all:	$(NAME)
 
-clean:	$(OBJ)
+clean:
 	$(RM) -f $(OBJ)
 
 fclean: clean

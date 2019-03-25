@@ -6,9 +6,9 @@
 ##
 
 all:
-	make -C game_1
-	make -C game_2
 	make -C snake
+	make -C pacman
+	# make -C game_2
 
 pacman:
 	make -C pacman
@@ -20,15 +20,15 @@ snake:
 	make -C snake
 
 clean:
-	make clean -C game_1
-	make clean -C game_2
 	make clean -C snake
+	make clean -C pacman
+	# make clean -C game_2
 		@echo "Clean faite!"
 
 fclean: clean
-	make fclean -C game_1
-	make fclean -C game_2
-	make fclean -C snake
+	make clean fclean -C snake
+	make clean fclean -C pacman
+	# make clean fclean -C game_2
 		@echo "FClean faite!"
 
 re:	fclean all

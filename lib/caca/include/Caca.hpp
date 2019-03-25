@@ -133,14 +133,17 @@ namespace displayModule
              *
              *  Lance la lecture d'un son
              */
-            void start_sound();
+            void startSound(const std::string &soundKey) final;
+
+            // Je les ai implémenté dans le .cpp mais à toi de les faire
+            void createSound(const std::string &path, const std::string &soundKey) final;
 
             /*!
              *  \brief Arrêt d'un son
              *
              *  Arrête le son joué
              */
-            void stop_sound();
+            void stopSound(const std::string &soundKey) final;
 
         protected:
         private:

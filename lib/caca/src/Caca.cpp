@@ -162,10 +162,13 @@ namespace displayModule
             return (this->catchSpecialEvents(h));
     }
 
-    void Caca::start_sound()
+    void Caca::createSound(const std::string &path, const std::string &soundKey)
     {}
 
-    void Caca::stop_sound()
+    void Caca::startSound(const std::string &soundKey)
+    {}
+
+    void Caca::stopSound(const std::string &soundKey)
     {}
 
     extern "C"

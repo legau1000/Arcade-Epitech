@@ -53,30 +53,31 @@ enum e_event
     ESCAPE
 };
 
-class IDisplayModule
-{
-  public:
-    // Destroyer
-    virtual ~IDisplayModule() = default;
+    class IDisplayModule
+    {
+        public:
+            // Destroyer
+            virtual ~IDisplayModule() = default;
 
-    // Sprites
-    virtual bool createAsset(const std::string &path, const std::string &assetName) = 0;
-    virtual bool drawAsset(const std::string &assetName, int x, int y) = 0;
-    virtual bool drawText(const std::string &textName, int x, int y) = 0;
-    
-    // 
-    virtual void refreshWindow() = 0;
-    virtual void clearScreen() = 0;
-    // Text
-    virtual bool createText(const std::string &text, const std::string &assetName) = 0;
+            // Sprites
+            virtual bool createAsset(const std::string &path, const std::string &assetName) = 0;
+            virtual bool drawAsset(const std::string &assetName, int x, int y) = 0;
+            virtual bool drawText(const std::string &textName, int x, int y) = 0;
 
-    // Events
-    virtual e_event catchEvent() = 0;
+            // 
+            virtual void refreshWindow() = 0;
+            virtual void clearScreen() = 0;
+            // Text
+            virtual bool createText(const std::string &text, const std::string &assetName) = 0;
 
-    // Sounds
-    virtual void start_sound() = 0;
-    virtual void stop_sound() = 0;
-};
+            // Events
+            virtual e_event catchEvent() = 0;
+
+            // Sounds
+            virtual void createSound(const std::string &path, const std::string &soundKey) = 0;
+            virtual void startSound(const std::string &soundKey) = 0;
+            virtual void stopSound(const std::string &soundKey) = 0;
+    };
 } // namespace displayModule
 
 #endif /* !IDISPLAYMODULE_HPP_ */
