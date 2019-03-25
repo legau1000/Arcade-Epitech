@@ -24,12 +24,11 @@ std::string InitWindow::cutEndFile(const std::string &name)
 
 bool InitWindow::createAsset(const std::string &path, const std::string &assetName)
 {
-	std::string realPath = path + "/2d/" + assetName;
-	std::string filename = this->cutEndFile(assetName);
+	std::string realPath = path + "/2d/" + assetName + ".png";
 
 	if (!this->_texture.loadFromFile(realPath))
 		return false;
-	this->_mapOfSprite.insert(std::pair<std::string, sf::Texture>(filename, this->_texture));
+	this->_mapOfSprite.insert(std::pair<std::string, sf::Texture>(assetName, this->_texture));
 	return true;
 }
 
@@ -50,16 +49,6 @@ void InitWindow::refreshWindow()
 void InitWindow::clearScreen()
 {
 	this->_window.clear();
-}
-
-sf::RenderWindow &InitWindow::getWindow()
-{
-	return this->_window;
-}
-
-sf::Event InitWindow::getEvent()
-{
-	return this->_event;
 }
 
 // Text

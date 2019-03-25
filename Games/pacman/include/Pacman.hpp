@@ -10,6 +10,8 @@
 
 #include <iostream>
 #include <memory>
+#include <vector>
+#include <unordered_map>
 #include "IDisplayModule.hpp"
 #include "IGameModule.hpp"
 
@@ -27,12 +29,16 @@ public:
 
 protected:
 private:
-	void fillMap(const std::shared_ptr<displayModule::IDisplayModule> &asset);
-	void createMap(const std::shared_ptr<displayModule::IDisplayModule> &asset);
-	void drawMap(const std::shared_ptr<displayModule::IDisplayModule> &asset);
-	void createCharacter(const std::shared_ptr<displayModule::IDisplayModule> &asset, int x, int y);
-	void drawCharacter(const std::shared_ptr<displayModule::IDisplayModule> &asset, int x, int y);
-	void moveCharacter(const std::shared_ptr<displayModule::IDisplayModule> &asset, int x, int y);
+	void fillMap();
+	void createMap();
+	void drawMap();
+	void createCharacter();
+	void drawCharacter(int x, int y, displayModule::e_event ext);
+	displayModule::e_event catchPacmanEvent(displayModule::e_event ext);
+	void move_nibbler(int x, int y);
+
+	int x = 9;
+	int y = 9;
 
 	std::shared_ptr<displayModule::IDisplayModule> _lib;
 	std::string _map;
