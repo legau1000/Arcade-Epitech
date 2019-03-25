@@ -44,6 +44,10 @@ bool InitWindow::drawAsset(const std::string &assetName, int x, int y)
 void InitWindow::refreshWindow()
 {
 	this->_window.display();
+}
+
+void InitWindow::clearWindow()
+{
 	this->_window.clear();
 }
 

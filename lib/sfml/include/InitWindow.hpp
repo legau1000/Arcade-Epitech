@@ -25,6 +25,7 @@ public:
   bool createAsset(const std::string &path, const std::string &assetName) final;
   bool drawAsset(const std::string &assetName, int x, int y) final;
   void refreshWindow() final;
+  void clearScreen() final;
   sf::RenderWindow &getWindow();
   sf::Event getEvent();
 
