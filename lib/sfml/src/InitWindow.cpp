@@ -46,7 +46,7 @@ void InitWindow::refreshWindow()
 	this->_window.display();
 }
 
-void InitWindow::clearWindow()
+void InitWindow::clearScreen()
 {
 	this->_window.clear();
 }
