@@ -35,9 +35,10 @@ bool InitWindow::createAsset(const std::string &path, const std::string &assetNa
 
 bool InitWindow::drawAsset(const std::string &assetName, int x, int y)
 {
-	this->_sprite.setTexture(this->_mapOfSprite.find(assetName)->second);
-	this->_sprite.setPosition(x * 32, y * 32);
-	this->_window.draw(this->_sprite);
+	sf::Sprite sprite;
+	sprite.setTexture(this->_mapOfSprite.find(assetName)->second);
+	sprite.setPosition(x * 32, y * 32);
+	this->_window.draw(sprite);
 	return true;
 }
 
@@ -76,7 +77,7 @@ bool InitWindow::drawText(const std::string &textName, int x, int y)
 	this->_text.setCharacterSize(100);
 	this->_text.setFillColor(sf::Color::Yellow);
 	this->_text.setStyle(sf::Text::Bold);
-	this->_text.setPosition(x, y);
+	this->_text.setPosition(x * 32, y * 32);
 	this->_window.draw(this->_text);
 	return true;
 }
@@ -161,14 +162,21 @@ e_event InitWindow::catchEvent()
 	return (NOTHING);
 }
 
-//Sounds
-void InitWindow::start_sound()
+void InitWindow::createSound(const std::string &path, const std::string &soundKey)
 {
-	this->_music.openFromFile("./Games/pacman/assets/2d/pacman.ogg");
+	std::string realPath = path + "/2d/" + soundKey;
+	std::string filename = this->cutEndFile(soundKey);
+	_mapOfMusic.insert(std::pair<std::string, std::string>(filename, realPath));
+}
+
+void InitWindow::startSound(const std::string &soundKey)
+{
 	this->_music.setVolume(50);
+	this->_music.openFromFile(this->_mapOfMusic.find(soundKey)->second);
 	this->_music.play();
 }
-void InitWindow::stop_sound()
+
+void InitWindow::stopSound(UNUSED const std::string &soundKey)
 {
 	this->_music.stop();
 }

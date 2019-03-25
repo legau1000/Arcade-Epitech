@@ -22,15 +22,19 @@ public:
 	~Pacman();
 
 	displayModule::e_event game();
-	bool initGame(std::shared_ptr<displayModule::IDisplayModule> asset);
-	bool setLib(std::shared_ptr<displayModule::IDisplayModule> asset);
+	bool initGame(const std::shared_ptr<displayModule::IDisplayModule> &asset);
+	bool setLib(const std::shared_ptr<displayModule::IDisplayModule> &asset);
 
 protected:
 private:
-	void fillMap();
-	void createMap(std::shared_ptr<displayModule::IDisplayModule> asset);
-	void initCharacter(std::shared_ptr<displayModule::IDisplayModule> asset, int x, int y);
-	void moveCharacter(std::shared_ptr<displayModule::IDisplayModule> asset, int x, int y);
+	void fillMap(const std::shared_ptr<displayModule::IDisplayModule> &asset);
+	void createMap(const std::shared_ptr<displayModule::IDisplayModule> &asset);
+	void drawMap(const std::shared_ptr<displayModule::IDisplayModule> &asset);
+	void createCharacter(const std::shared_ptr<displayModule::IDisplayModule> &asset, int x, int y);
+	void drawCharacter(const std::shared_ptr<displayModule::IDisplayModule> &asset, int x, int y);
+	void moveCharacter(const std::shared_ptr<displayModule::IDisplayModule> &asset, int x, int y);
+
+	std::shared_ptr<displayModule::IDisplayModule> _lib;
 	std::string _map;
 };
 } // namespace gameModule
