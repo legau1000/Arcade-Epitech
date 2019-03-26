@@ -40,10 +40,14 @@ class Pacman : public IGameModule
 	void movePacmanQ(int x, int y);
 	void movePacmanD(int x, int y);
 	void drawElements();
+	void ghost();
+	void ghostMoove(displayModule::e_event ext);
 
 	int yMap;
 	int x = 9;
 	int y = 9;
+	int xGhost = 1;
+	int yGhost = 1;
 	int score = 0;
 
 	std::shared_ptr<displayModule::IDisplayModule> _lib;
