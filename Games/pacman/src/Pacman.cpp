@@ -28,6 +28,8 @@ displayModule::e_event Pacman::game()
 		this->drawMap();
 		this->_lib->drawAsset("miss", this->x, this->y);
 		this->catchPacmanEvent(ext);
+		this->_lib->createText("Score : " + std::to_string(this->score), "score");
+		this->_lib->drawText("score", 5, 25);
 		this->_lib->refreshWindow();
 		ext = this->_lib->catchEvent();
 		if ((ext == displayModule::e_event::ERROR) ||
@@ -87,6 +89,10 @@ void Pacman::drawMap()
 	}
 }
 
+void Pacman::drawScore()
+{
+}
+
 void Pacman::createCharacter()
 {
 	this->_lib->createAsset("Games/pacman/assets", "miss");
@@ -109,24 +115,28 @@ bool Pacman::setLib(const std::shared_ptr<displayModule::IDisplayModule> &asset)
 
 void Pacman::movePacmanZ(int x, int y)
 {
+	this->score += 1;
 	this->_map[((this->yMap + 1) * (this->y + 1)) - (this->yMap - this->x + 1)] = 'i';
 	this->_lib->drawAsset("miss", x, y);
 }
 
 void Pacman::movePacmanQ(int x, int y)
 {
+	this->score += 1;
 	this->_map[((this->yMap + 1) * (this->y)) + this->x] = 'i';
 	this->_lib->drawAsset("miss", x, y);
 }
 
 void Pacman::movePacmanD(int x, int y)
 {
+	this->score += 1;
 	this->_map[((this->yMap + 1) * (this->y)) + this->x] = 'i';
 	this->_lib->drawAsset("miss", x, y);
 }
 
 void Pacman::movePacmanS(int x, int y)
 {
+	this->score += 1;
 	this->_map[((this->yMap + 1) * (this->y + 1)) - (this->yMap - this->x + 1)] = 'i';
 	this->_lib->drawAsset("miss", x, y);
 }

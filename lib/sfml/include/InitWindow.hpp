@@ -52,8 +52,6 @@ private:
   std::unordered_map<std::string, std::string> _mapOfMusic;
   sf::Music _music;
   sf::Texture _texture;
-  sf::Text _text;
-  sf::Font _font;
   sf::Event _event;
 };
 

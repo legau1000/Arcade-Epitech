@@ -60,14 +60,17 @@ bool InitWindow::createText(const std::string &text, const std::string &assetNam
 
 bool InitWindow::drawText(const std::string &textName, int x, int y)
 {
-	this->_font.loadFromFile("./Games/pacman/assets/2d/pacman.ttf");
-	this->_text.setFont(this->_font);
-	this->_text.setString(this->_mapOfText.find(textName)->second);
-	this->_text.setCharacterSize(10);
-	this->_text.setFillColor(sf::Color::Yellow);
-	this->_text.setStyle(sf::Text::Bold);
-	this->_text.setPosition(x * 32, y * 32);
-	this->_window.draw(this->_text);
+	sf::Text _text;
+	sf::Font _font;
+
+	_font.loadFromFile("./Games/pacman/assets/2d/arial.ttf");
+	_text.setFont(_font);
+	_text.setString(_mapOfText.find(textName)->second);
+	_text.setCharacterSize(30);
+	_text.setFillColor(sf::Color::White);
+	_text.setStyle(sf::Text::Bold);
+	_text.setPosition(x * 32, y * 32);
+	_window.draw(_text);
 	return true;
 }
 
