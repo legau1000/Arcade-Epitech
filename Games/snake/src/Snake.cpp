@@ -8,7 +8,7 @@
 #include <iostream>
 #include <memory>
 #include <fstream>
-
+#include <time.h>
 #include "Snake.hpp"
 
 namespace gameModule
@@ -77,10 +77,16 @@ namespace gameModule
 	displayModule::e_event Snake::game()
 	{
 		displayModule::e_event evt = displayModule::e_event::NOTHING;
+		time_t t1 = time(0);
+		time_t t2 = time(0);
 
 		this->stockMap("./Games/snake/map/mapEasy.txt");
 		while (!this->exitEvent(evt)) {
-			this->printMap();
+			if (t2 - t1 >= 0.5) {
+				this->printMap();
+				t1 = time(0);
+			}
+			t2 = time(0);
 			evt = this->_graph->catchEvent();
 		}
 		return (evt);
@@ -109,7 +115,7 @@ namespace gameModule
 	{
 		if (!this->setLib(asset))
 			return (false);
-		// this->_graph->clearScreen();
+		this->_graph->clearScreen();
 		this->initAssets();
 		this->_graph->startSound("Snake");
 		return (true);
