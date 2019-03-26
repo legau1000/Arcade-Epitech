@@ -63,7 +63,7 @@ bool InitWindow::drawText(const std::string &textName, int x, int y)
 	this->_font.loadFromFile("./Games/pacman/assets/2d/pacman.ttf");
 	this->_text.setFont(this->_font);
 	this->_text.setString(this->_mapOfText.find(textName)->second);
-	this->_text.setCharacterSize(100);
+	this->_text.setCharacterSize(10);
 	this->_text.setFillColor(sf::Color::Yellow);
 	this->_text.setStyle(sf::Text::Bold);
 	this->_text.setPosition(x * 32, y * 32);

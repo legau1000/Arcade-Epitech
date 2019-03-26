@@ -19,7 +19,7 @@ namespace gameModule
 {
 class Pacman : public IGameModule
 {
-public:
+  public:
 	Pacman();
 	~Pacman();
 
@@ -27,16 +27,21 @@ public:
 	bool initGame(const std::shared_ptr<displayModule::IDisplayModule> &asset);
 	bool setLib(const std::shared_ptr<displayModule::IDisplayModule> &asset);
 
-protected:
-private:
+  protected:
+  private:
 	void fillMap();
 	void createMap();
 	void drawMap();
 	void createCharacter();
-	void drawCharacter(int x, int y, displayModule::e_event ext);
 	displayModule::e_event catchPacmanEvent(displayModule::e_event ext);
 	void move_nibbler(int x, int y);
+	void movePacmanS(int x, int y);
+	void movePacmanZ(int x, int y);
+	void movePacmanQ(int x, int y);
+	void movePacmanD(int x, int y);
 
+	void drawElements();
+	int yMap;
 	int x = 9;
 	int y = 9;
 
