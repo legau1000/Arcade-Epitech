@@ -20,11 +20,15 @@ lib:
 	make -C lib
 
 clean:
-	$(RM) -f $(OBJ)
+	make clean -C core
+	make clean -C Games
+	make clean -C lib
 		@echo "Clean faite!"
 
 fclean: clean
-	$(RM) -f $(NAME)
+	make fclean -C core
+	make fclean -C Games
+	make fclean -C lib
 		@echo "FClean faite!"
 
 re:	fclean all

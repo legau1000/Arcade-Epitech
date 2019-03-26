@@ -35,7 +35,7 @@ clean:
 		@echo clean core
 
 fclean: clean
-	rm -f units_tests
+	rm -f $(NAME)
 		@echo fclean core
 
 re:	fclean all
