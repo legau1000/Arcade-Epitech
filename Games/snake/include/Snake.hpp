@@ -13,9 +13,19 @@
 #include <vector>
 #include "IDisplayModule.hpp"
 #include "IGameModule.hpp"
+#include "stockPrint.hpp"
 
 namespace gameModule
 {
+	enum e_move
+	{
+		ERROR = -1,
+		RIGHT,
+		LEFT,
+		TOP,
+		BOT
+	};
+
 	class Snake : public IGameModule
 	{
 		public:
@@ -42,6 +52,17 @@ namespace gameModule
 
 			bool stockMap(const std::string &path);
 			std::vector<std::string> _map;
+
+			void initSprite(std::string file, std::string text, int index);
+
+			// Vector sprite launcher
+			std::vector<stockPrint> _allSnakeSprite;
+
+			void moveSnake(displayModule::e_event ev);
+			e_move _move;
+			std::vector<stockPrint> _snake;
+			void printPlayer();
+
 	};
 } // namespace gameModule
 
