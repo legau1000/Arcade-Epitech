@@ -11,6 +11,7 @@
 #include "def.hpp"
 #include "IDisplayModule.hpp"
 #include <iostream>
+#include <utility>
 #include <unordered_map>
 #include "SFML/Graphics.hpp"
 #include "SFML/Audio.hpp"
@@ -42,19 +43,18 @@ public:
   void startSound(const std::string &soundKey) final;
   void stopSound(const std::string &soundKey) final;
 
-  sf::Event _event; // Prune je vais te tuer si tu laisse sa ici <3
-
 protected:
 private:
   std::string cutEndFile(const std::string &name);
   sf::RenderWindow _window;
   std::unordered_map<std::string, sf::Texture> _mapOfSprite;
   std::unordered_map<std::string, std::string> _mapOfText;
+  std::unordered_map<std::string, std::string> _mapOfMusic;
   sf::Music _music;
   sf::Texture _texture;
-  sf::Sprite _sprite;
   sf::Text _text;
   sf::Font _font;
+  sf::Event _event;
 };
 
 } // namespace displayModule

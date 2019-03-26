@@ -10,6 +10,8 @@
 
 #include <iostream>
 #include <memory>
+#include <vector>
+#include <unordered_map>
 #include "IDisplayModule.hpp"
 #include "IGameModule.hpp"
 
@@ -22,15 +24,23 @@ public:
 	~Pacman();
 
 	displayModule::e_event game();
-	bool initGame(std::shared_ptr<displayModule::IDisplayModule> asset);
-	bool setLib(std::shared_ptr<displayModule::IDisplayModule> asset);
+	bool initGame(const std::shared_ptr<displayModule::IDisplayModule> &asset);
+	bool setLib(const std::shared_ptr<displayModule::IDisplayModule> &asset);
 
 protected:
 private:
 	void fillMap();
-	void createMap(std::shared_ptr<displayModule::IDisplayModule> asset);
-	void initCharacter(std::shared_ptr<displayModule::IDisplayModule> asset, int x, int y);
-	void moveCharacter(std::shared_ptr<displayModule::IDisplayModule> asset, int x, int y);
+	void createMap();
+	void drawMap();
+	void createCharacter();
+	void drawCharacter(int x, int y, displayModule::e_event ext);
+	displayModule::e_event catchPacmanEvent(displayModule::e_event ext);
+	void move_nibbler(int x, int y);
+
+	int x = 9;
+	int y = 9;
+
+	std::shared_ptr<displayModule::IDisplayModule> _lib;
 	std::string _map;
 };
 } // namespace gameModule
