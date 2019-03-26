@@ -49,8 +49,8 @@ void gameModule::Nibbler::addApple()
     int y = 0;
 
     while (map[y][x] != ' ') {
-        x = rand();
-        y = rand();
+        x = std::rand();
+        y = std::rand();
     }
     this->pos_apple = std::make_pair(x, y);
 }

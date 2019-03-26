@@ -5,30 +5,28 @@
 ## makefile
 ##
 
-CXXFLAGS	=	-Iinclude
-
-AR	=	ar rc
+CXXFLAGS	=	-Iinclude -I../ -I./../../lib/ -shared -fPIC
 
 RM	=	rm
 
 SRC_BASE	=	src/
 
-SRC_FILES	=	
+SRC_FILES	=	Nibbler.cpp
 
 SRC		=	$(addprefix $(SRC_BASE),$(SRC_FILES))
 
 OBJ	=	$(SRC:.cpp=.o)
 
-NAME	=	 ../lib_arcade_insert_name_2.so
+NAME	=	 ../lib_arcade_nibbler.so
 
 .SILENT:
 
 $(NAME):	$(OBJ)
-	$(AR) -shared -o $(NAME) $(OBJ)
+	g++ -shared -o $(NAME) $(OBJ) $(CXXFLAGS)
 
 all:	$(NAME)
 
-clean:	$(OBJ)
+clean:
 	$(RM) -f $(OBJ)
 
 fclean: clean

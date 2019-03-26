@@ -15,10 +15,7 @@ namespace displayModule
         this->dp = caca_create_display(this->cv);
         if(!dp)
             return;
-        // this->cv = caca_get_canvas(this->dp);
         caca_set_display_title(this->dp, "Hello!");
-        // caca_set_color_ansi(this->cv, CACA_BLACK, CACA_WHITE);
-        // caca_put_str(this->cv, 0, 0, "This is a message");
         caca_refresh_display(this->dp);
     }
 
@@ -39,16 +36,15 @@ namespace displayModule
 
     bool Caca::createAsset(const std::string &path, const std::string &assetKey)
     {
-        std::fstream file(path + "/1d/" + assetKey, std::fstream::in);
+        std::fstream file(path + "/1d/" + assetKey + ".txt", std::fstream::in);
         std::string content;
-        std::string filename = this->cutEndFile(assetKey);
 
         if (file.is_open())
             getline(file, content, '\0');
         else
             return (false);
         file.close();
-        sprites.insert(make_pair(filename, content));
+        sprites.insert(make_pair(assetKey, content));
         return (true);
     }
 
@@ -76,7 +72,7 @@ namespace displayModule
         while (asset.data()[index]) {
             print[0] = asset.data()[index];
             this->cv = caca_get_canvas(this->dp);
-            caca_set_color_ansi(this->cv, CACA_BLACK, CACA_WHITE);
+            caca_set_color_ansi(this->cv, CACA_WHITE, CACA_BLACK);
             caca_put_str(this->cv, x, y, print);
             x++;
             index++;
@@ -148,7 +144,7 @@ namespace displayModule
 
     e_event Caca::catchEvent()
     {
-        int isKeyPressed = caca_get_event(dp, CACA_EVENT_KEY_PRESS, &this->ev, 1000);
+        int isKeyPressed = caca_get_event(dp, CACA_EVENT_KEY_PRESS, &this->ev, -1);
         int h;
         
         if (isKeyPressed != 1)
