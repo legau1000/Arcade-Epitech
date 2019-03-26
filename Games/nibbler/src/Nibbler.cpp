@@ -94,13 +94,15 @@ bool gameModule::Nibbler::setLib(std::shared_ptr<displayModule::IDisplayModule> 
 
 void gameModule::Nibbler::move_nibbler(int x, int y)
 {
-    auto x = this->nibbler.end();
     bool isApple = false;
-    auto isBody = std::find(this->nibbler.begin(), this->nibbler.end(), std::make_pair(x, y));
     auto tmp = this->nibbler[0];
     auto newTmp = std::make_pair(x, y);
     int i = 0;
     
+    for (i = 0; i < this->nibbler.size; i++) {
+        if (this->nibbler[i].first == x && this->nibbler[i].second == y)
+            exit(84);
+    }
     if (x == this->pos_apple.first && y == this->pos_apple.second) {
         this->nbApples = 0;
         this->score++;
@@ -111,8 +113,7 @@ void gameModule::Nibbler::move_nibbler(int x, int y)
             i++;
         }
         this->nibbler.push_back(tmp);
-    } else if (isBody != this->nibbler.end()
-    || this->map[y][x] == '#') {
+    } else if (this->map[y][x] == '#') {
         exit(84);
     } else if (this->map[y][x] == ' ') {
         while (i < nibbler.size()) {
