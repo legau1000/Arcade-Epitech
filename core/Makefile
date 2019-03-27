@@ -5,7 +5,7 @@
 ## makefile
 ##
 
-INCLUDE		=	-I ./include -I../Games -I../lib -ldl
+INCLUDE		=	-I ./include -I../games -I../lib -ldl
 
 CXXFLAGS	=	$(INCLUDE) -W -Wall -Wextra -Wshadow 
 
