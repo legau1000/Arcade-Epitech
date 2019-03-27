@@ -11,12 +11,12 @@ all:
 	make -C lib
 
 core:
-	make -C re core
+	make -C core/
 
 games:
 	make -C Games
 
-lib:
+graphicals:
 	make -C lib
 
 clean:
@@ -39,4 +39,4 @@ tests_run:
 	make -C Games/tests/
 	make -C lib/tests/
 
-.PHONY: clean fclean re all tests_run
+.PHONY: all core games graphicals clean fclean re tests_run
