@@ -211,7 +211,7 @@ int Core::start(int ac, char **av)
     if (this->_ActualGraph == nullptr)
         return (84);
     this->catchAllLib("./lib/");
-    this->catchAllLib("./Games/");
+    this->catchAllLib("./games/");
     this->initLib(av[1]);
     this->startGame();
     return (0);
@@ -237,7 +237,7 @@ void Core::catchAllLib(const std::string &directory)
         while (file) {
             name = file->d_name;
             if (name.find(".so\0") != std::string::npos) {
-                if (directory == "./Games/")
+                if (directory == "./games/")
                     this->_allGames.push_back(mapGraphGame(cutEndFile(name), (directory + name)));
                 else
                     this->_allGraphic.push_back(mapGraphGame(cutEndFile(name), (directory + name)));
