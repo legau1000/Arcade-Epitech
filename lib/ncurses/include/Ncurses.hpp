@@ -12,7 +12,7 @@
 #include <fstream>
 #include <bits/stdc++.h>
 #include "IDisplayModule.hpp"
-#include "def.hpp"
+// #include "def.hpp"
 
 namespace displayModule
 {
@@ -70,6 +70,19 @@ namespace displayModule
             std::string cutEndFile(const std::string &name);
 
     };
+
+    extern "C"
+    {
+        Ncurses *allocator()
+        {
+            return new Ncurses();
+        }
+
+        void deleter(Ncurses *ptr)
+        {
+            delete  ptr;
+        }
+    }
 }
 
 #endif /* !NCURSES_HPP_ */

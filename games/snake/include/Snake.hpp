@@ -1,4 +1,4 @@
-/*
+ /*
 ** EPITECH PROJECT, 2019
 ** pacman
 ** File description:
@@ -61,11 +61,20 @@ namespace gameModule
 			void moveSnake(displayModule::e_event ev);
 			e_move _move;
 			std::vector<stockPrint> _snake;
+			void addCore(int x, int y);
 			void printPlayer();
+			void printFood();
 			void detectSnake();
 			void snakeMove(int x, int y);
 			void detectObj();
+			bool detectMe();
 
+			int x_eat;
+			int y_eat;
+
+			int _score;
+
+			displayModule::e_event Menu();
 	};
 } // namespace gameModule
 

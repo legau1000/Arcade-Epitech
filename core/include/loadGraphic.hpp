@@ -15,7 +15,7 @@
 #include <memory>
 #include "IDisplayModule.hpp"
 
-template <typename T>
+template <class T>
 class LoadGraph
 {
     public:

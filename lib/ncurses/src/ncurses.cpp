@@ -49,7 +49,10 @@ namespace displayModule
 
     bool Ncurses::createText(const std::string &text, const std::string &assetKey)
     {
-        sprites.insert(make_pair(assetKey, text));
+        if (this->sprites.find(assetKey) != this->sprites.end())
+            this->sprites[assetKey] = text;
+        else
+            sprites.insert(make_pair(assetKey, text));
         return (true);
     }
 
@@ -153,18 +156,5 @@ namespace displayModule
 
     void Ncurses::stopSound(const std::string &soundKey)
     {}
-
-    extern "C"
-    {
-        Ncurses *allocator()
-        {
-            return new Ncurses();
-        }
-
-        void deleter(Ncurses *ptr)
-        {
-            delete  ptr;
-        }
-    }
 
 }

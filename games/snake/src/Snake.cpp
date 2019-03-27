@@ -23,6 +23,11 @@ namespace gameModule
 	{
 	}
 
+	displayModule::e_event Snake::Menu()
+	{
+		printf("BITE\n");
+	}
+
 	bool Snake::exitEvent(displayModule::e_event evt)
 	{
 		if (evt == displayModule::e_event::KEY_L) //Do it on core
@@ -66,42 +71,101 @@ namespace gameModule
 
 	void Snake::printPlayer()
 	{
-		int x = this->_snake[0].GetX();
-		int y = this->_snake[0].GetY() + 10;
+		int x = 0;
+		int y = 0;
+		int index = 0;
 
-		if (this->_snake[0].GetText())
-			this->_graph->drawText("head", x, y);
+		while (index < this->_snake.size()) {
+			x = this->_snake[index].GetX();
+			y = this->_snake[index].GetY() + 10;
+			if (this->_snake[index].GetText())
+				this->_graph->drawText(this->_snake[index].GetName(), x, y);
+			else
+				this->_graph->drawAsset(this->_snake[index].GetName(), x, y);
+			index++;
+		}
+	}
+
+	void Snake::printFood()
+	{
+		if (this->_allSnakeSprite[2].GetText())
+			this->_graph->drawText("aubergine", x_eat, 10 + y_eat);
 		else
-			this->_graph->drawAsset("head", x, y);
+			this->_graph->drawAsset("aubergine", x_eat, 10 + y_eat);
 	}
 
 	void Snake::snakeMove(int x, int y)
 	{
-		x = x + this->_snake[0].GetX();
-		y = y + this->_snake[0].GetY();
+		int index = this->_snake.size() - 1;
+		int stockX = x;
+		int stockY = y;
+
+		while (index > 0) {
+			x = this->_snake[index - 1].GetX();
+			y = this->_snake[index - 1].GetY();
+			this->_snake[index].SetXY(x, y);
+			index--;
+		}
+		x = stockX + this->_snake[0].GetX();
+		y = stockY + this->_snake[0].GetY();
 		this->_snake[0].SetXY(x, y);
+	}
+
+	bool Snake::detectMe()
+	{
+		int index = this->_snake.size() - 1;
+
+		while (index != 0) {
+			if (this->_snake[0].GetX() == this->_snake[index].GetX() &&
+				this->_snake[0].GetY() == this->_snake[index].GetY())
+				return (true);
+			index--;
+		}
+		return (false);
 	}
 
 	void Snake::detectObj()
 	{
 		if (this->_map[this->_snake[0].GetY()][this->_snake[0].GetX()] == '#') {
 			printf("GAME OVER\n");
-		} //else if (this->detectMe()) {
-		//
-		//}
+		}
+	}
+
+	void Snake::addCore(int x, int y)
+	{
+		this->_snake.push_back(stockPrint("./games/snake/assets", "body", x, y));
+		this->_snake[this->_snake.size() - 1].SetXY(x, y);
 	}
 
 	void Snake::detectSnake()
 	{
+		int x = 0;
+		int y = 0;
+		int stockX = this->_snake[this->_snake.size()-1].GetX();
+		int stockY = this->_snake[this->_snake.size()-1].GetX();
+
 		switch (this->_move) {
-			case TOP: snakeMove(0, -1); break;
-			case BOT: snakeMove(0, 1); break;
-			case RIGHT: snakeMove(1, 0); break;
-			case LEFT: snakeMove(-1, 0); break;
+			case TOP: y = -1; break;
+			case BOT: y = 1; break;
+			case RIGHT: x = 1; break;
+			case LEFT: x = -1; break;
 			default: break;
 		}
+		snakeMove(x, y);
 		if (this->_map[this->_snake[0].GetY()][this->_snake[0].GetX()] != ' ') {
 			this->detectObj();
+		}
+		// Core Folow
+		if (this->_snake[0].GetY() == this->y_eat && 
+			this->_snake[0].GetX() == this->x_eat) {
+			this->_score += 5;
+			// Place New Apple
+			// Be strongeur
+			this->addCore(x, y);
+		}
+		if (this->detectMe()) {
+			//Game Over Menu
+			printf("GAME OVER\n");
 		}
 	}
 
@@ -109,7 +173,7 @@ namespace gameModule
 	{
 		this->detectSnake();
 		this->printMap();
-		// this->printFood();
+		this->printFood();
 		this->printPlayer();
 		// this->printOther();
 		this->_graph->refreshWindow();
@@ -133,16 +197,20 @@ namespace gameModule
 	{
 		switch (evt) {
 			case displayModule::e_event::KEY_Z:
-				this->_move = TOP;
+				if (this->_move != BOT)
+					this->_move = TOP;
 				break;
 			case displayModule::e_event::KEY_S:
-				this->_move = BOT;
+				if (this->_move != TOP)
+					this->_move = BOT;
 				break;
 			case displayModule::e_event::KEY_Q:
-				this->_move = LEFT;
+				if (this->_move != RIGHT)
+					this->_move = LEFT;
 				break;
 			case displayModule::e_event::KEY_D:
-				this->_move = RIGHT;
+				if (this->_move != LEFT)
+					this->_move = RIGHT;
 				break;
 			default:
 				break;
@@ -153,7 +221,7 @@ namespace gameModule
 	{
 		displayModule::e_event evt = displayModule::e_event::NOTHING;
 
-		this->stockMap("./Games/snake/map/mapEasy.txt");
+		this->stockMap("./games/snake/map/mapEasy.txt");
 		while (!this->exitEvent(evt)) {
 			this->printGame();
 			std::this_thread::sleep_for(std::chrono::milliseconds(200));
@@ -165,7 +233,7 @@ namespace gameModule
 
 	void Snake::initSound()
 	{
-		this->_graph->createSound("./Games/snake/assets/Snake.ogg", "SnakeSound");
+		this->_graph->createSound("./games/snake/assets/Snake.ogg", "SnakeSound");
 	}
 
 	void Snake::startSound(const std::string &key)
@@ -180,12 +248,11 @@ namespace gameModule
 		this->initSprite("aubergine", "M", 0);
 		this->initSprite("wall", "+", 0);
 		this->initSprite("empty", " ", 0);
-		this->_snake.push_back(stockPrint("./Games/snake/assets", "head", 1, 1));
 	}
 
 	void Snake::initSprite(std::string file, std::string text, int index)
 	{
-		std::string path = "./Games/snake/assets";
+		std::string path = "./games/snake/assets";
 
 		this->_allSnakeSprite.push_back(stockPrint(path, file, 0, 0));
 		if (this->_graph->createAsset(path, file) == false) {
@@ -199,10 +266,10 @@ namespace gameModule
 		if (!this->setLib(asset))
 			return (false);
 		this->_move = RIGHT;
-		this->_graph->clearScreen();
-		this->initAssets();
-		// this->_graph->initSound();
-		// this->_graph->startSound("Snake");
+		this->x_eat = 9;
+		this->_score = 0;
+		this->y_eat = 6;
+		this->_snake.push_back(stockPrint("./games/snake/assets", "head", 1, 1));
 		return (true);
 	}
 
@@ -211,6 +278,10 @@ namespace gameModule
 		if (!asset)
 			return (false);
 		this->_graph = asset;
+		this->_graph->clearScreen();
+		this->initAssets();
+		// this->_graph->initSound();
+		// this->_graph->startSound("Snake");
 		return (true);
 	}
 
