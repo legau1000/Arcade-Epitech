@@ -62,6 +62,9 @@ namespace gameModule
 			e_move _move;
 			std::vector<stockPrint> _snake;
 			void printPlayer();
+			void detectSnake();
+			void snakeMove(int x, int y);
+			void detectObj();
 
 	};
 } // namespace gameModule

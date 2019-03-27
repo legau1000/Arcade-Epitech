@@ -9,6 +9,7 @@
 #include <memory>
 #include <fstream>
 #include <time.h>
+#include <thread>
 #include "Snake.hpp"
 
 namespace gameModule
@@ -65,14 +66,48 @@ namespace gameModule
 
 	void Snake::printPlayer()
 	{
+		int x = this->_snake[0].GetX();
+		int y = this->_snake[0].GetY() + 10;
+
 		if (this->_snake[0].GetText())
-			this->_graph->drawText("head", 1, 10 + 1);
+			this->_graph->drawText("head", x, y);
 		else
-			this->_graph->drawAsset("head", 1, 10 + 1);
+			this->_graph->drawAsset("head", x, y);
+	}
+
+	void Snake::snakeMove(int x, int y)
+	{
+		x = x + this->_snake[0].GetX();
+		y = y + this->_snake[0].GetY();
+		this->_snake[0].SetXY(x, y);
+	}
+
+	void Snake::detectObj()
+	{
+		if (this->_map[this->_snake[0].GetY()][this->_snake[0].GetX()] == '#') {
+			printf("GAME OVER\n");
+		} //else if (this->detectMe()) {
+		//
+		//}
+	}
+
+	void Snake::detectSnake()
+	{
+		switch (this->_move) {
+			case TOP: snakeMove(0, -1); break;
+			case BOT: snakeMove(0, 1); break;
+			case RIGHT: snakeMove(1, 0); break;
+			case LEFT: snakeMove(-1, 0); break;
+			default: break;
+		}
+		if (this->_map[this->_snake[0].GetY()][this->_snake[0].GetX()] != ' ') {
+			this->detectObj();
+		}
 	}
 
 	void Snake::printGame()
 	{
+		this->detectSnake();
 		this->printMap();
 		// this->printFood();
 		this->printPlayer();
@@ -97,32 +132,31 @@ namespace gameModule
 	void Snake::moveSnake(displayModule::e_event evt)
 	{
 		switch (evt) {
-		case displayModule::e_event::KEY_Z:
-			this->_move = TOP;
-		case displayModule::e_event::KEY_S:
-			this->_move = BOT;
-		case displayModule::e_event::KEY_Q:
-			this->_move = LEFT;
-		case displayModule::e_event::KEY_D:
-			this->_move = RIGHT;
-		default:
-			break;
+			case displayModule::e_event::KEY_Z:
+				this->_move = TOP;
+				break;
+			case displayModule::e_event::KEY_S:
+				this->_move = BOT;
+				break;
+			case displayModule::e_event::KEY_Q:
+				this->_move = LEFT;
+				break;
+			case displayModule::e_event::KEY_D:
+				this->_move = RIGHT;
+				break;
+			default:
+				break;
 		}
 	}
 
 	displayModule::e_event Snake::game()
 	{
 		displayModule::e_event evt = displayModule::e_event::NOTHING;
-		long double t1 = time(0) * 1000;
-		long double t2 = time(0) * 1000;
 
 		this->stockMap("./Games/snake/map/mapEasy.txt");
 		while (!this->exitEvent(evt)) {
-			if (t2 - t1 >= 0.25) {
-				this->printGame();
-				t1 = time(0) * 1000;
-			}
-			t2 = time(0) * 1000;
+			this->printGame();
+			std::this_thread::sleep_for(std::chrono::milliseconds(200));
 			evt = this->_graph->catchEvent();
 			this->moveSnake(evt);
 		}
