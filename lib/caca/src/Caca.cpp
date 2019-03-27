@@ -148,8 +148,10 @@ namespace displayModule
         int h;
         
         if (isKeyPressed != 1)
-            return (NOTHING);        
+            return (NOTHING);
+        printf("POUTRE\n");
         h = caca_get_event_key_ch(&this->ev);
+        printf("BRAS D'ENFANT\n");
         if (h == CACA_KEY_UNKNOWN)
             return (NOTHING);
         else if ((h >= 65 && h <= 90) || (h >= 97 && h <= 122))

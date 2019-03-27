@@ -14,33 +14,58 @@
 #include <unordered_map>
 #include "IDisplayModule.hpp"
 #include "IGameModule.hpp"
+#include "stockPrint.hpp"
+
 
 namespace gameModule
 {
-    class Nibbler : virtual IGameModule
-    {
-        public:
-            Nibbler();
-            ~Nibbler();
+	enum e_move
+	{
+		ERROR = -1,
+		RIGHT,
+		LEFT,
+		TOP,
+		BOT
+	};
 
-            displayModule::e_event game();
-            bool initGame(std::shared_ptr<displayModule::IDisplayModule> asset);
-            bool setLib(std::shared_ptr<displayModule::IDisplayModule> asset);
+	class Nibbler : public IGameModule
+	{
+		public:
+			Nibbler();
+			~Nibbler();
 
-            void drawElements(displayModule::IDisplayModule *);
-            displayModule::e_event catchNibblerEvent(displayModule::e_event event);
-            void move_nibbler(int x, int y);
-            void addApple(void);
-        protected:
-        private:
-            std::vector<std::string> map;
-            std::vector<std::pair<int, int>> nibbler;
-            displayModule::e_event ev_nibbler;
-            std::pair<int, int> pos_apple;
-            bool isQuit = false;
-            int score;
-            int nbApples;
-    };
+			displayModule::e_event game();
+			bool initGame(const std::shared_ptr<displayModule::IDisplayModule> &asset);
+			bool setLib(const std::shared_ptr<displayModule::IDisplayModule> &asset);
+
+		protected:
+		private:
+			std::shared_ptr<displayModule::IDisplayModule> _graph;
+
+			void initSound();
+			void startSound(const std::string &key);
+
+			void initAssets();
+
+			bool exitEvent(displayModule::e_event evt);
+
+			void printGame();
+			void printMap();
+
+			bool stockMap(const std::string &path);
+			std::vector<std::string> _map;
+
+			void initSprite(std::string file, std::string text, int index);
+
+			// Vector sprite launcher
+			std::vector<stockPrint> _allNibblerSprite;
+
+			void moveNibbler(displayModule::e_event ev);
+			e_move _move;
+			std::vector<stockPrint> _Nibbler;
+			void printPlayer();
+
+	};
 }
 
 #endif //OOP_ARCADE_2018_NIBBLER_HPP
