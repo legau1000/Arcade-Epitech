@@ -10,7 +10,8 @@
 
 #include <ncurses.h>
 #include <fstream>
-#include <bits/stdc++.h>
+#include <memory>
+#include <unordered_map>
 #include "IDisplayModule.hpp"
 // #include "def.hpp"
 
@@ -71,18 +72,6 @@ namespace displayModule
 
     };
 
-    extern "C"
-    {
-        Ncurses *allocator()
-        {
-            return new Ncurses();
-        }
-
-        void deleter(Ncurses *ptr)
-        {
-            delete  ptr;
-        }
-    }
 }
 
 #endif /* !NCURSES_HPP_ */

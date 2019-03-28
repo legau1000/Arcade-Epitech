@@ -172,14 +172,9 @@ namespace displayModule
 
     extern "C"
     {
-        Caca *allocator()
+        std::shared_ptr<IDisplayModule> allocator()
         {
-            return new Caca();
-        }
-
-        void deleter(Caca *ptr)
-        {
-            delete  ptr;
+            return std::make_shared<Caca>();
         }
     }
 }

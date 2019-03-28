@@ -279,11 +279,9 @@ namespace gameModule
 		if (asset == nullptr)
 			return (false);
         printf(" PD \n");
-		if (this->_graph != nullptr)
-			this->_graph = nullptr;
 		this->_graph = asset;
-		this->_graph->clearScreen();
         printf(" !	\n");
+		this->_graph->clearScreen();
 		this->initAssets();
 		// this->_graph->initSound();
 		// this->_graph->startSound("Snake");

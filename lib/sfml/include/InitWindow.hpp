@@ -57,17 +57,4 @@ private:
 
 } // namespace displayModule
 
-extern "C"
-{
-  displayModule::InitWindow *allocator()
-  {
-    return new displayModule::InitWindow();
-  }
-
-  void deleter(displayModule::InitWindow *ptr)
-  {
-    delete ptr;
-  }
-}
-
 #endif /* !WINDOW_HPP_ */

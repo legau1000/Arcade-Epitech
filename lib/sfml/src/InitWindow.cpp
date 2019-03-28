@@ -5,6 +5,7 @@
 ** InitWindow
 */
 
+#include <memory>
 #include "InitWindow.hpp"
 
 using namespace displayModule;
@@ -176,4 +177,12 @@ void InitWindow::stopSound(UNUSED const std::string &soundKey)
 InitWindow::~InitWindow()
 {
 	this->_window.close();
+}
+
+extern "C"
+{
+	std::shared_ptr<IDisplayModule> allocator()
+	{
+		return std::make_shared<InitWindow>();
+	}
 }
