@@ -40,43 +40,39 @@ namespace gameModule
 
 		protected:
 		private:
-			std::shared_ptr<displayModule::IDisplayModule> _graph;
-
+			void initAssets();
 			void initSound();
+			void initSprite(std::string file, std::string text, int index);
+
+			bool stockMap(const std::string &path);
+
 			void startSound(const std::string &key);
 
-			void initAssets();
-
 			bool exitEvent(displayModule::e_event evt);
+			void moveNibbler(displayModule::e_event ev);
+			void nibblerMove(int x, int y);
+			void addCore(int x, int y);
+			void setFoodPosition(void);
 
 			void printGame();
 			void printMap();
-
-			bool stockMap(const std::string &path);
-			std::vector<std::string> _map;
-
-			void initSprite(std::string file, std::string text, int index);
-
-			// Vector sprite launcher
-			std::vector<stockPrint> _allNibblerSprite;
-
-			void moveNibbler(displayModule::e_event ev);
-			e_move _move;
-			std::vector<stockPrint> _nibbler;
-			void addCore(int x, int y);
 			void printPlayer();
 			void printFood();
+
 			void detectNibbler();
-			void nibblerMove(int x, int y);
 			void detectObj();
 			bool detectMe();
 
+			displayModule::e_event Menu();
+
+			std::shared_ptr<displayModule::IDisplayModule> _graph;
+			std::vector<std::string> _map;
+			std::vector<stockPrint> _allNibblerSprite;
+			e_move _move;
+			std::vector<stockPrint> _nibbler;
 			int x_food;
 			int y_food;
-
 			int _score;
-
-			displayModule::e_event Menu();
 	};
 }
 

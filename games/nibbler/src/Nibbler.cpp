@@ -156,9 +156,8 @@ namespace gameModule
 		if (this->_nibbler[0].GetY() == this->y_food && 
 			this->_nibbler[0].GetX() == this->x_food) {
 			this->_score += 5;
-			// Place New Apple
-			// Be strongeur
 			this->addCore(x, y);
+			this->setFoodPosition();
 		}
 		if (this->detectMe()) {
 			//Game Over Menu
@@ -170,7 +169,7 @@ namespace gameModule
 	{
 		this->detectNibbler();
 		this->printMap();
-		//this->printFood();
+		this->printFood();
 		this->printPlayer();
 		// this->printOther();
 		this->_graph->refreshWindow();
@@ -271,6 +270,16 @@ namespace gameModule
 		this->_nibbler.push_back(stockPrint("./games/nibbler/assets", "body", 9, 9));
 		this->_nibbler.push_back(stockPrint("./games/nibbler/assets", "body", 10, 9));
 		return (true);
+	}
+
+	void Nibbler::setFoodPosition(void)
+	{
+		this->x_food = std::rand() % 17;
+		this->y_food = std::rand() % 17;
+		while (this->_map[this->y_food][this->x_food] == '#') {
+			this->x_food = std::rand() % 17;
+			this->y_food = std::rand() % 17;
+		}
 	}
 
 	bool Nibbler::setLib(const std::shared_ptr<displayModule::IDisplayModule> &asset)
