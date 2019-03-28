@@ -218,7 +218,7 @@ namespace gameModule
 	{
 		displayModule::e_event evt = displayModule::e_event::NOTHING;
 
-		this->stockMap("./games/nibbler/map/mapEasy.txt");
+		this->stockMap("./games/nibbler/map/map1.txt");
 		while (!this->exitEvent(evt)) {
 			this->printGame();
 			std::this_thread::sleep_for(std::chrono::milliseconds(200));
