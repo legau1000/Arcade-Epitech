@@ -244,10 +244,10 @@ namespace gameModule
 	void Snake::initAssets()
 	{
 		this->initSprite("head", "0", 0);
-		this->initSprite("body", "O", 0);
-		this->initSprite("aubergine", "M", 0);
-		this->initSprite("wall", "+", 0);
-		this->initSprite("empty", " ", 0);
+		this->initSprite("body", "O", 1);
+		this->initSprite("aubergine", "M", 2);
+		this->initSprite("wall", "+", 3);
+		this->initSprite("empty", " ", 4);
 	}
 
 	void Snake::initSprite(std::string file, std::string text, int index)

@@ -54,7 +54,7 @@ namespace gameModule
 					else
 						this->_graph->drawAsset("wall", line, index);
 				} else {
-					if (this->_allNibblerSprite[3].GetText())
+					if (this->_allNibblerSprite[4].GetText())
 						this->_graph->drawText("empty", line, index);
 					else
 						this->_graph->drawAsset("empty", line, index);
@@ -170,7 +170,7 @@ namespace gameModule
 	{
 		this->detectNibbler();
 		this->printMap();
-		this->printFood();
+		//this->printFood();
 		this->printPlayer();
 		// this->printOther();
 		this->_graph->refreshWindow();
@@ -183,7 +183,7 @@ namespace gameModule
 
 		if (!file.is_open())
 			return (false);
-		while (getline(file, content)) {
+		while (getline(file, content, '\n')) {
 			this->_map.push_back(content);
 		}
 		file.close();
@@ -218,7 +218,7 @@ namespace gameModule
 	{
 		displayModule::e_event evt = displayModule::e_event::NOTHING;
 
-		this->stockMap("./games/nibbler/map/map1.txt");
+		this->stockMap("./games/nibbler/assets/map/map1.txt");
 		while (!this->exitEvent(evt)) {
 			this->printGame();
 			std::this_thread::sleep_for(std::chrono::milliseconds(200));
@@ -241,10 +241,10 @@ namespace gameModule
 	void Nibbler::initAssets()
 	{
 		this->initSprite("head", "P", 0);
-		this->initSprite("body", "*", 0);
-		this->initSprite("egg", "x", 0);
-		this->initSprite("wall", "#", 0);
-		this->initSprite("empty", " ", 0);
+		this->initSprite("body", "*", 1);
+		this->initSprite("egg", "X", 2);
+		this->initSprite("wall", "#", 3);
+		this->initSprite("empty", " ", 4 );
 	}
 
 	void Nibbler::initSprite(std::string file, std::string text, int index)
