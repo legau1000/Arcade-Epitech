@@ -17,7 +17,7 @@ SRC		=	$(addprefix $(SRC_BASE),$(SRC_FILES))
 
 OBJ	=	$(SRC:.cpp=.o)
 
-NAME	=	 ../pacman.so
+NAME	=	 ../lib_arcade_pacman.so
 
 .SILENT:
 

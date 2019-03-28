@@ -30,9 +30,8 @@ class Pacman : public IGameModule
   protected:
   private:
 	void fillMap();
-	void createMap();
+	void createAll();
 	void drawMap();
-	void drawScore();
 	void createCharacter();
 	displayModule::e_event catchPacmanEvent(displayModule::e_event ext);
 	void movePacmanS();
@@ -44,18 +43,19 @@ class Pacman : public IGameModule
 	void ghostMoove();
 	void moovePlayer();
 	void drawAllAsset();
+	void drawScore();
 
 	int yMap;
-	int x = 9;
-	int y = 9;
-	int xGhost = 1;
-	int yGhost = 1;
-	int score = 0;
+	int x;
+	int y;
+	int xGhost;
+	int yGhost;
+	int score;
+	int directionGhost;
 
 	std::shared_ptr<displayModule::IDisplayModule> _lib;
 	std::string _map;
 	std::string direction;
-	std::string directionGhost;
 };
 } // namespace gameModule
 

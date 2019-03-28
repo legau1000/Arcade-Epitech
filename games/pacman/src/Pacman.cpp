@@ -26,10 +26,11 @@ displayModule::e_event Pacman::game()
 
 	while (ext != displayModule::e_event::ESCAPE)
 	{
-		std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
 		this->drawAllAsset();
 		this->moovePlayer();
+		this->ghostMoove();
+		std::this_thread::sleep_for(std::chrono::milliseconds(300));
 		this->catchPacmanEvent(ext);
 		this->_lib->refreshWindow();
 
@@ -48,8 +49,6 @@ void Pacman::drawAllAsset()
 	this->drawMap();
 	this->_lib->drawAsset("miss", this->x, this->y);
 	this->ghost();
-	this->_lib->createText("Score : " + std::to_string(this->score), "score");
-	this->_lib->drawText("score", 5, 25);
 }
 
 void Pacman::moovePlayer()
@@ -64,9 +63,9 @@ void Pacman::moovePlayer()
 		this->movePacmanS();
 }
 
-void Pacman::createMap()
+void Pacman::createAll()
 {
-	std::ifstream fileName("Games/pacman/assets/2d/map.txt", std::ios::in);
+	std::ifstream fileName("games/pacman/assets/2d/map.txt", std::ios::in);
 
 	std::string content;
 	while (getline(fileName, content))
@@ -74,11 +73,23 @@ void Pacman::createMap()
 		this->_map.append(content);
 		this->_map.append("\n");
 	}
-	this->_lib->createAsset("Games/pacman/assets", "wall");
-	this->_lib->createAsset("Games/pacman/assets", "little");
-	this->_lib->createAsset("Games/pacman/assets", "blackWall");
-	this->_lib->createAsset("Games/pacman/assets", "mushroom");
-	this->_lib->createAsset("Games/pacman/assets", "pink");
+	this->_lib->createAsset("games/pacman/assets", "wall");
+	this->_lib->createAsset("games/pacman/assets", "little");
+	this->_lib->createAsset("games/pacman/assets", "blackWall");
+	this->_lib->createAsset("games/pacman/assets", "mushroom");
+	this->_lib->createAsset("games/pacman/assets", "pink");
+	this->_lib->createAsset("games/pacman/assets", "gameOver");
+	this->_lib->createText("Score = ", "score");
+	this->_lib->createText("0", "0");
+	this->_lib->createText("1", "1");
+	this->_lib->createText("2", "2");
+	this->_lib->createText("3", "3");
+	this->_lib->createText("4", "4");
+	this->_lib->createText("5", "5");
+	this->_lib->createText("6", "6");
+	this->_lib->createText("7", "7");
+	this->_lib->createText("8", "8");
+	this->_lib->createText("9", "9");
 }
 
 void Pacman::drawMap()
@@ -105,6 +116,11 @@ void Pacman::drawMap()
 			this->_lib->drawAsset("blackWall", x, y);
 			x += 1;
 		}
+		else if (this->_map[i] == 'q')
+		{
+			this->_lib->drawAsset("mushroom", x, y);
+			x += 1;
+		}
 		if (this->_map[i] == '\n')
 		{
 			this->yMap += 1;
@@ -115,27 +131,28 @@ void Pacman::drawMap()
 	}
 }
 
-void Pacman::drawScore()
-{
-}
-
 void Pacman::createCharacter()
 {
-	this->_lib->createAsset("Games/pacman/assets", "miss");
+	this->_lib->createAsset("games/pacman/assets", "miss");
 }
 
 bool Pacman::initGame(const std::shared_ptr<displayModule::IDisplayModule> &asset)
 {
+	this->x = 9;
+	this->y = 9;
+	this->xGhost = 1;
+	this->yGhost = 9;
+	score = 0;
 	this->setLib(asset);
-	this->_lib->clearScreen();
-	this->createMap();
-	this->createCharacter();
 	return true;
 }
 
 bool Pacman::setLib(const std::shared_ptr<displayModule::IDisplayModule> &asset)
 {
 	this->_lib = asset;
+	this->_lib->clearScreen();
+	this->createAll();
+	this->createCharacter();
 	return true;
 }
 
@@ -143,7 +160,10 @@ void Pacman::movePacmanZ()
 {
 	if (this->_map[((this->yMap + 1) * (this->y)) - (this->yMap + 1 - this->x)] != '#')
 	{
-		this->score += 1;
+		if (this->_map[((this->yMap + 1) * (this->y)) - (this->yMap + 1 - this->x)] == ' ')
+			this->score += 1;
+		if (this->_map[((this->yMap + 1) * (this->y)) - (this->yMap + 1 - this->x)] == 'q')
+			this->score += 10;
 		this->y -= 1;
 		this->_map[((this->yMap + 1) * (this->y + 1)) - (this->yMap - this->x + 1)] = 'i';
 	}
@@ -153,8 +173,9 @@ void Pacman::movePacmanQ()
 {
 	if (this->_map[((this->yMap + 1) * (this->y)) + this->x - 1] != '#')
 	{
-		this->score += 1;
-		this->y, this->x -= 1;
+		if (this->_map[((this->yMap + 1) * (this->y)) + this->x - 1] == ' ')
+			this->score += 1;
+		this->x -= 1;
 		this->_map[((this->yMap + 1) * (this->y)) + this->x] = 'i';
 	}
 }
@@ -163,8 +184,11 @@ void Pacman::movePacmanD()
 {
 	if (this->_map[((this->yMap + 1) * (this->y)) + this->x + 1] != '#')
 	{
-		this->score += 1;
-		this->y, this->x += 1;
+		if (this->_map[((this->yMap + 1) * (this->y)) + this->x + 1] == ' ')
+			this->score += 1;
+		if (this->_map[((this->yMap + 1) * (this->y)) + this->x + 1] == 'q')
+			this->score += 10;
+		this->x += 1;
 		this->_map[((this->yMap + 1) * (this->y)) + this->x] = 'i';
 	}
 }
@@ -173,48 +197,69 @@ void Pacman::movePacmanS()
 {
 	if (this->_map[((this->yMap + 1) * (this->y + 1)) + this->x] != '#')
 	{
-		this->score += 1;
-		this->x, this->y += 1;
+		if (this->_map[((this->yMap + 1) * (this->y + 1)) + this->x] == ' ')
+			this->score += 1;
+		this->y += 1;
 		this->_map[((this->yMap + 1) * (this->y + 1)) - (this->yMap - this->x + 1)] = 'i';
 	}
 }
 
+void Pacman::drawScore()
+{
+	int index = score / 10;
+
+	this->_lib->drawText("score", 5, 25);
+	this->_lib->drawText(std::to_string(index), 10, 25);
+	this->_lib->drawText(std::to_string(score % 10), 11, 25);
+}
+
 displayModule::e_event Pacman::catchPacmanEvent(displayModule::e_event ext)
 {
+	this->drawScore();
 	if (ext == displayModule::e_event::KEY_Z)
 		this->direction = "z";
-	if (ext == displayModule::e_event::KEY_Q)
+	else if (ext == displayModule::e_event::KEY_Q)
 		this->direction = "q";
-	if (ext == displayModule::e_event::KEY_D)
+	else if (ext == displayModule::e_event::KEY_D)
 		this->direction = "d";
-	if (ext == displayModule::e_event::KEY_S)
+	else if (ext == displayModule::e_event::KEY_S)
 		this->direction = "s";
 	return (ext);
 }
 
 void Pacman::ghostMoove()
 {
-	if (this->directionGhost == "z")
-		this->yGhost -= 1;
-	if (this->directionGhost == "q")
-		this->xGhost -= 1;
-	if (this->directionGhost == "d")
-		this->xGhost += 1;
-	if (this->directionGhost == "s")
-		this->yGhost += 1;
+	if (this->xGhost < this->y || this->yGhost < this->x)
+	{
+		if (this->directionGhost == 1)
+			this->yGhost -= 1;
+		if (this->directionGhost == 2)
+			this->xGhost -= 1;
+		if (this->directionGhost == 3)
+			this->xGhost += 1;
+		if (this->directionGhost == 4)
+			this->yGhost += 1;
+	}
+	if (this->yGhost == this->x && this->xGhost == this->y)
+	{
+		this->direction = 5;
+		this->directionGhost = 5;
+		this->_lib->clearScreen();
+		this->_lib->drawAsset("gameOver", 1, 1);
+	}
 }
 
 void Pacman::ghost()
 {
 	this->_lib->drawAsset("pink", this->yGhost, this->xGhost);
 	if (this->_map[((this->yMap + 1) * (this->yGhost)) - (this->yMap + 1 - this->xGhost)] != '#')
-		this->directionGhost = "z";
+		this->directionGhost = 1;
 	if (this->_map[((this->yMap + 1) * (this->yGhost)) + this->xGhost - 1] != '#')
-		this->directionGhost = "q";
-	if (this->_map[((this->yMap + 1) * (this->y)) + this->xGhost + 1] != '#')
-		this->directionGhost = "d";
+		this->directionGhost = 2;
+	if (this->_map[((this->yMap + 1) * (this->yGhost)) + this->xGhost + 1] != '#')
+		this->directionGhost = 3;
 	if (this->_map[((this->yMap + 1) * (this->yGhost + 1)) + this->xGhost] != '#')
-		this->directionGhost = "s";
+		this->directionGhost = 4;
 }
 
 Pacman::~Pacman()
