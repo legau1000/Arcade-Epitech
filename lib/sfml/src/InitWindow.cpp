@@ -63,7 +63,7 @@ bool InitWindow::drawText(const std::string &textName, int x, int y)
 	sf::Text _text;
 	sf::Font _font;
 
-	_font.loadFromFile("./games/pacman/assets/2d/arial.ttf");
+	_font.loadFromFile("./.fonts/default.ttf");
 	_text.setFont(_font);
 	_text.setString(_mapOfText.find(textName)->second);
 	_text.setCharacterSize(30);
