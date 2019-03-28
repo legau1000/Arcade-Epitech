@@ -5,7 +5,7 @@
 ## makefile
 ##
 
-CXXFLAGS	=	-Iinclude -I../ -shared -fPIC
+CXXFLAGS	=	-Iinclude -I../ -shared -fPIC -g
 
 RM	=	rm
 

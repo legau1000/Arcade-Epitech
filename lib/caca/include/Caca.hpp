@@ -14,7 +14,8 @@
  * \author louis.pezet@epitech.eu
  */
 
-#include <bits/stdc++.h>
+#include <memory>
+#include <unordered_map>
 #include <fstream>
 #include <caca.h>
 #include "IDisplayModule.hpp"

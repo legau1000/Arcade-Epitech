@@ -43,7 +43,7 @@ namespace displayModule
         else
             return (false);
         file.close();
-        sprites.insert(make_pair(assetKey, content));
+        sprites.emplace(assetKey, content);
         return (true);
     }
 
@@ -157,4 +157,11 @@ namespace displayModule
     void Ncurses::stopSound(const std::string &soundKey)
     {}
 
+    extern "C"
+    {
+        std::shared_ptr<IDisplayModule> allocator()
+        {
+            return std::make_shared<Ncurses>();
+        }
+    }
 }
