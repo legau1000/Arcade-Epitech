@@ -8,7 +8,7 @@
 all:
 	make -C snake
 	make -C pacman
-	# make -C nibbler
+	make -C nibbler
 
 pacman:
 	make -C pacman
@@ -22,13 +22,13 @@ snake:
 clean:
 	make clean -C snake
 	make clean -C pacman
-	# make clean -C nibbler
+	make clean -C nibbler
 		@echo "Clean faite!"
 
 fclean: clean
 	make clean fclean -C snake
 	make clean fclean -C pacman
-	# make clean fclean -C nibbler
+	make clean fclean -C nibbler
 		@echo "FClean faite!"
 
 re:	fclean all
@@ -37,6 +37,6 @@ re:	fclean all
 tests_run:
 	make -C snake/tests/
 	make -C pacman/tests/
-	# make -C nibbler/tests/
+	make -C nibbler/tests/
 
 .PHONY: clean fclean re all tests_run pacman snake nibbler

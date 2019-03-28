@@ -62,9 +62,21 @@ namespace gameModule
 
 			void moveNibbler(displayModule::e_event ev);
 			e_move _move;
-			std::vector<stockPrint> _Nibbler;
+			std::vector<stockPrint> _nibbler;
+			void addCore(int x, int y);
 			void printPlayer();
+			void printFood();
+			void detectNibbler();
+			void nibblerMove(int x, int y);
+			void detectObj();
+			bool detectMe();
 
+			int x_food;
+			int y_food;
+
+			int _score;
+
+			displayModule::e_event Menu();
 	};
 }
 

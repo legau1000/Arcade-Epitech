@@ -144,18 +144,21 @@ namespace displayModule
 
     e_event Caca::catchEvent()
     {
-        int isKeyPressed = caca_get_event(dp, CACA_EVENT_KEY_PRESS, &this->ev, -1);
+        int isKeyPressed = caca_get_event(dp, CACA_EVENT_KEY_PRESS, &this->ev, 1);
         int h;
         
-        if (isKeyPressed != 1)
+        if (isKeyPressed != 1
+        || caca_get_event_type(&this->ev) != CACA_EVENT_KEY_PRESS)
             return (NOTHING);
         h = caca_get_event_key_ch(&this->ev);
         if (h == CACA_KEY_UNKNOWN)
             return (NOTHING);
-        else if ((h >= 65 && h <= 90) || (h >= 97 && h <= 122))
+        else if ((h >= 65 && h <= 90)
+        || (h >= 97 && h <= 122))
             return (this->catchLetterEvents(h));
         else
             return (this->catchSpecialEvents(h));
+        return (NOTHING);
     }
 
     void Caca::createSound(const std::string &path, const std::string &soundKey)
