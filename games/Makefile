@@ -8,13 +8,13 @@
 all:
 	make -C snake
 	make -C pacman
-	# make -C game_2
+	# make -C nibbler
 
 pacman:
 	make -C pacman
 
-g2:
-	make -C game_2
+nibbler:
+	make -C nibbler
 
 snake:
 	make -C snake
@@ -22,21 +22,21 @@ snake:
 clean:
 	make clean -C snake
 	make clean -C pacman
-	# make clean -C game_2
+	# make clean -C nibbler
 		@echo "Clean faite!"
 
 fclean: clean
 	make clean fclean -C snake
 	make clean fclean -C pacman
-	# make clean fclean -C game_2
+	# make clean fclean -C nibbler
 		@echo "FClean faite!"
 
 re:	fclean all
 		@echo "Re fait!"
 
 tests_run:
-	make -C game_1/tests/
-	make -C game_2/tests/
 	make -C snake/tests/
+	make -C pacman/tests/
+	# make -C nibbler/tests/
 
-.PHONY: clean fclean re all tests_run
+.PHONY: clean fclean re all tests_run pacman snake nibbler

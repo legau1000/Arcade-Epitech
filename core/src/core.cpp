@@ -34,6 +34,7 @@ bool Core::setNewGraphLib(size_t index)
         this->_allLauncherSprite.clear();
         this->initLauncher();
     } else {
+        printf("ERROR\n");
         //To do
     }
     return (false);
