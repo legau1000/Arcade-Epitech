@@ -26,17 +26,17 @@ int Core::writeUsage()
 bool Core::setNewGraphLib(size_t index)
 {
     this->_allGraphic[index].SetUse(true);
-    this->_ActualGraph = nullptr;
-    this->_ActualGraph = _graph.loadNewLib(this->_allGraphic[index].GetPath());
+    if (this->_ActualGame == nullptr)
+        this->_ActualGraph = nullptr;
+    this->_ActualGraph = this->_graph.loadNewLib(this->_allGraphic[index].GetPath());
     if (this->_ActualGraph == nullptr)
         return (true);
+    this->_allLauncherSprite.clear();
     if (this->_ActualGame == nullptr) {
-        this->_allLauncherSprite.clear();
         this->initLauncher();
     } else {
+        printf("VICTOR\n");
         this->_ActualGame->setLib(this->_ActualGraph);
-        printf("ERROR\n");
-        //To do
     }
     return (false);
 }
@@ -45,6 +45,7 @@ bool Core::changeGraphic(displayModule::e_event ext)
 {
     size_t index = 0;
 
+    printf("new\n");
     while (this->_allGraphic[index].GetUse() != true)
         index++;
     this->_allGraphic[index].SetUse(false);

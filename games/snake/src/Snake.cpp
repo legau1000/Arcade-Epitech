@@ -275,10 +275,15 @@ namespace gameModule
 
 	bool Snake::setLib(const std::shared_ptr<displayModule::IDisplayModule> &asset)
 	{
-		if (!asset)
+        printf(" EST \n");
+		if (asset == nullptr)
 			return (false);
+        printf(" PD \n");
+		if (this->_graph != nullptr)
+			this->_graph = nullptr;
 		this->_graph = asset;
 		this->_graph->clearScreen();
+        printf(" !	\n");
 		this->initAssets();
 		// this->_graph->initSound();
 		// this->_graph->startSound("Snake");
