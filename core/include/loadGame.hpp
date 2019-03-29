@@ -13,47 +13,44 @@
 #include <dlfcn.h>
 #include <dirent.h>
 #include <memory>
-#include "IDisplayModule.hpp"
+#include "IGameModule.hpp"
 
-template <typename T>
-class loadGame
+template <class T>
+class LoadGame
 {
-  public:
-    loadGame()
-    {
-        this->hundleGraph = nullptr;
-    };
-    ~loadGame(){};
-    std::shared_ptr<T> loadNewLib(const std::string &path)
-    {
-        if (this->hundleGraph != nullptr)
-          dlclose(this->hundleGraph);
-        this->hundleGraph = dlopen(path.data(), RTLD_NOW);
-        if (!this->hundleGraph)
+    public:
+        LoadGame()
         {
-            std::cout << dlerror() << std::endl;
-            return (nullptr);
-        }
-        return (this->GetLoadAndDelete());
-    };
-
-  protected:
-    std::shared_ptr<T> GetLoadAndDelete()
-    {
-        auto luncher = reinterpret_cast<T *(*)()>(dlsym(this->hundleGraph, "allocator"));
-        auto deleter = reinterpret_cast<void (*)(T *)>(dlsym(this->hundleGraph, "deleter"));
-
-        if (!luncher || !deleter)
+            this->hundleGraph = nullptr;
+        };
+        ~LoadGame() {};
+        std::shared_ptr<T> loadNewLib(const std::string &path)
         {
-            std::cout << "ERROR WHEN LOADING ALLOCATOR OR DELETER!\n"
-                      << std::endl;
-            return (nullptr);
-        }
-        return (std::shared_ptr<T>(luncher(), [deleter](T *p) { deleter(p); }));
-    };
+            if (this->hundleGraph != nullptr)
+                dlclose(this->hundleGraph);
+            this->hundleGraph = dlopen(path.data(), RTLD_NOW);
+            if (!this->hundleGraph) {
+                std::cout << dlerror() << std::endl;
+                return (nullptr);
+            }
+            return (this->GetLoadAndDelete());
+        };
 
-  private:
-    void *hundleGraph;
+    protected:
+        std::shared_ptr<T> GetLoadAndDelete()
+        {
+            auto luncher = reinterpret_cast<std::shared_ptr<T> (*)()>(dlsym(this->hundleGraph, "allocator"));
+
+            if (!luncher) {
+                std::cout << "ERROR WHEN LOADING ALLOCATOR!\n" << std::endl;
+                return (nullptr);
+            }
+            return (luncher());
+        };
+
+    private:
+        void *hundleGraph;
+
 };
 
 #endif

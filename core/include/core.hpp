@@ -67,7 +67,7 @@ class Core
         LoadGraph<displayModule::IDisplayModule> _graph;
 
         // Struct for load Games Lib
-        loadGame<gameModule::IGameModule> _games;
+        LoadGame<gameModule::IGameModule> _games;
 
         // Actual Graphic Lib
         std::shared_ptr<displayModule::IDisplayModule> _ActualGraph;
@@ -81,6 +81,7 @@ class Core
         // Arrow Launcher
         std::unique_ptr<stockPrint> _arrow;
         int _place;
+        std::string GetPathGraph();
 
 };
 

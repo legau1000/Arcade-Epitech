@@ -14,6 +14,8 @@ Core::Core()
 
 Core::~Core()
 {
+    this->_ActualGraph = nullptr;
+    this->_ActualGame = nullptr;
     std::cout << "Good Bye and see you later my friend!" << std::endl;
 }
 
@@ -26,17 +28,23 @@ int Core::writeUsage()
 bool Core::setNewGraphLib(size_t index)
 {
     this->_allGraphic[index].SetUse(true);
-    if (this->_ActualGame == nullptr)
-        this->_ActualGraph = nullptr;
-    this->_ActualGraph = this->_graph.loadNewLib(this->_allGraphic[index].GetPath());
-    if (this->_ActualGraph == nullptr)
-        return (true);
-    this->_allLauncherSprite.clear();
+    // if (this->_ActualGame == nullptr)
+    //     this->_ActualGraph = nullptr;
+    // this->_ActualGraph = this->_graph.loadNewLib(this->_allGraphic[index].GetPath());
+    // if (this->_ActualGraph == nullptr)
+    //     return (true);
     if (this->_ActualGame == nullptr) {
+        this->_ActualGraph = nullptr;
+        this->_ActualGraph = this->_graph.loadNewLib(this->_allGraphic[index].GetPath());
+        if (this->_ActualGraph == nullptr)
+            return (true);
+        this->_allLauncherSprite.clear();
         this->initLauncher();
     } else {
         printf("VICTOR\n");
-        this->_ActualGame->setLib(this->_ActualGraph);
+        this->_ActualGraph = nullptr;
+        // printf("%p\n", this->_ActualGraph);
+        return (!this->_ActualGame->setLib(this->_graph.loadNewLib(this->_allGraphic[index].GetPath())));
     }
     return (false);
 }
@@ -82,15 +90,25 @@ bool Core::changeGame(displayModule::e_event ext)
     return (false);
 }
 
+std::string Core::GetPathGraph()
+{
+    size_t index = 0;
+
+    printf("new\n");
+    while (this->_allGraphic[index].GetUse() != true)
+        index++;
+    return (this->_allGraphic[index].GetPath());
+}
+
 bool Core::enterEvent()
 {
     if (this->_ActualGame == nullptr) {
         this->_allGames[this->_place].SetUse(true);
-        this->_ActualGame = nullptr;
         this->_ActualGame = this->_games.loadNewLib(this->_allGames[this->_place].GetPath());
         if (this->_ActualGame == nullptr)
             return (true);
-        this->_ActualGame->initGame(this->_ActualGraph);
+        this->_ActualGraph = nullptr;
+        this->_ActualGame->initGame(this->_graph.loadNewLib(this->GetPathGraph()));
     } else {
     }
     return (false);

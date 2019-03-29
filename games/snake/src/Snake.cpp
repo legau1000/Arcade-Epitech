@@ -263,8 +263,13 @@ namespace gameModule
 
 	bool Snake::initGame(const std::shared_ptr<displayModule::IDisplayModule> &asset)
 	{
-		if (!this->setLib(asset))
+		if (asset == nullptr)
 			return (false);
+		this->_graph = asset;
+		this->_graph->clearScreen();
+		this->initAssets();
+		// this->_graph->initSound();
+		// this->_graph->startSound("Snake");
 		this->_move = RIGHT;
 		this->x_eat = 9;
 		this->_score = 0;
@@ -275,10 +280,13 @@ namespace gameModule
 
 	bool Snake::setLib(const std::shared_ptr<displayModule::IDisplayModule> &asset)
 	{
+		printf("%p\n", asset);
         printf(" EST \n");
 		if (asset == nullptr)
 			return (false);
         printf(" PD \n");
+		// dprintf(2, "this - %p\n", this->_graph.get());
+		// dprintf(2, "aset - %p\n", asset.get());
 		this->_graph = asset;
         printf(" !	\n");
 		this->_graph->clearScreen();
@@ -288,16 +296,11 @@ namespace gameModule
 		return (true);
 	}
 
-	extern "C"
-	{
-		Snake *allocator()
-		{
-			return new Snake();
-		}
-
-		void deleter(Snake *ptr)
-		{
-			delete ptr;
-		}
-	}
+    extern "C"
+    {
+        std::shared_ptr<IGameModule> allocator()
+        {
+            return std::make_shared<Snake>();
+        }
+    }
 }; // namespace gameModule
