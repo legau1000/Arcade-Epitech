@@ -10,6 +10,9 @@
 #include <fstream>
 #include <time.h>
 #include <thread>
+#include <string>
+#include <fstream>
+#include <istream>
 
 #include "Pacman.hpp"
 
@@ -20,27 +23,74 @@ Pacman::Pacman()
 {
 }
 
+void Pacman::howToPlay()
+{
+	this->_lib->createText("How to play", "how1");
+	this->_lib->drawText("how1", 10, 10);
+	this->_lib->createText("Use Z, Q, S, D to move the character.", "how2");
+	this->_lib->drawText("how2", 10, 12);
+	this->_lib->createText("Press L to return to the core.", "how3");
+	this->_lib->drawText("how3", 10, 13);
+}
+
+void Pacman::drawScoreInMenu()
+{
+	this->_lib->createText("Score", "scoreMenu");
+	this->_lib->drawText("scoreMenu", 40, 5);
+	std::ifstream file("./games/pacman/src/.score.txt");
+	std::string content;
+
+	while (getline(file, content))
+		content.append(content);
+	this->_lib->createText(content, "scoreM");
+	this->_lib->drawText("scoreM", 40, 15);
+}
+
+void Pacman::menu()
+{
+	this->_lib->clearScreen();
+	this->_lib->createText("press enter to play", "play");
+	this->_lib->drawText("play", 10, 5);
+	this->_lib->createAsset("games/pacman/assets", "msr");
+	this->_lib->drawAsset("msr", 12, 20);
+	this->drawScoreInMenu();
+	this->howToPlay();
+}
+
 displayModule::e_event Pacman::game()
 {
 	displayModule::e_event ext = this->_lib->catchEvent();
 
 	while (ext != displayModule::e_event::ESCAPE)
 	{
-
-		this->drawAllAsset();
-		this->moovePlayer();
-		this->ghostMoove();
-		std::this_thread::sleep_for(std::chrono::milliseconds(300));
-		this->catchPacmanEvent(ext);
+		this->menu();
+		if (ext == displayModule::e_event::ENTER)
+			this->inMenu = true;
+		if (this->inMenu == true)
+		{
+			this->_lib->clearScreen();
+			this->drawAllAsset();
+			this->moovePlayer();
+			this->ghostMoove();
+			std::this_thread::sleep_for(std::chrono::milliseconds(300));
+			this->catchPacmanEvent(ext);
+			this->_lib->refreshWindow();
+		}
 		this->_lib->refreshWindow();
-
 		ext = this->_lib->catchEvent();
 		if ((ext == displayModule::e_event::ERROR) ||
 			(ext == displayModule::e_event::ESCAPE) ||
+			ext == displayModule::e_event::KEY_L ||
 			((ext >= displayModule::e_event::ARROW_UP) && (ext <= displayModule::e_event::ARROW_LEFT)))
 			return (ext);
 	}
 	return ext;
+}
+
+void Pacman::gameOver()
+{
+	std::ofstream file("games/pacman/src/.score.txt", std::ios_base::app);
+	file << this->score << std::endl;
 }
 
 void Pacman::drawAllAsset()
@@ -244,6 +294,11 @@ void Pacman::ghostMoove()
 	{
 		this->direction = 5;
 		this->directionGhost = 5;
+		if (block == 0)
+		{
+			this->gameOver();
+			block += 1;
+		}
 		this->_lib->clearScreen();
 		this->_lib->drawAsset("gameOver", 1, 1);
 	}

@@ -44,6 +44,10 @@ class Pacman : public IGameModule
 	void moovePlayer();
 	void drawAllAsset();
 	void drawScore();
+	void gameOver();
+	void menu();
+	void howToPlay();
+	void drawScoreInMenu();
 
 	int yMap;
 	int x;
@@ -52,6 +56,9 @@ class Pacman : public IGameModule
 	int yGhost;
 	int score;
 	int directionGhost;
+	int block = 0;
+
+	bool inMenu = false;
 
 	std::shared_ptr<displayModule::IDisplayModule> _lib;
 	std::string _map;
