@@ -70,6 +70,16 @@ namespace gameModule
 		}
 	}
 
+	void Snake::setFoodPosition()
+	{
+		this->x_eat = std::rand() % 17;
+		this->y_eat = std::rand() % 17;
+		while (this->_map[this->y_eat][this->x_eat] == '#') {
+			this->x_eat = std::rand() % 17;
+			this->y_eat = std::rand() % 17;
+		}
+	}
+
 	void Snake::printPlayer()
 	{
 		int x = 0;
@@ -160,6 +170,7 @@ namespace gameModule
 		if (this->_snake[0].GetY() == this->y_eat && 
 			this->_snake[0].GetX() == this->x_eat) {
 			this->_score += 5;
+			this->setFoodPosition();
 			// Place New Apple
 			// Be strongeur
 			this->addCore(x, y);
@@ -220,6 +231,7 @@ namespace gameModule
 
 	void Snake::playGame()
 	{
+		this->_graph->clearScreen();
 		this->evt = this->_graph->catchEvent();
 		this->printGame();
 		this->moveSnake(evt);
@@ -231,7 +243,6 @@ namespace gameModule
 		while (!this->exitEvent()) {
 			std::this_thread::sleep_for(std::chrono::milliseconds(200));
 			(this->*position)();
-			// playGame();
 		}
 		return (this->evt);
 	}

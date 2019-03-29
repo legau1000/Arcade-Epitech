@@ -63,6 +63,8 @@ namespace gameModule
 
 			bool stockMap(const std::string &path);
 
+			void setFoodPosition();
+
 			void initSprite(std::string file, std::string text, int index);
 
 			// Variables
