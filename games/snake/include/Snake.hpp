@@ -36,31 +36,13 @@ namespace gameModule
 			bool initGame(const std::shared_ptr<displayModule::IDisplayModule> &asset);
 			bool setLib(const std::shared_ptr<displayModule::IDisplayModule> &asset);
 
+
 		protected:
 		private:
-			std::shared_ptr<displayModule::IDisplayModule> _graph;
+			void Menu();
+			void playGame();
 
-			void initSound();
-			void startSound(const std::string &key);
-
-			void initAssets();
-
-			bool exitEvent(displayModule::e_event evt);
-
-			void printGame();
-			void printMap();
-
-			bool stockMap(const std::string &path);
-			std::vector<std::string> _map;
-
-			void initSprite(std::string file, std::string text, int index);
-
-			// Vector sprite launcher
-			std::vector<stockPrint> _allSnakeSprite;
-
-			void moveSnake(displayModule::e_event ev);
-			e_move _move;
-			std::vector<stockPrint> _snake;
+			// Functions
 			void addCore(int x, int y);
 			void printPlayer();
 			void printFood();
@@ -69,12 +51,36 @@ namespace gameModule
 			void detectObj();
 			bool detectMe();
 
+			void initSound();
+			void startSound(const std::string &key);
+
+			void initAssets();
+
+			bool exitEvent();
+
+			void printGame();
+			void printMap();
+
+			bool stockMap(const std::string &path);
+
+			void initSprite(std::string file, std::string text, int index);
+
+			// Variables
+
+			void moveSnake(displayModule::e_event ev);
+
 			int x_eat;
 			int y_eat;
-
 			int _score;
+			e_move _move;
+			displayModule::e_event evt;
+			std::vector<std::string> _map;
+			std::vector<stockPrint> _allSnakeSprite;
+			std::vector<stockPrint> _snake;
+			std::shared_ptr<displayModule::IDisplayModule> _graph;
 
-			displayModule::e_event Menu();
+			void (Snake::*position)();
+
 	};
 } // namespace gameModule
 
