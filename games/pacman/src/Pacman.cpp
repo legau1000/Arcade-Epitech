@@ -268,14 +268,9 @@ Pacman::~Pacman()
 
 extern "C"
 {
-	Pacman *allocator()
+	std::shared_ptr<IGameModule> allocator()
 	{
-		return new Pacman();
-	}
-
-	void deleter(Pacman *ptr)
-	{
-		delete ptr;
+		return std::make_shared<Pacman>();
 	}
 }
 }; // namespace gameModule

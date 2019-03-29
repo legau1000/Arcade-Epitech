@@ -294,16 +294,11 @@ namespace gameModule
 		return (true);
 	}
 
-extern "C"
-{
-	Nibbler *allocator()
+	extern "C"
 	{
-		return new Nibbler();
+		std::shared_ptr<IGameModule> allocator()
+		{
+			return std::make_shared<Nibbler>();
+		}
 	}
-
-	void deleter(Nibbler *ptr)
-	{
-		delete ptr;
-	}
-}
 }; // namespace gameModule
