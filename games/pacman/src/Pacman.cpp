@@ -39,11 +39,15 @@ void Pacman::drawScoreInMenu()
 	this->_lib->drawText("scoreMenu", 40, 5);
 	std::ifstream file("./games/pacman/src/.score.txt");
 	std::string content;
+	std::string totalContent;
 
 	while (getline(file, content))
-		content.append(content);
-	this->_lib->createText(content, "scoreM");
-	this->_lib->drawText("scoreM", 40, 15);
+	{
+		totalContent.append(content);
+		totalContent.append("\n");
+	}
+	this->_lib->createText(totalContent, "scoreM");
+	this->_lib->drawText("scoreM", 41, 7);
 }
 
 void Pacman::menu()
@@ -52,7 +56,7 @@ void Pacman::menu()
 	this->_lib->createText("press enter to play", "play");
 	this->_lib->drawText("play", 10, 5);
 	this->_lib->createAsset("games/pacman/assets", "msr");
-	this->_lib->drawAsset("msr", 12, 20);
+	this->_lib->drawAsset("msr", 0, 15);
 	this->drawScoreInMenu();
 	this->howToPlay();
 }
@@ -61,6 +65,7 @@ displayModule::e_event Pacman::game()
 {
 	displayModule::e_event ext = this->_lib->catchEvent();
 
+	this->_lib->startSound("pacman");
 	while (ext != displayModule::e_event::ESCAPE)
 	{
 		this->menu();
@@ -129,6 +134,7 @@ void Pacman::createAll()
 	this->_lib->createAsset("games/pacman/assets", "mushroom");
 	this->_lib->createAsset("games/pacman/assets", "pink");
 	this->_lib->createAsset("games/pacman/assets", "gameOver");
+	this->_lib->createSound("games/pacman/assets", "pacman");
 	this->_lib->createText("Score = ", "score");
 	this->_lib->createText("0", "0");
 	this->_lib->createText("1", "1");

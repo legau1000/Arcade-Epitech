@@ -157,9 +157,8 @@ e_event InitWindow::catchEvent()
 
 void InitWindow::createSound(const std::string &path, const std::string &soundKey)
 {
-	std::string realPath = path + "/2d/" + soundKey;
-	std::string filename = this->cutEndFile(soundKey);
-	_mapOfMusic.insert(std::pair<std::string, std::string>(filename, realPath));
+	std::string realPath = path + "/2d/" + soundKey + ".ogg";
+	_mapOfMusic.insert(std::pair<std::string, std::string>(soundKey, realPath));
 }
 
 void InitWindow::startSound(const std::string &soundKey)
