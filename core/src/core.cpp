@@ -26,7 +26,7 @@ int Core::writeUsage()
 bool Core::setNewGraphLib(size_t index)
 {
     this->_allGraphic[index].SetUse(true);
-    this->_ActualGraph.reset();
+    this->_ActualGraph = nullptr;
     this->_ActualGraph = this->_graph.loadNewLib(this->_allGraphic[index].GetPath());
     if (this->_ActualGraph == nullptr)
         return (true);
@@ -34,17 +34,27 @@ bool Core::setNewGraphLib(size_t index)
     if (this->_ActualGame == nullptr) {
         this->initLauncher();
     } else {
-        // printf("%d\n", this->_ActualGraph.use_count());
-        this->_ActualGame->setLib(this->_ActualGraph);
-        // this->_ActualGraph.reset();
+        // this->_ActualGame->setLib(this->_ActualGraph);
+        // delete &this->_ActualGraph;
     }
     return (false);
+}
+
+std::string Core::GetPathGraph()
+{
+    int index = 0;
+
+    while (this->_allGraphic[index].GetUse() != true)
+        index++;
+    return (this->_allGraphic[index].GetPath());
 }
 
 bool Core::changeGraphic(displayModule::e_event ext)
 {
     size_t index = 0;
 
+    if (this->_ActualGame != nullptr)
+        return (false);
     while (this->_allGraphic[index].GetUse() != true)
         index++;
     this->_allGraphic[index].SetUse(false);
@@ -72,37 +82,25 @@ void Core::moveArrow(displayModule::e_event ext)
 
 bool Core::changeGame(displayModule::e_event ext)
 {
+    this->moveArrow(ext);
     if (this->_ActualGame == nullptr) {
-        this->moveArrow(ext);
         return (false);
     } else {
-        // Load New Game
+        this->_ActualGame = nullptr;
+        this->enterEvent();
     }
     return (false);
-}
-
-std::string Core::GetPathGraph()
-{
-    int index = 0;
-
-    while (this->_allGraphic[index].GetUse() != true)
-        index++;
-    return (this->_allGraphic[index].GetPath());
 }
 
 bool Core::enterEvent()
 {
     if (this->_ActualGame == nullptr) {
         this->_allGames[this->_place].SetUse(true);
-        this->_ActualGame.reset();
+        this->_ActualGame = nullptr;
         this->_ActualGame = this->_games.loadNewLib(this->_allGames[this->_place].GetPath());
         if (this->_ActualGame == nullptr)
             return (true);
-        // this->_ActualGraph.reset();
-        // this->_ActualGraph = this->_graph.loadNewLib(GetPathGraph());
-        dprintf(2, "%ld\n", this->_ActualGraph.use_count());
         this->_ActualGame->initGame(this->_ActualGraph);
-        // this->_ActualGraph.reset();
     } else {
     }
     return (false);
@@ -120,6 +118,10 @@ bool Core::executeEvent(displayModule::e_event ext)
     if (ext == displayModule::ARROW_UP ||
         ext == displayModule::ARROW_DOWN) {
         return (this->changeGame(ext));
+    }
+    if (ext == displayModule::KEY_L) {
+        this->_ActualGame = nullptr;
+        return (false);
     }
     return (false);
 }
