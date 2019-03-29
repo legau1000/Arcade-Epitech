@@ -31,6 +31,10 @@ void Pacman::howToPlay()
 	this->_lib->drawText("how2", 10, 12);
 	this->_lib->createText("Press L to return to the core.", "how3");
 	this->_lib->drawText("how3", 10, 13);
+	this->_lib->createText("Press S to stop music.", "how4");
+	this->_lib->drawText("how4", 10, 14);
+	this->_lib->createText("Press P to restart music.", "how5");
+	this->_lib->drawText("how5", 10, 15);
 }
 
 void Pacman::drawScoreInMenu()
@@ -39,11 +43,15 @@ void Pacman::drawScoreInMenu()
 	this->_lib->drawText("scoreMenu", 40, 5);
 	std::ifstream file("./games/pacman/src/.score.txt");
 	std::string content;
+	std::string totalContent;
 
 	while (getline(file, content))
-		content.append(content);
-	this->_lib->createText(content, "scoreM");
-	this->_lib->drawText("scoreM", 40, 15);
+	{
+		totalContent.append(content);
+		totalContent.append("\n");
+	}
+	this->_lib->createText(totalContent, "scoreM");
+	this->_lib->drawText("scoreM", 41, 7);
 }
 
 void Pacman::menu()
@@ -52,7 +60,7 @@ void Pacman::menu()
 	this->_lib->createText("press enter to play", "play");
 	this->_lib->drawText("play", 10, 5);
 	this->_lib->createAsset("games/pacman/assets", "msr");
-	this->_lib->drawAsset("msr", 12, 20);
+	this->_lib->drawAsset("msr", 0, 15);
 	this->drawScoreInMenu();
 	this->howToPlay();
 }
@@ -66,13 +74,17 @@ displayModule::e_event Pacman::game()
 		this->menu();
 		if (ext == displayModule::e_event::ENTER)
 			this->inMenu = true;
+		if (ext == displayModule::e_event::KEY_S)
+			this->_lib->stopSound("pacman");
+		if (ext == displayModule::e_event::KEY_P)
+			this->_lib->startSound("pacman");
 		if (this->inMenu == true)
 		{
 			this->_lib->clearScreen();
 			this->drawAllAsset();
 			this->moovePlayer();
 			this->ghostMoove();
-			std::this_thread::sleep_for(std::chrono::milliseconds(300));
+			std::this_thread::sleep_for(std::chrono::milliseconds(100));
 			this->catchPacmanEvent(ext);
 			this->_lib->refreshWindow();
 		}
@@ -129,6 +141,7 @@ void Pacman::createAll()
 	this->_lib->createAsset("games/pacman/assets", "mushroom");
 	this->_lib->createAsset("games/pacman/assets", "pink");
 	this->_lib->createAsset("games/pacman/assets", "gameOver");
+	this->_lib->createSound("games/pacman/assets", "pacman");
 	this->_lib->createText("Score = ", "score");
 	this->_lib->createText("0", "0");
 	this->_lib->createText("1", "1");
@@ -211,7 +224,7 @@ void Pacman::movePacmanZ()
 	if (this->_map[((this->yMap + 1) * (this->y)) - (this->yMap + 1 - this->x)] != '#')
 	{
 		if (this->_map[((this->yMap + 1) * (this->y)) - (this->yMap + 1 - this->x)] == ' ')
-			this->score += 1;
+			this->score += 5;
 		if (this->_map[((this->yMap + 1) * (this->y)) - (this->yMap + 1 - this->x)] == 'q')
 			this->score += 10;
 		this->y -= 1;
@@ -224,7 +237,7 @@ void Pacman::movePacmanQ()
 	if (this->_map[((this->yMap + 1) * (this->y)) + this->x - 1] != '#')
 	{
 		if (this->_map[((this->yMap + 1) * (this->y)) + this->x - 1] == ' ')
-			this->score += 1;
+			this->score += 5;
 		this->x -= 1;
 		this->_map[((this->yMap + 1) * (this->y)) + this->x] = 'i';
 	}
@@ -235,7 +248,7 @@ void Pacman::movePacmanD()
 	if (this->_map[((this->yMap + 1) * (this->y)) + this->x + 1] != '#')
 	{
 		if (this->_map[((this->yMap + 1) * (this->y)) + this->x + 1] == ' ')
-			this->score += 1;
+			this->score += 5;
 		if (this->_map[((this->yMap + 1) * (this->y)) + this->x + 1] == 'q')
 			this->score += 10;
 		this->x += 1;
@@ -248,7 +261,7 @@ void Pacman::movePacmanS()
 	if (this->_map[((this->yMap + 1) * (this->y + 1)) + this->x] != '#')
 	{
 		if (this->_map[((this->yMap + 1) * (this->y + 1)) + this->x] == ' ')
-			this->score += 1;
+			this->score += 5;
 		this->y += 1;
 		this->_map[((this->yMap + 1) * (this->y + 1)) - (this->yMap - this->x + 1)] = 'i';
 	}
@@ -256,11 +269,13 @@ void Pacman::movePacmanS()
 
 void Pacman::drawScore()
 {
-	int index = score / 10;
+	int index = score / 10 % 10;
+	int centaine = score / 100;
 
 	this->_lib->drawText("score", 5, 25);
-	this->_lib->drawText(std::to_string(index), 10, 25);
-	this->_lib->drawText(std::to_string(score % 10), 11, 25);
+	this->_lib->drawText(std::to_string(centaine), 11, 25);
+	this->_lib->drawText(std::to_string(index), 12, 25);
+	this->_lib->drawText(std::to_string(score % 10), 13, 25);
 }
 
 displayModule::e_event Pacman::catchPacmanEvent(displayModule::e_event ext)
