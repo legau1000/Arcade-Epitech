@@ -23,12 +23,13 @@ namespace gameModule
 	{
 	}
 
-	displayModule::e_event Snake::Menu()
+	void Snake::Menu()
 	{
 		printf("BITE\n");
+		this->evt = this->_graph->catchEvent();
 	}
 
-	bool Snake::exitEvent(displayModule::e_event evt)
+	bool Snake::exitEvent()
 	{
 		if (evt == displayModule::e_event::KEY_L) //Do it on core
 			return (true);
@@ -217,18 +218,22 @@ namespace gameModule
 		}
 	}
 
+	void Snake::playGame()
+	{
+		this->evt = this->_graph->catchEvent();
+		this->printGame();
+		this->moveSnake(evt);
+	}
+
 	displayModule::e_event Snake::game()
 	{
-		displayModule::e_event evt = displayModule::e_event::NOTHING;
-
 		this->stockMap("./games/snake/map/mapEasy.txt");
-		while (!this->exitEvent(evt)) {
-			this->printGame();
+		while (!this->exitEvent()) {
 			std::this_thread::sleep_for(std::chrono::milliseconds(200));
-			evt = this->_graph->catchEvent();
-			this->moveSnake(evt);
+			(this->*position)();
+			// playGame();
 		}
-		return (evt);
+		return (this->evt);
 	}
 
 	void Snake::initSound()
@@ -270,26 +275,16 @@ namespace gameModule
 		this->_score = 0;
 		this->y_eat = 6;
 		this->_snake.push_back(stockPrint("./games/snake/assets", "head", 1, 1));
+		this->evt = displayModule::e_event::NOTHING;
+		this->position = &Snake::playGame;
 		return (true);
 	}
 
 	bool Snake::setLib(const std::shared_ptr<displayModule::IDisplayModule> &asset)
 	{
-		printf("%p\n", asset);
-        printf(" EST \n");
 		if (asset == nullptr)
 			return (false);
-        printf(" PD \n");
-		// dprintf(2, "this - %p\n", this->_graph.get());
-		// dprintf(2, "aset - %p\n", asset.get());
-		dprintf(2, "asset = %d\n", asset.use_count());
-        printf(" !\n");
-		dprintf(2, "Graph BEFORE RESET = %d\n", this->_graph.use_count());
-	    this->_graph.reset();
-		dprintf(2, "Graph AFTER RESET = %d\n", this->_graph.use_count());
 		this->_graph = asset;
-        printf(" !\n");
-		
 		this->_graph->clearScreen();
 		this->initAssets();
 		// this->_graph->initSound();
