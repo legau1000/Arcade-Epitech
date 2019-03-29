@@ -21,6 +21,7 @@ namespace displayModule
 
     Ncurses::~Ncurses()
     {
+        printf("DEL NCURSES\n");
         endwin();
     }
     

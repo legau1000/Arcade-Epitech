@@ -263,13 +263,8 @@ namespace gameModule
 
 	bool Snake::initGame(const std::shared_ptr<displayModule::IDisplayModule> &asset)
 	{
-		if (asset == nullptr)
+		if (setLib(asset) == false)
 			return (false);
-		this->_graph = asset;
-		this->_graph->clearScreen();
-		this->initAssets();
-		// this->_graph->initSound();
-		// this->_graph->startSound("Snake");
 		this->_move = RIGHT;
 		this->x_eat = 9;
 		this->_score = 0;
@@ -287,8 +282,14 @@ namespace gameModule
         printf(" PD \n");
 		// dprintf(2, "this - %p\n", this->_graph.get());
 		// dprintf(2, "aset - %p\n", asset.get());
+		dprintf(2, "asset = %d\n", asset.use_count());
+        printf(" !\n");
+		dprintf(2, "Graph BEFORE RESET = %d\n", this->_graph.use_count());
+	    this->_graph.reset();
+		dprintf(2, "Graph AFTER RESET = %d\n", this->_graph.use_count());
 		this->_graph = asset;
-        printf(" !	\n");
+        printf(" !\n");
+		
 		this->_graph->clearScreen();
 		this->initAssets();
 		// this->_graph->initSound();
