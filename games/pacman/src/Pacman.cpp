@@ -31,6 +31,10 @@ void Pacman::howToPlay()
 	this->_lib->drawText("how2", 10, 12);
 	this->_lib->createText("Press L to return to the core.", "how3");
 	this->_lib->drawText("how3", 10, 13);
+	this->_lib->createText("Press S to stop music.", "how4");
+	this->_lib->drawText("how4", 10, 14);
+	this->_lib->createText("Press P to restart music.", "how5");
+	this->_lib->drawText("how5", 10, 15);
 }
 
 void Pacman::drawScoreInMenu()
@@ -65,19 +69,22 @@ displayModule::e_event Pacman::game()
 {
 	displayModule::e_event ext = this->_lib->catchEvent();
 
-	this->_lib->startSound("pacman");
 	while (ext != displayModule::e_event::ESCAPE)
 	{
 		this->menu();
 		if (ext == displayModule::e_event::ENTER)
 			this->inMenu = true;
+		if (ext == displayModule::e_event::KEY_S)
+			this->_lib->stopSound("pacman");
+		if (ext == displayModule::e_event::KEY_P)
+			this->_lib->startSound("pacman");
 		if (this->inMenu == true)
 		{
 			this->_lib->clearScreen();
 			this->drawAllAsset();
 			this->moovePlayer();
 			this->ghostMoove();
-			std::this_thread::sleep_for(std::chrono::milliseconds(300));
+			std::this_thread::sleep_for(std::chrono::milliseconds(100));
 			this->catchPacmanEvent(ext);
 			this->_lib->refreshWindow();
 		}
@@ -217,7 +224,7 @@ void Pacman::movePacmanZ()
 	if (this->_map[((this->yMap + 1) * (this->y)) - (this->yMap + 1 - this->x)] != '#')
 	{
 		if (this->_map[((this->yMap + 1) * (this->y)) - (this->yMap + 1 - this->x)] == ' ')
-			this->score += 1;
+			this->score += 5;
 		if (this->_map[((this->yMap + 1) * (this->y)) - (this->yMap + 1 - this->x)] == 'q')
 			this->score += 10;
 		this->y -= 1;
@@ -230,7 +237,7 @@ void Pacman::movePacmanQ()
 	if (this->_map[((this->yMap + 1) * (this->y)) + this->x - 1] != '#')
 	{
 		if (this->_map[((this->yMap + 1) * (this->y)) + this->x - 1] == ' ')
-			this->score += 1;
+			this->score += 5;
 		this->x -= 1;
 		this->_map[((this->yMap + 1) * (this->y)) + this->x] = 'i';
 	}
@@ -241,7 +248,7 @@ void Pacman::movePacmanD()
 	if (this->_map[((this->yMap + 1) * (this->y)) + this->x + 1] != '#')
 	{
 		if (this->_map[((this->yMap + 1) * (this->y)) + this->x + 1] == ' ')
-			this->score += 1;
+			this->score += 5;
 		if (this->_map[((this->yMap + 1) * (this->y)) + this->x + 1] == 'q')
 			this->score += 10;
 		this->x += 1;
@@ -254,7 +261,7 @@ void Pacman::movePacmanS()
 	if (this->_map[((this->yMap + 1) * (this->y + 1)) + this->x] != '#')
 	{
 		if (this->_map[((this->yMap + 1) * (this->y + 1)) + this->x] == ' ')
-			this->score += 1;
+			this->score += 5;
 		this->y += 1;
 		this->_map[((this->yMap + 1) * (this->y + 1)) - (this->yMap - this->x + 1)] = 'i';
 	}
@@ -262,11 +269,13 @@ void Pacman::movePacmanS()
 
 void Pacman::drawScore()
 {
-	int index = score / 10;
+	int index = score / 10 % 10;
+	int centaine = score / 100;
 
 	this->_lib->drawText("score", 5, 25);
-	this->_lib->drawText(std::to_string(index), 10, 25);
-	this->_lib->drawText(std::to_string(score % 10), 11, 25);
+	this->_lib->drawText(std::to_string(centaine), 11, 25);
+	this->_lib->drawText(std::to_string(index), 12, 25);
+	this->_lib->drawText(std::to_string(score % 10), 13, 25);
 }
 
 displayModule::e_event Pacman::catchPacmanEvent(displayModule::e_event ext)
