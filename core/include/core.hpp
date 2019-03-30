@@ -79,7 +79,7 @@ class Core
         std::vector<stockPrint> _allLauncherSprite;
 
         // Arrow Launcher
-        std::unique_ptr<stockPrint> _arrow;
+        std::shared_ptr<stockPrint> _arrow;
         int _place;
         std::string GetPathGraph();
 

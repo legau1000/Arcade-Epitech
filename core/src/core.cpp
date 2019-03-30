@@ -173,7 +173,7 @@ void Core::initLauncher()
 
 void Core::initArrow(std::string path, std::string file, std::string text)
 {
-    this->_arrow = std::make_unique<stockPrint>(stockPrint(path, this->cutEndFile(file), 0, 0));
+    this->_arrow = std::make_shared<stockPrint>(stockPrint(path, this->cutEndFile(file), 0, 0));
     if (this->_ActualGraph->createAsset(path, file) == false) {
         this->_ActualGraph->createText(text, file);
         this->_arrow->SetText(true);
