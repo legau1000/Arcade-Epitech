@@ -20,7 +20,7 @@ Core::~Core()
 int Core::writeUsage()
 {
     std::cout << DRAW_USAGE << std::endl;
-    return (0);
+    return (84);
 }
 
 bool Core::setNewGraphLib(size_t index)

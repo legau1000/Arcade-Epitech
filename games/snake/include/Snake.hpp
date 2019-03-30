@@ -40,6 +40,7 @@ namespace gameModule
 		protected:
 		private:
 			void Menu();
+			void ChooseMap();
 			void playGame();
 
 			// Functions
@@ -72,6 +73,14 @@ namespace gameModule
 			void moveSnake(displayModule::e_event ev);
 			void moveMenuArrow();
 
+			void controlEventChooseMap();
+
+			void initMap();
+
+			void printChooseMap();
+
+			void moveMapArrow();
+
 			// Variables
 
 			int x_eat;
@@ -80,10 +89,13 @@ namespace gameModule
 			e_move _move;
 			displayModule::e_event evt;
 			std::vector<std::string> _map;
+			std::vector<std::string> _allmap;
 			std::vector<stockPrint> _allSnakeSprite;
 			std::vector<stockPrint> _snake;
+			std::vector<stockPrint> _spriteMap;
 			std::shared_ptr<displayModule::IDisplayModule> _graph;
 			int _arrowMenuPos;
+			int _arrowMapPos;
 
 			void (Snake::*position)();
 

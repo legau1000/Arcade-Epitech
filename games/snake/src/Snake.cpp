@@ -10,6 +10,8 @@
 #include <fstream>
 #include <time.h>
 #include <thread>
+#include <sys/types.h>
+#include <dirent.h>
 #include "Snake.hpp"
 
 namespace gameModule
@@ -46,16 +48,16 @@ namespace gameModule
 				if (this->_map[index][line] == '#')
 				{
 					if (this->_allSnakeSprite[3].GetText())
-						this->_graph->drawText("wall", line, 10 + index);
+						this->_graph->drawText("wall", line, index);
 					else
-						this->_graph->drawAsset("wall", line, 10 + index);
+						this->_graph->drawAsset("wall", line, index);
 				}
 				else
 				{
 					if (this->_allSnakeSprite[3].GetText())
-						this->_graph->drawText("empty", line, 10 + index);
+						this->_graph->drawText("empty", line, index);
 					else
-						this->_graph->drawAsset("empty", line, 10 + index);
+						this->_graph->drawAsset("empty", line, index);
 				}
 				line++;
 			}
@@ -82,7 +84,7 @@ namespace gameModule
 
 		while (index < this->_snake.size()) {
 			x = this->_snake[index].GetX();
-			y = this->_snake[index].GetY() + 10;
+			y = this->_snake[index].GetY();
 			if (this->_snake[index].GetText())
 				this->_graph->drawText(this->_snake[index].GetName(), x, y);
 			else
@@ -94,9 +96,9 @@ namespace gameModule
 	void Snake::printFood()
 	{
 		if (this->_allSnakeSprite[2].GetText())
-			this->_graph->drawText("aubergine", x_eat, 10 + y_eat);
+			this->_graph->drawText("aubergine", x_eat, y_eat);
 		else
-			this->_graph->drawAsset("aubergine", x_eat, 10 + y_eat);
+			this->_graph->drawAsset("aubergine", x_eat, y_eat);
 	}
 
 	void Snake::snakeMove(int x, int y)
@@ -250,6 +252,34 @@ namespace gameModule
 		this->_allSnakeSprite[7].SetXY(3, y[this->_arrowMenuPos]);
 	}
 
+	void Snake::initMap()
+	{
+		DIR *rep = opendir("./games/snake/map/");
+		struct dirent *file = nullptr;
+		std::string name;
+		int index = 1;
+
+		this->_spriteMap.push_back(stockPrint("./games/snake/map/", "Return", 15, (13)));
+		this->_graph->createText("Return", "Return");
+		this->_spriteMap[0].SetText(true);
+		if (rep) {
+			file = readdir(rep);
+			while (file) {
+				name = file->d_name;
+				if (name.find(".txt\0") != std::string::npos) {
+					name = name.substr(0, name.find("."));
+					this->_allmap.push_back(name);
+					this->_spriteMap.push_back(stockPrint("./games/snake/map/", name, 15, (13 + (4 * index))));
+					this->_graph->createText(name, name);
+					this->_spriteMap[index].SetText(true);
+					index++;
+				}
+				file = readdir(rep);
+			}
+			closedir(rep);
+		}
+	}
+
 	void Snake::controlEventMenu()
 	{
 		if (this->evt == displayModule::e_event::KEY_Z) {
@@ -265,7 +295,7 @@ namespace gameModule
 		} else if (this->evt == displayModule::e_event::ENTER) {
 			switch (this->_arrowMenuPos)
 			{
-				case 0:	this->position = &Snake::playGame; break;
+				case 0:	this->position = &Snake::ChooseMap; this->initMap(); break;
 				case 1:	this->position = &Snake::playGame; break;
 				case 2:	this->position = &Snake::playGame; break;
 				// case 1:	this->position = &Snake::HowToPlay; break;
@@ -297,6 +327,58 @@ namespace gameModule
 		this->_graph->refreshWindow();
 	}
 
+	void Snake::moveMapArrow()
+	{
+		this->_allSnakeSprite[7].SetXY(3, (10 + (4 * this->_arrowMapPos)));
+	}
+
+	void Snake::controlEventChooseMap()
+	{
+		if (this->evt == displayModule::e_event::KEY_Z) {
+			this->_arrowMapPos -= 1;
+			if (this->_arrowMapPos == -1)
+				this->_arrowMapPos = this->_spriteMap.size() - 1;
+			this->moveMapArrow();
+		} else if (this->evt == displayModule::e_event::KEY_S) {
+			this->_arrowMapPos = (1 + this->_arrowMapPos) % (this->_spriteMap.size());
+			this->moveMapArrow();
+		} else if (this->evt == displayModule::e_event::ENTER) {
+			if (this->_arrowMapPos == 0) {
+				this->position = &Snake::Menu;
+			} else {
+				this->position = &Snake::playGame;
+				this->stockMap("./games/snake/map/" + this->_allmap[this->_arrowMapPos - 1] + ".txt");
+			}
+		}
+	}
+
+	void Snake::printChooseMap()
+	{
+		int index = 0;
+		std::string name;
+		int x = 0;
+		int y = 0;
+
+		this->printSprite(10);
+		this->printSprite(7);
+		while (index < this->_spriteMap.size()) {
+			name = this->_spriteMap[index].GetName();
+			x = this->_spriteMap[index].GetX();
+			y = this->_spriteMap[index].GetY();
+			this->_graph->drawText(name, x, y);
+			index++;
+		}
+		this->_graph->refreshWindow();
+	}
+
+	void Snake::ChooseMap()
+	{
+		this->_graph->clearScreen();
+		this->evt = this->_graph->catchEvent();
+		this->controlEventChooseMap();
+		this->printChooseMap();
+	}
+
 	void Snake::Menu()
 	{
 		this->_graph->clearScreen();
@@ -307,7 +389,6 @@ namespace gameModule
 
 	displayModule::e_event Snake::game()
 	{
-		this->stockMap("./games/snake/map/mapEasy.txt");
 		while (!this->exitEvent()) {
 			std::this_thread::sleep_for(std::chrono::milliseconds(200));
 			(this->*position)();
@@ -341,6 +422,7 @@ namespace gameModule
 		this->_allSnakeSprite[8].SetXY(15, 18);
 		this->initSprite("Score", "Score", 9); // To Do 2D
 		this->_allSnakeSprite[9].SetXY(15, 26);
+		this->initSprite("ChooseMap", "ChooseYourMap", 10); // To Do 2D
 	}
 
 	void Snake::initSprite(std::string file, std::string text, int index)
@@ -363,6 +445,7 @@ namespace gameModule
 		this->_score = 0;
 		this->y_eat = 6;
 		this->_arrowMenuPos = 0;
+		this->_arrowMapPos = 0;
 		this->_snake.push_back(stockPrint("./games/snake/assets", "head", 1, 1));
 		this->evt = displayModule::e_event::NOTHING;
 		this->position = &Snake::Menu;
