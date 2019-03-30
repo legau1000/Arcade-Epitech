@@ -22,11 +22,6 @@ Nibbler::~Nibbler()
 {
 }
 
-displayModule::e_event Nibbler::Menu()
-{
-	printf("BITE\n");
-}
-
 bool Nibbler::exitEvent(displayModule::e_event evt)
 {
 	if (evt == displayModule::e_event::KEY_L)
@@ -35,6 +30,8 @@ bool Nibbler::exitEvent(displayModule::e_event evt)
 		return (true);
 	if (evt == displayModule::e_event::ESCAPE)
 		return (true);
+	if (evt == displayModule::e_event::KEY_R)
+		this->_scene = MENU;
 	return (false);
 }
 
@@ -126,14 +123,6 @@ bool Nibbler::detectMe()
 	return (false);
 }
 
-void Nibbler::detectObj()
-{
-	if (this->_map[this->_nibbler[0].GetY()][this->_nibbler[0].GetX()] == '#')
-	{
-		printf("GAME OVER\n");
-	}
-}
-
 void Nibbler::addCore(int x, int y)
 {
 	this->_nibbler.push_back(stockPrint("./games/nibbler/assets", "body", x, y));
@@ -165,10 +154,6 @@ void Nibbler::detectNibbler()
 		break;
 	}
 	nibblerMove(x, y);
-	if (this->_map[this->_nibbler[0].GetY()][this->_nibbler[0].GetX()] != ' ')
-	{
-		this->detectObj();
-	}
 	// Core Folow
 	if (this->_nibbler[0].GetY() == this->y_food &&
 		this->_nibbler[0].GetX() == this->x_food)
@@ -177,20 +162,49 @@ void Nibbler::detectNibbler()
 		this->addCore(x, y);
 		this->setFoodPosition();
 	}
-	if (this->detectMe())
+	if ((this->detectMe())
+	|| (this->_map[this->_nibbler[0].GetY()][this->_nibbler[0].GetX()] == '#'))
 	{
-		//Game Over Menu
-		printf("GAME OVER\n");
+		this->_scene = GAMEOVER;
 	}
+}
+
+void Nibbler::printScore()
+{
+	this->_graph->drawText("score", 0, 25);
+	this->_graph->drawText(std::to_string(this->_score / 100), 9, 25);
+	this->_graph->drawText(std::to_string((this->_score / 10) % 10), 10, 25);
+	this->_graph->drawText(std::to_string(this->_score % 10), 11, 25);
+}
+
+void Nibbler::printMenu()
+{
+	this->_graph->clearScreen();
+	if (this->_allNibblerSprite[17].GetText())
+		this->_graph->drawText("menu", 0, 0);
+	else
+		this->_graph->drawAsset("menu", 0, 0);
+	this->_graph->refreshWindow();
 }
 
 void Nibbler::printGame()
 {
+	this->_graph->clearScreen();
 	this->detectNibbler();
 	this->printMap();
 	this->printFood();
 	this->printPlayer();
-	// this->printOther();
+	this->printScore();
+	this->_graph->refreshWindow();
+}
+
+void Nibbler::printGameover()
+{
+	this->_graph->clearScreen();
+	if (this->_allNibblerSprite[16].GetText())
+		this->_graph->drawText("gameOver", 0, 0);
+	else
+		this->_graph->drawAsset("gameOver", 0, 0);
 	this->_graph->refreshWindow();
 }
 
@@ -241,10 +255,38 @@ displayModule::e_event Nibbler::game()
 	this->stockMap("./games/nibbler/assets/map/map1.txt");
 	while (!this->exitEvent(evt))
 	{
-		this->printGame();
+		switch(this->_scene)
+		{
+		case gameModule::e_scene::MENU:
+			this->printMenu();
+			break;
+		case gameModule::e_scene::GAME:
+			this->printGame();
+			break;
+		case gameModule::e_scene::GAMEOVER:
+			this->printGameover();
+			break;
+		}
 		std::this_thread::sleep_for(std::chrono::milliseconds(200));
 		evt = this->_graph->catchEvent();
-		this->moveNibbler(evt);
+		if (this->_scene == gameModule::e_scene::GAME)
+			this->moveNibbler(evt);
+		else if (evt == displayModule::e_event::SPACE) {
+			if (this->_scene == gameModule::e_scene::MENU) {
+				this->_scene = gameModule::e_scene::GAME;
+				this->_move = LEFT;
+				this->x_food = 3;
+				this->y_food = 9;
+				this->_score = 0;
+				this->_nibbler.clear();
+				this->_nibbler.push_back(stockPrint("./games/nibbler/assets", "head", 7, 9));
+				this->_nibbler.push_back(stockPrint("./games/nibbler/assets", "body", 8, 9));
+				this->_nibbler.push_back(stockPrint("./games/nibbler/assets", "body", 9, 9));
+				this->_nibbler.push_back(stockPrint("./games/nibbler/assets", "body", 10, 9));
+			}
+			else
+				this->_scene = gameModule::e_scene::MENU;
+		}
 	}
 	return (evt);
 }
@@ -266,6 +308,19 @@ void Nibbler::initAssets()
 	this->initSprite("egg", "X", 2);
 	this->initSprite("wall", "#", 3);
 	this->initSprite("empty", " ", 4);
+	this->initSprite("score", "Score :", 5);
+	this->initSprite("0", "0", 6);
+	this->initSprite("1", "1", 7);
+	this->initSprite("2", "2", 8);
+	this->initSprite("3", "3", 9);
+	this->initSprite("4", "4", 10);
+	this->initSprite("5", "5", 11);
+	this->initSprite("6", "6", 12);
+	this->initSprite("7", "7", 13);
+	this->initSprite("8", "8", 14);
+	this->initSprite("9", "9", 15);
+	this->initSprite("gameOver", "GAME OVER", 16);
+	this->initSprite("menu", "MENU", 17);
 }
 
 void Nibbler::initSprite(std::string file, std::string text, int index)

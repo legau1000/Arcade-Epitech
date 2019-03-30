@@ -28,6 +28,13 @@ namespace gameModule
 		BOT
 	};
 
+	enum e_scene
+	{
+		MENU = 0,
+		GAME,
+		GAMEOVER
+	};
+
 	class Nibbler : public IGameModule
 	{
 		public:
@@ -49,27 +56,32 @@ namespace gameModule
 			void startSound(const std::string &key);
 
 			bool exitEvent(displayModule::e_event evt);
+			void controlEventMenu();
+
 			void moveNibbler(displayModule::e_event ev);
 			void nibblerMove(int x, int y);
+
 			void addCore(int x, int y);
 			void setFoodPosition(void);
 
+			void printMenu();
 			void printGame();
+			void printGameover();
+
 			void printMap();
 			void printPlayer();
 			void printFood();
+			void printScore();
 
 			void detectNibbler();
-			void detectObj();
 			bool detectMe();
-
-			displayModule::e_event Menu();
 
 			std::shared_ptr<displayModule::IDisplayModule> _graph;
 			std::vector<std::string> _map;
 			std::vector<stockPrint> _allNibblerSprite;
-			e_move _move;
 			std::vector<stockPrint> _nibbler;
+			e_move _move;
+			e_scene _scene = MENU;
 			int x_food;
 			int y_food;
 			int _score;
