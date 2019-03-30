@@ -43,6 +43,9 @@ namespace gameModule
 			void playGame();
 
 			// Functions
+			void printSprite(int index);
+			void controlEventMenu();
+			void printMenu();
 			void addCore(int x, int y);
 			void printPlayer();
 			void printFood();
@@ -80,6 +83,7 @@ namespace gameModule
 			std::vector<stockPrint> _allSnakeSprite;
 			std::vector<stockPrint> _snake;
 			std::shared_ptr<displayModule::IDisplayModule> _graph;
+			int _arrowMenuPos;
 
 			void (Snake::*position)();
 

@@ -23,12 +23,6 @@ namespace gameModule
 	{
 	}
 
-	void Snake::Menu()
-	{
-		printf("BITE\n");
-		this->evt = this->_graph->catchEvent();
-	}
-
 	bool Snake::exitEvent()
 	{
 		if (evt == displayModule::e_event::KEY_L) //Do it on core
@@ -237,6 +231,45 @@ namespace gameModule
 		this->moveSnake(evt);
 	}
 
+	void Snake::controlEventMenu()
+	{
+		if (this->evt == displayModule::e_event::KEY_Z) {
+
+		} else if (this->evt == displayModule::e_event::KEY_S) {
+		
+		} else if (this->evt == displayModule::e_event::ENTER) {
+
+		}
+	}
+
+	void Snake::printSprite(int index)
+	{
+		std::string name = this->_allSnakeSprite[index].GetName();
+		int x = this->_allSnakeSprite[index].GetX();
+		int y = this->_allSnakeSprite[index].GetY();
+
+		if (this->_allSnakeSprite[index].GetText())
+			this->_graph->drawText(name, x, y);
+		else
+			this->_graph->drawAsset(name, x, y);
+	}
+
+	void Snake::printMenu()
+	{
+		this->printSprite(5);
+		this->printSprite(6);
+		this->printSprite(7);
+		this->_graph->refreshWindow();
+	}
+
+	void Snake::Menu()
+	{
+		this->_graph->clearScreen();
+		this->evt = this->_graph->catchEvent();
+		this->controlEventMenu();
+		this->printMenu();
+	}
+
 	displayModule::e_event Snake::game()
 	{
 		this->stockMap("./games/snake/map/mapEasy.txt");
@@ -264,6 +297,11 @@ namespace gameModule
 		this->initSprite("aubergine", "M", 2);
 		this->initSprite("wall", "+", 3);
 		this->initSprite("empty", " ", 4);
+		this->initSprite("Play", "Play", 5); // To Do 2D
+		this->_allSnakeSprite[5].SetXY(20, 20);
+		this->initSprite("Snake", "Snake", 6); // To Do 2D
+		this->initSprite("arrowSnake", "=>", 7);
+		this->_allSnakeSprite[7].SetXY(5, 21);
 	}
 
 	void Snake::initSprite(std::string file, std::string text, int index)
@@ -285,9 +323,10 @@ namespace gameModule
 		this->x_eat = 9;
 		this->_score = 0;
 		this->y_eat = 6;
+		this->_arrowMenuPos = 0;
 		this->_snake.push_back(stockPrint("./games/snake/assets", "head", 1, 1));
 		this->evt = displayModule::e_event::NOTHING;
-		this->position = &Snake::playGame;
+		this->position = &Snake::Menu;
 		return (true);
 	}
 
