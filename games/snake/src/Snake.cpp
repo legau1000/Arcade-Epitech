@@ -245,7 +245,7 @@ namespace gameModule
 
 	void Snake::moveMenuArrow()
 	{
-		int y[] = {21, 30, 40};
+		int y[] = {10, 18, 26};
 
 		this->_allSnakeSprite[7].SetXY(3, y[this->_arrowMenuPos]);
 	}
@@ -333,14 +333,14 @@ namespace gameModule
 		this->initSprite("wall", "+", 3);
 		this->initSprite("empty", " ", 4);
 		this->initSprite("Play", "Play", 5); // To Do 2D
-		this->_allSnakeSprite[5].SetXY(15, 20);
+		this->_allSnakeSprite[5].SetXY(15, 10);
 		this->initSprite("Snake", "Snake", 6);
 		this->initSprite("arrowSnake", "=>", 7);
-		this->_allSnakeSprite[7].SetXY(3, 21);
+		this->_allSnakeSprite[7].SetXY(3, 10);
 		this->initSprite("howtoplaySnake", "How To Play", 8); // To Do 2D
-		this->_allSnakeSprite[8].SetXY(15, 30);
+		this->_allSnakeSprite[8].SetXY(15, 18);
 		this->initSprite("Score", "Score", 9); // To Do 2D
-		this->_allSnakeSprite[9].SetXY(15, 40);
+		this->_allSnakeSprite[9].SetXY(15, 26);
 	}
 
 	void Snake::initSprite(std::string file, std::string text, int index)
