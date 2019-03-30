@@ -53,7 +53,7 @@ namespace displayModule
         if (this->sprites.find(assetKey) != this->sprites.end())
             this->sprites[assetKey] = text;
         else
-            sprites.insert(make_pair(assetKey, text));
+            sprites.emplace(assetKey, text);
         return (true);
     }
 

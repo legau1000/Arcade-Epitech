@@ -224,11 +224,15 @@ int Core::start(int ac, char **av)
 {
     if (ac != 2 || av[1] == (char *)"-h" || av[1] == (char *)"--help")
         return (writeUsage());
+    this->catchAllLib("./games/");
+    if (this->_allGames.size() == 0) {
+        std::cerr << "No Available games on ./games/ Directory" << std::endl;
+        return (84);
+    }
     this->_ActualGraph = _graph.loadNewLib(av[1]);
     if (this->_ActualGraph == nullptr)
         return (84);
     this->catchAllLib("./lib/");
-    this->catchAllLib("./games/");
     this->initLib(av[1]);
     this->startGame();
     return (0);

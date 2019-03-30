@@ -69,10 +69,10 @@ namespace gameModule
 			void setFoodPosition();
 
 			void initSprite(std::string file, std::string text, int index);
+			void moveSnake(displayModule::e_event ev);
+			void moveMenuArrow();
 
 			// Variables
-
-			void moveSnake(displayModule::e_event ev);
 
 			int x_eat;
 			int y_eat;

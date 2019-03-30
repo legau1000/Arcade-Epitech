@@ -192,6 +192,7 @@ namespace gameModule
 
 		if (!file.is_open())
 			return (false);
+		this->_map.clear();
 		while (getline(file, content)) {
 			this->_map.push_back(content);
 		}
@@ -227,18 +228,50 @@ namespace gameModule
 	{
 		this->_graph->clearScreen();
 		this->evt = this->_graph->catchEvent();
+		if (this->evt == displayModule::e_event::KEY_R) {
+			// this->_map.clear();
+			this->_snake.clear();
+			this->_move = RIGHT;
+			this->x_eat = 9;
+			this->y_eat = 6;
+			this->_score = 0;
+			this->_snake.push_back(stockPrint("./games/snake/assets", "head", 1, 1));
+			this->position = &Snake::Menu;
+			return;
+		}
 		this->printGame();
 		this->moveSnake(evt);
+	}
+
+	void Snake::moveMenuArrow()
+	{
+		int y[] = {21, 30, 40};
+
+		this->_allSnakeSprite[7].SetXY(3, y[this->_arrowMenuPos]);
 	}
 
 	void Snake::controlEventMenu()
 	{
 		if (this->evt == displayModule::e_event::KEY_Z) {
-
+			this->_arrowMenuPos -= 1;
+			if (this->_arrowMenuPos == -1)
+				this->_arrowMenuPos = 2;
+			this->moveMenuArrow();
 		} else if (this->evt == displayModule::e_event::KEY_S) {
-		
+			this->_arrowMenuPos += 1;
+			if (this->_arrowMenuPos == 3)
+				this->_arrowMenuPos = 0;
+			this->moveMenuArrow();
 		} else if (this->evt == displayModule::e_event::ENTER) {
-
+			switch (this->_arrowMenuPos)
+			{
+				case 0:	this->position = &Snake::playGame; break;
+				case 1:	this->position = &Snake::playGame; break;
+				case 2:	this->position = &Snake::playGame; break;
+				// case 1:	this->position = &Snake::HowToPlay; break;
+				// case 2:	this->position = &Snake::Score; break;
+				default: break;
+			}
 		}
 	}
 
@@ -259,6 +292,8 @@ namespace gameModule
 		this->printSprite(5);
 		this->printSprite(6);
 		this->printSprite(7);
+		this->printSprite(8);
+		this->printSprite(9);
 		this->_graph->refreshWindow();
 	}
 
@@ -298,10 +333,14 @@ namespace gameModule
 		this->initSprite("wall", "+", 3);
 		this->initSprite("empty", " ", 4);
 		this->initSprite("Play", "Play", 5); // To Do 2D
-		this->_allSnakeSprite[5].SetXY(20, 20);
-		this->initSprite("Snake", "Snake", 6); // To Do 2D
+		this->_allSnakeSprite[5].SetXY(15, 20);
+		this->initSprite("Snake", "Snake", 6);
 		this->initSprite("arrowSnake", "=>", 7);
-		this->_allSnakeSprite[7].SetXY(5, 21);
+		this->_allSnakeSprite[7].SetXY(3, 21);
+		this->initSprite("howtoplaySnake", "How To Play", 8); // To Do 2D
+		this->_allSnakeSprite[8].SetXY(15, 30);
+		this->initSprite("Score", "Score", 9); // To Do 2D
+		this->_allSnakeSprite[9].SetXY(15, 40);
 	}
 
 	void Snake::initSprite(std::string file, std::string text, int index)
