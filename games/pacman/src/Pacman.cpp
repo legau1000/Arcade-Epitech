@@ -8,7 +8,6 @@
 #include <iostream>
 #include <memory>
 #include <fstream>
-#include <time.h>
 #include <thread>
 #include <string>
 #include <fstream>
@@ -81,11 +80,11 @@ displayModule::e_event Pacman::game()
 		if (this->inMenu == true)
 		{
 			this->_lib->clearScreen();
+			this->catchPacmanEvent(ext);
 			this->drawAllAsset();
 			this->moovePlayer();
 			this->ghostMoove();
 			std::this_thread::sleep_for(std::chrono::milliseconds(100));
-			this->catchPacmanEvent(ext);
 			this->_lib->refreshWindow();
 		}
 		this->_lib->refreshWindow();
@@ -111,6 +110,7 @@ void Pacman::drawAllAsset()
 	this->drawMap();
 	this->_lib->drawAsset("miss", this->x, this->y);
 	this->ghost();
+	this->drawScore();
 }
 
 void Pacman::moovePlayer()
@@ -280,7 +280,6 @@ void Pacman::drawScore()
 
 displayModule::e_event Pacman::catchPacmanEvent(displayModule::e_event ext)
 {
-	this->drawScore();
 	if (ext == displayModule::e_event::KEY_Z)
 		this->direction = "z";
 	else if (ext == displayModule::e_event::KEY_Q)

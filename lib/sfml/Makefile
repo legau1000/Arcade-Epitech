@@ -13,7 +13,7 @@ RM	=	rm
 
 SRC_BASE	=	src/
 
-SRC_FILES	=	InitWindow.cpp
+SRC_FILES	=	Sfml.cpp
 
 SRC		=	$(addprefix $(SRC_BASE),$(SRC_FILES))
 

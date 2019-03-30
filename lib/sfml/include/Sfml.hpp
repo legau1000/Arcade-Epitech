@@ -8,21 +8,22 @@
 #ifndef WINDOW_HPP_
 #define WINDOW_HPP_
 
-#include "def.hpp"
-#include "IDisplayModule.hpp"
 #include <iostream>
 #include <utility>
 #include <unordered_map>
+
 #include "SFML/Graphics.hpp"
 #include "SFML/Audio.hpp"
+#include "def.hpp"
+#include "IDisplayModule.hpp"
 
 namespace displayModule
 {
-class InitWindow : public IDisplayModule
+class Sfml : public IDisplayModule
 {
 public:
-  InitWindow();
-  ~InitWindow() final;
+  Sfml();
+  ~Sfml() final;
   bool createAsset(const std::string &path, const std::string &assetName) final;
   bool drawAsset(const std::string &assetName, int x, int y) final;
   void refreshWindow() final;
@@ -38,7 +39,6 @@ public:
   e_event catchEvent() final;
 
   // Sounds
-  // Je les ai implémenté dans le .cpp mais à toi de les faire
   void createSound(const std::string &path, const std::string &soundKey) final;
   void startSound(const std::string &soundKey) final;
   void stopSound(const std::string &soundKey) final;

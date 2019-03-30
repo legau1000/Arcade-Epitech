@@ -6,15 +6,15 @@
 */
 
 #include <memory>
-#include "InitWindow.hpp"
+#include "Sfml.hpp"
 
 using namespace displayModule;
 
-InitWindow::InitWindow() : _window(sf::VideoMode(1920, 1080), "Let's play!", sf::Style::Resize | sf::Style::Close)
+Sfml::Sfml() : _window(sf::VideoMode(1920, 1080), "Let's play!", sf::Style::Resize | sf::Style::Close)
 {
 }
 
-std::string InitWindow::cutEndFile(const std::string &name)
+std::string Sfml::cutEndFile(const std::string &name)
 {
 	std::size_t pos = name.find(".");
 
@@ -23,7 +23,7 @@ std::string InitWindow::cutEndFile(const std::string &name)
 	return (name.substr(0, pos));
 }
 
-bool InitWindow::createAsset(const std::string &path, const std::string &assetName)
+bool Sfml::createAsset(const std::string &path, const std::string &assetName)
 {
 	std::string realPath = path + "/2d/" + assetName + ".png";
 
@@ -33,7 +33,7 @@ bool InitWindow::createAsset(const std::string &path, const std::string &assetNa
 	return true;
 }
 
-bool InitWindow::drawAsset(const std::string &assetName, int x, int y)
+bool Sfml::drawAsset(const std::string &assetName, int x, int y)
 {
 	sf::Sprite sprite;
 	sprite.setTexture(this->_mapOfSprite.find(assetName)->second);
@@ -42,24 +42,24 @@ bool InitWindow::drawAsset(const std::string &assetName, int x, int y)
 	return true;
 }
 
-void InitWindow::refreshWindow()
+void Sfml::refreshWindow()
 {
 	this->_window.display();
 }
 
-void InitWindow::clearScreen()
+void Sfml::clearScreen()
 {
 	this->_window.clear();
 }
 
 // Text
-bool InitWindow::createText(const std::string &text, const std::string &assetName)
+bool Sfml::createText(const std::string &text, const std::string &assetName)
 {
 	this->_mapOfText.insert(std::pair<std::string, std::string>(assetName, text));
 	return true;
 }
 
-bool InitWindow::drawText(const std::string &textName, int x, int y)
+bool Sfml::drawText(const std::string &textName, int x, int y)
 {
 	sf::Text _text;
 	sf::Font _font;
@@ -76,7 +76,7 @@ bool InitWindow::drawText(const std::string &textName, int x, int y)
 }
 
 // Events
-e_event InitWindow::catchEvent()
+e_event Sfml::catchEvent()
 {
 	while (this->_window.pollEvent(this->_event))
 	{
@@ -155,25 +155,25 @@ e_event InitWindow::catchEvent()
 	return (NOTHING);
 }
 
-void InitWindow::createSound(const std::string &path, const std::string &soundKey)
+void Sfml::createSound(const std::string &path, const std::string &soundKey)
 {
 	std::string realPath = path + "/2d/" + soundKey + ".ogg";
 	_mapOfMusic.insert(std::pair<std::string, std::string>(soundKey, realPath));
 }
 
-void InitWindow::startSound(const std::string &soundKey)
+void Sfml::startSound(const std::string &soundKey)
 {
 	this->_music.setVolume(50);
 	this->_music.openFromFile(this->_mapOfMusic.find(soundKey)->second);
 	this->_music.play();
 }
 
-void InitWindow::stopSound(UNUSED const std::string &soundKey)
+void Sfml::stopSound(UNUSED const std::string &soundKey)
 {
 	this->_music.stop();
 }
 
-InitWindow::~InitWindow()
+Sfml::~Sfml()
 {
 	this->_window.close();
 }
@@ -182,6 +182,6 @@ extern "C"
 {
 	std::shared_ptr<IDisplayModule> allocator()
 	{
-		return std::make_shared<InitWindow>();
+		return std::make_shared<Sfml>();
 	}
 }
