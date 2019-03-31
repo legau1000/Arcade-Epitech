@@ -134,7 +134,7 @@ namespace gameModule
 	void Snake::detectObj()
 	{
 		if (this->_map[this->_snake[0].GetY()][this->_snake[0].GetX()] == '#') {
-			printf("GAME OVER\n");
+			this->position = &Snake::gameOver;
 		}
 	}
 
@@ -162,17 +162,14 @@ namespace gameModule
 		if (this->_map[this->_snake[0].GetY()][this->_snake[0].GetX()] != ' ') {
 			this->detectObj();
 		}
-		// Core Folow
 		if (this->_snake[0].GetY() == this->y_eat && 
 			this->_snake[0].GetX() == this->x_eat) {
 			this->_score += 5;
 			this->setFoodPosition();
-			// Place New Apple
-			// Be strongeur
 			this->addCore(x, y);
 		}
 		if (this->detectMe()) {
-			//Game Over Menu
+			this->position = &Snake::gameOver;
 			printf("GAME OVER\n");
 		}
 	}
@@ -384,6 +381,26 @@ namespace gameModule
 		this->_graph->refreshWindow();
 	}
 
+	void Snake::controlEventGameOver()
+	{
+
+	}
+
+	void Snake::printGameOver()
+	{
+		this->printSprite(11);
+		this->printSprite(12);
+		this->_graph->refreshWindow();
+	}
+
+	void Snake::gameOver()
+	{
+		this->_graph->clearScreen();
+		this->evt = this->_graph->catchEvent();
+		this->controlEventGameOver();
+		this->printGameOver();
+	}
+
 	void Snake::ChooseMap()
 	{
 		this->_graph->clearScreen();
@@ -436,6 +453,11 @@ namespace gameModule
 		this->initSprite("Score", "Score", 9); // To Do 2D
 		this->_allSnakeSprite[9].SetXY(15, 26);
 		this->initSprite("ChooseMap", "ChooseYourMap", 10); // To Do 2D
+		this->initSprite("gameOver", "gameOver", 11);
+		this->initSprite("EnterName", "EnterName", 12);
+		this->_allSnakeSprite[12].SetXY(20, 20);
+		this->initSprite("arrowUp", "arrowUp", 13);
+		this->initSprite("arrowDown", "arrowDown", 14);
 	}
 
 	void Snake::initSprite(std::string file, std::string text, int index)
