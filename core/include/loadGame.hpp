@@ -23,7 +23,9 @@ class LoadGame
         {
             this->hundleGraph = nullptr;
         };
-        ~LoadGame() {};
+        ~LoadGame() 
+        {
+        };
         std::shared_ptr<T> loadNewLib(const std::string &path)
         {
             if (this->hundleGraph != nullptr)

@@ -23,7 +23,9 @@ class LoadGraph
         {
             this->hundleGraph = nullptr;
         };
-        ~LoadGraph() {};
+        ~LoadGraph()
+        {
+        };
         std::shared_ptr<T> loadNewLib(const std::string &path)
         {
             if (this->hundleGraph != nullptr)
