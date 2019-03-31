@@ -200,6 +200,8 @@ void Pacman::createCharacter()
 
 bool Pacman::initGame(const std::shared_ptr<displayModule::IDisplayModule> &asset)
 {
+	if (!asset)
+		return false;
 	this->x = 9;
 	this->y = 9;
 	this->xGhost = 1;
@@ -226,6 +228,8 @@ void Pacman::restartGame()
 
 bool Pacman::setLib(const std::shared_ptr<displayModule::IDisplayModule> &asset)
 {
+	if (!asset)
+		return false;
 	this->_lib = asset;
 	this->_lib->clearScreen();
 	this->createAll();

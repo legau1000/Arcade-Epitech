@@ -16,21 +16,37 @@ Sfml::Sfml() : _window(sf::VideoMode(1920, 1080), "Let's play!", sf::Style::Resi
 
 bool Sfml::createAsset(const std::string &path, const std::string &assetName)
 {
-	std::string realPath = path + "/2d/" + assetName + ".png";
+	try
+	{
+		std::string realPath = path + "/2d/" + assetName + ".png";
 
-	if (!this->_texture.loadFromFile(realPath))
+		if (!this->_texture.loadFromFile(realPath))
+			return false;
+		this->_mapOfSprite.insert(std::pair<std::string, sf::Texture>(assetName, this->_texture));
+		return true;
+	}
+	catch (const std::exception &e)
+	{
+		std::cerr << e.what() << '\n';
 		return false;
-	this->_mapOfSprite.insert(std::pair<std::string, sf::Texture>(assetName, this->_texture));
-	return true;
+	}
 }
 
 bool Sfml::drawAsset(const std::string &assetName, int x, int y)
 {
-	sf::Sprite sprite;
-	sprite.setTexture(this->_mapOfSprite.find(assetName)->second);
-	sprite.setPosition(x * 32, y * 32);
-	this->_window.draw(sprite);
-	return true;
+	try
+	{
+		sf::Sprite sprite;
+		sprite.setTexture(this->_mapOfSprite.find(assetName)->second);
+		sprite.setPosition(x * 32, y * 32);
+		this->_window.draw(sprite);
+		return true;
+	}
+	catch (const std::exception &e)
+	{
+		std::cerr << e.what() << '\n';
+		return false;
+	}
 }
 
 void Sfml::refreshWindow()
