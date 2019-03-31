@@ -42,6 +42,7 @@ namespace gameModule
 			void Menu();
 			void ChooseMap();
 			void playGame();
+			void gameOver();
 
 			// Functions
 			void printSprite(int index);
@@ -80,6 +81,10 @@ namespace gameModule
 			void printChooseMap();
 
 			void moveMapArrow();
+
+			void printGameOver();
+	
+			void controlEventGameOver();
 
 			// Variables
 
