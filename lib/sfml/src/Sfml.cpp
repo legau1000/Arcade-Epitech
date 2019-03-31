@@ -14,32 +14,39 @@ Sfml::Sfml() : _window(sf::VideoMode(1920, 1080), "Let's play!", sf::Style::Resi
 {
 }
 
-std::string Sfml::cutEndFile(const std::string &name)
-{
-	std::size_t pos = name.find(".");
-
-	if (pos == std::string::npos)
-		return (name);
-	return (name.substr(0, pos));
-}
-
 bool Sfml::createAsset(const std::string &path, const std::string &assetName)
 {
-	std::string realPath = path + "/2d/" + assetName + ".png";
+	try
+	{
+		std::string realPath = path + "/2d/" + assetName + ".png";
 
-	if (!this->_texture.loadFromFile(realPath))
+		if (!this->_texture.loadFromFile(realPath))
+			return false;
+		this->_mapOfSprite.insert(std::pair<std::string, sf::Texture>(assetName, this->_texture));
+		return true;
+	}
+	catch (const std::exception &e)
+	{
+		std::cerr << e.what() << '\n';
 		return false;
-	this->_mapOfSprite.insert(std::pair<std::string, sf::Texture>(assetName, this->_texture));
-	return true;
+	}
 }
 
 bool Sfml::drawAsset(const std::string &assetName, int x, int y)
 {
-	sf::Sprite sprite;
-	sprite.setTexture(this->_mapOfSprite.find(assetName)->second);
-	sprite.setPosition(x * 32, y * 32);
-	this->_window.draw(sprite);
-	return true;
+	try
+	{
+		sf::Sprite sprite;
+		sprite.setTexture(this->_mapOfSprite.find(assetName)->second);
+		sprite.setPosition(x * 32, y * 32);
+		this->_window.draw(sprite);
+		return true;
+	}
+	catch (const std::exception &e)
+	{
+		std::cerr << e.what() << '\n';
+		return false;
+	}
 }
 
 void Sfml::refreshWindow()
@@ -84,75 +91,80 @@ e_event Sfml::catchEvent()
 			return ESCAPE;
 		if (this->_event.type == sf::Event::KeyPressed)
 		{
-			if (this->_event.key.code == sf::Keyboard::A)
-				return KEY_A;
-			if (this->_event.key.code == sf::Keyboard::B)
-				return KEY_B;
-			if (this->_event.key.code == sf::Keyboard::C)
-				return KEY_C;
-			if (this->_event.key.code == sf::Keyboard::D)
-				return KEY_D;
-			if (this->_event.key.code == sf::Keyboard::E)
-				return KEY_E;
-			if (this->_event.key.code == sf::Keyboard::F)
-				return KEY_F;
-			if (this->_event.key.code == sf::Keyboard::G)
-				return KEY_G;
-			if (this->_event.key.code == sf::Keyboard::H)
-				return KEY_H;
-			if (this->_event.key.code == sf::Keyboard::I)
-				return KEY_I;
-			if (this->_event.key.code == sf::Keyboard::J)
-				return KEY_J;
-			if (this->_event.key.code == sf::Keyboard::K)
-				return KEY_K;
-			if (this->_event.key.code == sf::Keyboard::L)
-				return KEY_L;
-			if (this->_event.key.code == sf::Keyboard::M)
-				return KEY_M;
-			if (this->_event.key.code == sf::Keyboard::N)
-				return KEY_N;
-			if (this->_event.key.code == sf::Keyboard::O)
-				return KEY_O;
-			if (this->_event.key.code == sf::Keyboard::P)
-				return KEY_P;
-			if (this->_event.key.code == sf::Keyboard::Q)
-				return KEY_Q;
-			if (this->_event.key.code == sf::Keyboard::R)
-				return KEY_R;
-			if (this->_event.key.code == sf::Keyboard::S)
-				return KEY_S;
-			if (this->_event.key.code == sf::Keyboard::T)
-				return KEY_T;
-			if (this->_event.key.code == sf::Keyboard::U)
-				return KEY_U;
-			if (this->_event.key.code == sf::Keyboard::V)
-				return KEY_V;
-			if (this->_event.key.code == sf::Keyboard::W)
-				return KEY_W;
-			if (this->_event.key.code == sf::Keyboard::X)
-				return KEY_X;
-			if (this->_event.key.code == sf::Keyboard::Y)
-				return KEY_Y;
-			if (this->_event.key.code == sf::Keyboard::Z)
-				return KEY_Z;
-			if (this->_event.key.code == sf::Keyboard::Down)
-				return ARROW_DOWN;
-			if (this->_event.key.code == sf::Keyboard::Up)
-				return ARROW_UP;
-			if (this->_event.key.code == sf::Keyboard::Left)
-				return ARROW_LEFT;
-			if (this->_event.key.code == sf::Keyboard::Right)
-				return ARROW_RIGHT;
-			if (this->_event.key.code == sf::Keyboard::Space)
-				return SPACE;
-			if (this->_event.key.code == sf::Keyboard::Enter)
-				return ENTER;
-			if (this->_event.key.code == sf::Keyboard::Escape)
-				return ESCAPE;
+			switch (this->_event.key.code)
+			{
+			case sf::Keyboard::Enter:
+				return (displayModule::ENTER);
+			case sf::Keyboard::Escape:
+				return (displayModule::ESCAPE);
+			case sf::Keyboard::A:
+				return (displayModule::KEY_A);
+			case sf::Keyboard::B:
+				return (displayModule::KEY_B);
+			case sf::Keyboard::C:
+				return (displayModule::KEY_C);
+			case sf::Keyboard::D:
+				return (displayModule::KEY_D);
+			case sf::Keyboard::E:
+				return (displayModule::KEY_E);
+			case sf::Keyboard::F:
+				return (displayModule::KEY_F);
+			case sf::Keyboard::G:
+				return (displayModule::KEY_G);
+			case sf::Keyboard::H:
+				return (displayModule::KEY_H);
+			case sf::Keyboard::I:
+				return (displayModule::KEY_I);
+			case sf::Keyboard::J:
+				return (displayModule::KEY_J);
+			case sf::Keyboard::K:
+				return (displayModule::KEY_K);
+			case sf::Keyboard::L:
+				return (displayModule::KEY_L);
+			case sf::Keyboard::M:
+				return (displayModule::KEY_M);
+			case sf::Keyboard::N:
+				return (displayModule::KEY_N);
+			case sf::Keyboard::O:
+				return (displayModule::KEY_O);
+			case sf::Keyboard::P:
+				return (displayModule::KEY_P);
+			case sf::Keyboard::Q:
+				return (displayModule::KEY_Q);
+			case sf::Keyboard::R:
+				return (displayModule::KEY_R);
+			case sf::Keyboard::S:
+				return (displayModule::KEY_S);
+			case sf::Keyboard::T:
+				return (displayModule::KEY_T);
+			case sf::Keyboard::U:
+				return (displayModule::KEY_U);
+			case sf::Keyboard::V:
+				return (displayModule::KEY_V);
+			case sf::Keyboard::W:
+				return (displayModule::KEY_W);
+			case sf::Keyboard::X:
+				return (displayModule::KEY_X);
+			case sf::Keyboard::Y:
+				return (displayModule::KEY_Y);
+			case sf::Keyboard::Z:
+				return (displayModule::KEY_Z);
+			case sf::Keyboard::Up:
+				return (displayModule::ARROW_UP);
+			case sf::Keyboard::Down:
+				return (displayModule::ARROW_DOWN);
+			case sf::Keyboard::Right:
+				return (displayModule::ARROW_RIGHT);
+			case sf::Keyboard::Left:
+				return (displayModule::ARROW_LEFT);
+			case sf::Keyboard::Space:
+				return (displayModule::SPACE);
+			default:
+				return (displayModule::NOTHING);
+			}
 		}
 	}
-	return (NOTHING);
+	return (displayModule::NOTHING);
 }
 
 void Sfml::createSound(const std::string &path, const std::string &soundKey)
