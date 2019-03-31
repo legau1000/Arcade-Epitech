@@ -117,9 +117,6 @@ namespace displayModule
              */
             bool createText(const std::string &text, const std::string &assetName);
 
-            // SET POSITION
-            //void setAssetPosition(Asset &asset, int x, int y);
-
             /*!
              *  \brief Catch d'events
              *
@@ -136,7 +133,11 @@ namespace displayModule
              */
             void startSound(const std::string &soundKey) final;
 
-            // Je les ai implémenté dans le .cpp mais à toi de les faire
+            /*!
+             *  \brief Création d'un son
+             *
+             *  Créé un son
+             */
             void createSound(const std::string &path, const std::string &soundKey) final;
 
             /*!
