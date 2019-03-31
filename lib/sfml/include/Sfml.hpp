@@ -31,8 +31,8 @@
 
 namespace displayModule
 {
-    /*! \class Caca
-     * \brief classe décrivant les fonctions pour la libcaca
+    /*! \class Sfml
+     * \brief classe décrivant les fonctions pour la Sfml
      *
      *  La classe gère la définition des méthodes pures de
      *  l'interface IDisplayModule
