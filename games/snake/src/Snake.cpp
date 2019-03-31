@@ -68,11 +68,11 @@ namespace gameModule
 
 	void Snake::setFoodPosition()
 	{
-		this->x_eat = std::rand() % 17;
-		this->y_eat = std::rand() % 17;
+		this->x_eat = std::rand() % 40;
+		this->y_eat = std::rand() % 30;
 		while (this->_map[this->y_eat][this->x_eat] == '#') {
-			this->x_eat = std::rand() % 17;
-			this->y_eat = std::rand() % 17;
+			this->x_eat = std::rand() % 40;
+			this->y_eat = std::rand() % 30;
 		}
 	}
 
@@ -196,9 +196,15 @@ namespace gameModule
 			return (false);
 		this->_map.clear();
 		while (getline(file, content)) {
+			if (content.size() != 40) {
+				file.close();
+				return (false);
+			}
 			this->_map.push_back(content);
 		}
 		file.close();
+		if (this->_map.size() != 30)
+			return (false);
 		return (true);
 	}
 
@@ -229,9 +235,10 @@ namespace gameModule
 	void Snake::playGame()
 	{
 		this->_graph->clearScreen();
+		if (this->_map.size() != 30 || this->_map[0].size() != 40)
+			this->position = &Snake::Menu;
 		this->evt = this->_graph->catchEvent();
 		if (this->evt == displayModule::e_event::KEY_R) {
-			// this->_map.clear();
 			this->_snake.clear();
 			this->_move = RIGHT;
 			this->x_eat = 9;
@@ -259,6 +266,8 @@ namespace gameModule
 		std::string name;
 		int index = 1;
 
+		this->_spriteMap.clear();
+		this->_map.clear();
 		this->_spriteMap.push_back(stockPrint("./games/snake/map/", "Return", 15, (13)));
 		this->_graph->createText("Return", "Return");
 		this->_spriteMap[0].SetText(true);
@@ -336,7 +345,7 @@ namespace gameModule
 	{
 		if (this->evt == displayModule::e_event::KEY_Z) {
 			this->_arrowMapPos -= 1;
-			if (this->_arrowMapPos == -1)
+			if (this->_arrowMapPos < 0)
 				this->_arrowMapPos = this->_spriteMap.size() - 1;
 			this->moveMapArrow();
 		} else if (this->evt == displayModule::e_event::KEY_S) {
@@ -347,7 +356,11 @@ namespace gameModule
 				this->position = &Snake::Menu;
 			} else {
 				this->position = &Snake::playGame;
-				this->stockMap("./games/snake/map/" + this->_allmap[this->_arrowMapPos - 1] + ".txt");
+				if (!this->stockMap("./games/snake/map/" + this->_allmap[this->_arrowMapPos - 1] + ".txt")) {
+					this->position = &Snake::Menu;
+					return;
+				}
+				this->setFoodPosition();
 			}
 		}
 	}
@@ -441,9 +454,9 @@ namespace gameModule
 		if (setLib(asset) == false)
 			return (false);
 		this->_move = RIGHT;
-		this->x_eat = 9;
+		this->x_eat = 0;
+		this->y_eat = 0;
 		this->_score = 0;
-		this->y_eat = 6;
 		this->_arrowMenuPos = 0;
 		this->_arrowMapPos = 0;
 		this->_snake.push_back(stockPrint("./games/snake/assets", "head", 1, 1));
