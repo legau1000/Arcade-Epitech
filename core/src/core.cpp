@@ -14,7 +14,6 @@ Core::Core()
 
 Core::~Core()
 {
-    this->_allLauncherSprite.clear();
     std::cout << "Good Bye and see you later my friend!" << std::endl;
 }
 
