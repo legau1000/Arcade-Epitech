@@ -625,7 +625,7 @@ void Snake::initAssets()
 	this->_allSnakeSprite[15].SetText(true);
 	this->_allSnakeSprite[15].SetXY(20, 20);
 	this->_allSnakeSprite.push_back(stockPrint("How2", "TXTHowInfo", 0, 0));
-	this->_graph->createText("\n'Z' = UP\n'S' = DOWN\n'Q' = LEFT\'D' = RIGHT\nScore + 5 Per food.", "TXTHowInfo");
+	this->_graph->createText("\n'Z' = UP\n'S' = DOWN\n'Q' = LEFT\n'D' = RIGHT\nScore + 5 Per food.", "TXTHowInfo");
 	this->_allSnakeSprite[16].SetText(true);
 	this->_allSnakeSprite[16].SetXY(20, 20);
 	this->createLetter();
