@@ -39,7 +39,7 @@ void Pacman::howToPlay()
 void Pacman::drawScoreInMenu()
 {
 	this->_lib->createText("Score", "scoreMenu");
-	this->_lib->drawText("scoreMenu", 40, 5);
+	this->_lib->drawText("scoreMenu", 45, 5);
 	std::ifstream file("./games/pacman/src/.score.txt");
 	std::string content;
 	std::string totalContent;
@@ -50,7 +50,7 @@ void Pacman::drawScoreInMenu()
 		totalContent.append("\n");
 	}
 	this->_lib->createText(totalContent, "scoreM");
-	this->_lib->drawText("scoreM", 41, 7);
+	this->_lib->drawText("scoreM", 46, 7);
 }
 
 void Pacman::menu()
@@ -84,7 +84,7 @@ displayModule::e_event Pacman::game()
 			this->drawAllAsset();
 			this->moovePlayer();
 			this->ghostMoove(ext);
-			std::this_thread::sleep_for(std::chrono::milliseconds(50));
+			std::this_thread::sleep_for(std::chrono::milliseconds(100));
 			this->_lib->refreshWindow();
 		}
 		this->_lib->refreshWindow();
@@ -141,6 +141,7 @@ void Pacman::createAll()
 	this->_lib->createAsset("games/pacman/assets", "pink");
 	this->_lib->createAsset("games/pacman/assets", "gameOver");
 	this->_lib->createSound("games/pacman/assets", "pacman");
+	this->_lib->createText("Press enter to restart the game", "press");
 	this->_lib->createText("Score = ", "score");
 	this->_lib->createText("0", "0");
 	this->_lib->createText("1", "1");
@@ -339,6 +340,7 @@ void Pacman::gameOver(displayModule::e_event ext)
 		}
 		this->_lib->clearScreen();
 		this->_lib->drawAsset("gameOver", 1, 1);
+		this->_lib->drawText("press", 10, 25);
 		if (ext == displayModule::ENTER)
 			this->restartGame();
 	}
