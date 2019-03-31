@@ -83,7 +83,7 @@ displayModule::e_event Pacman::game()
 			this->catchPacmanEvent(ext);
 			this->drawAllAsset();
 			this->moovePlayer();
-			this->ghostMoove();
+			this->ghostMoove(ext);
 			std::this_thread::sleep_for(std::chrono::milliseconds(100));
 			this->_lib->refreshWindow();
 		}
@@ -96,12 +96,6 @@ displayModule::e_event Pacman::game()
 			return (ext);
 	}
 	return ext;
-}
-
-void Pacman::gameOver()
-{
-	std::ofstream file("games/pacman/src/.score.txt", std::ios_base::app);
-	file << this->score << std::endl;
 }
 
 void Pacman::drawAllAsset()
@@ -125,7 +119,7 @@ void Pacman::moovePlayer()
 		this->movePacmanS();
 }
 
-void Pacman::createAll()
+void Pacman::fillMap()
 {
 	std::ifstream fileName("games/pacman/assets/2d/map.txt", std::ios::in);
 
@@ -135,6 +129,11 @@ void Pacman::createAll()
 		this->_map.append(content);
 		this->_map.append("\n");
 	}
+}
+
+void Pacman::createAll()
+{
+	this->fillMap();
 	this->_lib->createAsset("games/pacman/assets", "wall");
 	this->_lib->createAsset("games/pacman/assets", "little");
 	this->_lib->createAsset("games/pacman/assets", "blackWall");
@@ -205,9 +204,24 @@ bool Pacman::initGame(const std::shared_ptr<displayModule::IDisplayModule> &asse
 	this->y = 9;
 	this->xGhost = 1;
 	this->yGhost = 9;
-	score = 0;
+	this->score = 0;
+	this->block = 0;
+	this->inMenu = false;
 	this->setLib(asset);
 	return true;
+}
+
+void Pacman::restartGame()
+{
+	this->_map = "";
+	this->x = 9;
+	this->y = 9;
+	this->xGhost = 1;
+	this->yGhost = 9;
+	this->score = 0;
+	this->block = 0;
+	this->inMenu = false;
+	this->fillMap();
 }
 
 bool Pacman::setLib(const std::shared_ptr<displayModule::IDisplayModule> &asset)
@@ -291,7 +305,7 @@ displayModule::e_event Pacman::catchPacmanEvent(displayModule::e_event ext)
 	return (ext);
 }
 
-void Pacman::ghostMoove()
+void Pacman::ghostMoove(displayModule::e_event ext)
 {
 	if (this->xGhost < this->y || this->yGhost < this->x)
 	{
@@ -304,17 +318,25 @@ void Pacman::ghostMoove()
 		if (this->directionGhost == 4)
 			this->yGhost += 1;
 	}
+	this->gameOver(ext);
+}
+
+void Pacman::gameOver(displayModule::e_event ext)
+{
 	if (this->yGhost == this->x && this->xGhost == this->y)
 	{
 		this->direction = 5;
 		this->directionGhost = 5;
 		if (block == 0)
 		{
-			this->gameOver();
+			std::ofstream file("games/pacman/src/.score.txt", std::ios_base::app);
+			file << this->score << std::endl;
 			block += 1;
 		}
 		this->_lib->clearScreen();
 		this->_lib->drawAsset("gameOver", 1, 1);
+		if (ext == displayModule::ENTER)
+			this->restartGame();
 	}
 }
 
