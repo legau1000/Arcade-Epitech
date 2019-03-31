@@ -56,28 +56,18 @@ enum e_event
     class IDisplayModule
     {
         public:
-            // Destroyer
             virtual ~IDisplayModule() = default;
-
-            // Sprites
-            virtual bool createAsset(const std::string &path, const std::string &assetName) = 0;
-            virtual bool drawAsset(const std::string &assetName, int x, int y) = 0;
-            virtual bool drawText(const std::string &textName, int x, int y) = 0;
-
-            // 
+            virtual bool createAsset(const std::string &path, const std::string &assetKey) = 0;
+            virtual bool createText(const std::string &text, const std::string &textKey) = 0;
+            virtual bool drawAsset(const std::string &assetKey, int x, int y) = 0;
+            virtual bool drawText(const std::string &textKey, int x, int y) = 0;
             virtual void refreshWindow() = 0;
             virtual void clearScreen() = 0;
-            // Text
-            virtual bool createText(const std::string &text, const std::string &assetName) = 0;
-
-            // Events
             virtual e_event catchEvent() = 0;
-
-            // Sounds
             virtual void createSound(const std::string &path, const std::string &soundKey) = 0;
             virtual void startSound(const std::string &soundKey) = 0;
             virtual void stopSound(const std::string &soundKey) = 0;
-    };
-} // namespace displayModule
+    }; 
+} // nvirtual amespace displayModule
 
 #endif /* !IDISPLAYMODULE_HPP_ */

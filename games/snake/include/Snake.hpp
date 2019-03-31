@@ -43,6 +43,8 @@ namespace gameModule
 			void ChooseMap();
 			void playGame();
 			void gameOver();
+			void HowToPlay();
+			void Score();
 
 			// Functions
 			void printSprite(int index);
@@ -86,12 +88,24 @@ namespace gameModule
 	
 			void controlEventGameOver();
 
+			void controlHowToPlay();
+			void printHowToPlay();
+			void controlEventScore();
+			void printScore();
+			void createLetter();
+			void drawScore();
+			void drawScoreInMenu();
+			void stockScore();
+
 			// Variables
 
 			int x_eat;
 			int y_eat;
 			int _score;
+			int _arrowMenuPos;
+			int _arrowMapPos;
 			e_move _move;
+			std::string _name;
 			displayModule::e_event evt;
 			std::vector<std::string> _map;
 			std::vector<std::string> _allmap;
@@ -99,8 +113,6 @@ namespace gameModule
 			std::vector<stockPrint> _snake;
 			std::vector<stockPrint> _spriteMap;
 			std::shared_ptr<displayModule::IDisplayModule> _graph;
-			int _arrowMenuPos;
-			int _arrowMapPos;
 
 			void (Snake::*position)();
 

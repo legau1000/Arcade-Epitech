@@ -27,7 +27,7 @@ namespace gameModule
 
 	bool Snake::exitEvent()
 	{
-		if (evt == displayModule::e_event::KEY_L) //Do it on core
+		if (evt == displayModule::e_event::KEY_L)
 			return (true);
 		if (evt >= 1 && evt <= 4)
 			return (true);
@@ -170,7 +170,6 @@ namespace gameModule
 		}
 		if (this->detectMe()) {
 			this->position = &Snake::gameOver;
-			printf("GAME OVER\n");
 		}
 	}
 
@@ -180,7 +179,7 @@ namespace gameModule
 		this->printMap();
 		this->printFood();
 		this->printPlayer();
-		// this->printOther();
+		this->drawScore();
 		this->_graph->refreshWindow();
 	}
 
@@ -302,13 +301,25 @@ namespace gameModule
 			switch (this->_arrowMenuPos)
 			{
 				case 0:	this->position = &Snake::ChooseMap; this->initMap(); break;
-				case 1:	this->position = &Snake::playGame; break;
-				case 2:	this->position = &Snake::playGame; break;
-				// case 1:	this->position = &Snake::HowToPlay; break;
-				// case 2:	this->position = &Snake::Score; break;
+				case 1:	this->position = &Snake::HowToPlay; this->_allSnakeSprite[8].SetXY(0, 0); break;
+				case 2:	this->position = &Snake::Score; this->stockScore(); break;
 				default: break;
 			}
 		}
+	}
+
+	void Snake::stockScore()
+	{
+		std::ifstream file("./games/snake/src/.score.txt");
+		std::string content;
+		std::string totalContent;
+
+		while (getline(file, content))
+		{
+			totalContent.append(content);
+			totalContent.append("\n");
+		}
+		this->_graph->createText(totalContent, "scoreM");
 	}
 
 	void Snake::printSprite(int index)
@@ -381,9 +392,37 @@ namespace gameModule
 		this->_graph->refreshWindow();
 	}
 
+	void Snake::controlHowToPlay()
+	{
+		if (this->evt == displayModule::e_event::ENTER) {
+			this->position = &Snake::Menu;
+			this->_allSnakeSprite[8].SetXY(15, 18);
+		}
+		if (this->evt == displayModule::e_event::KEY_R) {
+			this->position = &Snake::Menu;
+			this->_allSnakeSprite[8].SetXY(15, 18);
+		}
+		if (this->evt == displayModule::e_event::KEY_L) {
+			this->position = &Snake::Menu;
+			this->_allSnakeSprite[8].SetXY(15, 18);
+		}
+	}
+
+	void Snake::printHowToPlay()
+	{
+		this->printSprite(8);
+		this->printSprite(15);
+		this->printSprite(16);
+		this->_graph->refreshWindow();
+	}
+
 	void Snake::controlEventGameOver()
 	{
-
+		if (this->evt == displayModule::e_event::ENTER) {
+			this->position = &Snake::Menu;
+			std::ofstream file("games/snake/src/.score.txt", std::ios_base::app);
+			file << this->_score << std::endl;
+		}
 	}
 
 	void Snake::printGameOver()
@@ -393,12 +432,33 @@ namespace gameModule
 		this->_graph->refreshWindow();
 	}
 
+	void Snake::drawScore()
+	{
+		int index = this->_score / 10 % 10;
+		int centaine = this->_score / 100 % 10;
+
+		this->_graph->drawText("score", 42, 1);
+		if (this->_score >= 1000)
+			this->_graph->drawText(std::to_string(this->_score / 1000), 50, 1);
+		this->_graph->drawText(std::to_string(centaine), 51, 1);
+		this->_graph->drawText(std::to_string(index), 52, 1);
+		this->_graph->drawText(std::to_string(this->_score % 10), 53, 1);
+	}
+
 	void Snake::gameOver()
 	{
 		this->_graph->clearScreen();
 		this->evt = this->_graph->catchEvent();
 		this->controlEventGameOver();
 		this->printGameOver();
+	}
+
+	void Snake::HowToPlay()
+	{
+		this->_graph->clearScreen();
+		this->evt = this->_graph->catchEvent();
+		this->controlHowToPlay();
+		this->printHowToPlay();
 	}
 
 	void Snake::ChooseMap()
@@ -415,6 +475,27 @@ namespace gameModule
 		this->evt = this->_graph->catchEvent();
 		this->controlEventMenu();
 		this->printMenu();
+	}
+
+	void Snake::printScore()
+	{
+		this->_graph->drawText("scoreM", 46, 7);
+		this->_graph->refreshWindow();
+	}
+
+	void Snake::controlEventScore()
+	{
+		if (this->evt == displayModule::e_event::ENTER) {
+			this->position = &Snake::Menu;
+		}
+	}
+
+	void Snake::Score()
+	{
+		this->_graph->clearScreen();
+		this->evt = this->_graph->catchEvent();
+		this->controlEventScore();
+		this->printScore();
 	}
 
 	displayModule::e_event Snake::game()
@@ -436,6 +517,30 @@ namespace gameModule
 		this->_graph->startSound(key);
 	}
 
+	void Snake::createLetter()
+	{
+		char index = 'A';
+		std::string data;
+
+		data[1] = '\0';
+		while (index <= 'Z') {
+			data[0] = index;
+			this->_graph->createText(data, data);
+			index++;
+		}
+		this->_graph->createText("Score = ", "score");
+		this->_graph->createText("0", "0");
+		this->_graph->createText("1", "1");
+		this->_graph->createText("2", "2");
+		this->_graph->createText("3", "3");
+		this->_graph->createText("4", "4");
+		this->_graph->createText("5", "5");
+		this->_graph->createText("6", "6");
+		this->_graph->createText("7", "7");
+		this->_graph->createText("8", "8");
+		this->_graph->createText("9", "9");
+	}
+
 	void Snake::initAssets()
 	{
 		this->initSprite("head", "0", 0);
@@ -455,9 +560,35 @@ namespace gameModule
 		this->initSprite("ChooseMap", "ChooseYourMap", 10); // To Do 2D
 		this->initSprite("gameOver", "gameOver", 11);
 		this->initSprite("EnterName", "EnterName", 12);
-		this->_allSnakeSprite[12].SetXY(20, 20);
+		this->_allSnakeSprite[12].SetXY(4, 13);
 		this->initSprite("arrowUp", "arrowUp", 13);
 		this->initSprite("arrowDown", "arrowDown", 14);
+		this->_allSnakeSprite.push_back(stockPrint("How1", "TXTHowReturn", 0, 0));
+		this->_graph->createText("Press Enter return.", "TXTHowReturn");
+		this->_allSnakeSprite[15].SetText(true);
+		this->_allSnakeSprite[15].SetXY(20, 20);
+		this->_allSnakeSprite.push_back(stockPrint("How2", "TXTHowInfo", 0, 0));
+		this->_graph->createText("'Z' = UP  |  'S' = DOWN  |  'Q' = LEFT  |  'D' = RIGHT\nScore + 5 Per food.", "TXTHowInfo");
+		this->_allSnakeSprite[16].SetText(true);
+		this->_allSnakeSprite[16].SetXY(20, 20);
+		this->createLetter();
+	}
+
+	void Snake::drawScoreInMenu()
+	{
+		this->_graph->createText("Score", "scoreMenu");
+		this->_graph->drawText("scoreMenu", 45, 5);
+		std::ifstream file("./games/pacman/src/.score.txt");
+		std::string content;
+		std::string totalContent;
+
+		while (getline(file, content))
+		{
+			totalContent.append(content);
+			totalContent.append("\n");
+		}
+		this->_graph->createText(totalContent, "scoreM");
+		this->_graph->drawText("scoreM", 46, 7);
 	}
 
 	void Snake::initSprite(std::string file, std::string text, int index)
@@ -479,6 +610,7 @@ namespace gameModule
 		this->x_eat = 0;
 		this->y_eat = 0;
 		this->_score = 0;
+		this->_name = "AAA";
 		this->_arrowMenuPos = 0;
 		this->_arrowMapPos = 0;
 		this->_snake.push_back(stockPrint("./games/snake/assets", "head", 1, 1));
