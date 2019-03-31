@@ -14,15 +14,6 @@ Sfml::Sfml() : _window(sf::VideoMode(1920, 1080), "Let's play!", sf::Style::Resi
 {
 }
 
-std::string Sfml::cutEndFile(const std::string &name)
-{
-	std::size_t pos = name.find(".");
-
-	if (pos == std::string::npos)
-		return (name);
-	return (name.substr(0, pos));
-}
-
 bool Sfml::createAsset(const std::string &path, const std::string &assetName)
 {
 	std::string realPath = path + "/2d/" + assetName + ".png";

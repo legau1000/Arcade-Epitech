@@ -84,7 +84,7 @@ displayModule::e_event Pacman::game()
 			this->drawAllAsset();
 			this->moovePlayer();
 			this->ghostMoove(ext);
-			std::this_thread::sleep_for(std::chrono::milliseconds(100));
+			std::this_thread::sleep_for(std::chrono::milliseconds(50));
 			this->_lib->refreshWindow();
 		}
 		this->_lib->refreshWindow();
